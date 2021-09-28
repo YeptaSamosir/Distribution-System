@@ -1,0 +1,52 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch (api)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+
+            "program": "${workspaceFolder}/API/bin/Debug/net5.0/API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/API/",
+            "stopAtEntry": false,
+
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS": "http://localhost:5002"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/API/Views"
+            }
+        },
+        {
+            "name": "Launch (web)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/Client/bin/Debug/net5.0/Client.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Client/",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS": "http://localhost:5001"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Client/Views"
+            }
+        }
+    ]
+}
