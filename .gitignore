@@ -388,8 +388,12 @@ FodyWeavers.xsd
 *.sln.iml
 
 # My Project
-Client/bin/
-API/bin/
+Client/bin/*
+API/bin/*
 
-Client/obj/
-API/obj/
+Client/obj/*
+API/obj/*
+
+Client/.vscode
+API/.vscode
+API/appsetings.json
