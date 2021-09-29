@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20210928125318_migrate1")]
+    [Migration("20210929035335_migrate1")]
     partial class migrate1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,8 +56,8 @@ namespace API.Migrations
                     b.Property<int>("AccountId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -117,6 +117,41 @@ namespace API.Migrations
                     b.ToTable("tb_m_companies");
                 });
 
+            modelBuilder.Entity("API.Models.DetailScheduleInterview", b =>
+                {
+                    b.Property<int>("DetailScheduleInterviewId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmailCandidate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmailCustomer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ScheduleInterviewId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("TypeLocation")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("DetailScheduleInterviewId");
+
+                    b.HasIndex("ScheduleInterviewId");
+
+                    b.ToTable("tb_m_detail_schedule_interviews");
+                });
+
             modelBuilder.Entity("API.Models.Onboard", b =>
                 {
                     b.Property<int>("OnboardId")
@@ -136,8 +171,8 @@ namespace API.Migrations
                     b.Property<DateTime>("DateStart")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("StatusId")
-                        .HasColumnType("int");
+                    b.Property<string>("StatusId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("OnboardId");
 
@@ -152,10 +187,8 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Role", b =>
                 {
-                    b.Property<int>("RoleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -173,10 +206,8 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.ScheduleInterview", b =>
                 {
-                    b.Property<int>("ScheduleInterviewId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("ScheduleInterviewId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CandidateId")
                         .HasColumnType("int");
@@ -190,20 +221,17 @@ namespace API.Migrations
                     b.Property<string>("CustomerName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateInterview")
+                    b.Property<DateTime>("EndInterview")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("JobTitle")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StatusId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("TimeEnd")
+                    b.Property<DateTime>("StartInterview")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("TimeStart")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("StatusId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -221,10 +249,8 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Status", b =>
                 {
-                    b.Property<int>("StatusId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("StatusId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -232,8 +258,8 @@ namespace API.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TypeStatusId")
-                        .HasColumnType("int");
+                    b.Property<string>("TypeStatusId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -247,13 +273,17 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.TypeStatus", b =>
                 {
-                    b.Property<int>("TypeStatusId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("TypeStatusId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("NameTypeStatus")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("TypeStatusId");
 
@@ -279,6 +309,15 @@ namespace API.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("API.Models.DetailScheduleInterview", b =>
+                {
+                    b.HasOne("API.Models.ScheduleInterview", "ScheduleInterview")
+                        .WithMany("DetailScheduleInterviews")
+                        .HasForeignKey("ScheduleInterviewId");
+
+                    b.Navigation("ScheduleInterview");
+                });
+
             modelBuilder.Entity("API.Models.Onboard", b =>
                 {
                     b.HasOne("API.Models.Candidate", "Candidate")
@@ -295,9 +334,7 @@ namespace API.Migrations
 
                     b.HasOne("API.Models.Status", "Status")
                         .WithMany("Onboards")
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StatusId");
 
                     b.Navigation("Candidate");
 
@@ -322,9 +359,7 @@ namespace API.Migrations
 
                     b.HasOne("API.Models.Status", "Status")
                         .WithMany("ScheduleInterviews")
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StatusId");
 
                     b.Navigation("Candidate");
 
@@ -337,9 +372,7 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Models.TypeStatus", "TypeStatus")
                         .WithMany("Status")
-                        .HasForeignKey("TypeStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TypeStatusId");
 
                     b.Navigation("TypeStatus");
                 });
@@ -366,6 +399,11 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.Role", b =>
                 {
                     b.Navigation("AccountRoles");
+                });
+
+            modelBuilder.Entity("API.Models.ScheduleInterview", b =>
+                {
+                    b.Navigation("DetailScheduleInterviews");
                 });
 
             modelBuilder.Entity("API.Models.Status", b =>

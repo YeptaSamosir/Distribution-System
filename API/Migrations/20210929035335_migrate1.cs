@@ -60,8 +60,7 @@ namespace API.Migrations
                 name: "tb_m_roles",
                 columns: table => new
                 {
-                    RoleId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -75,9 +74,10 @@ namespace API.Migrations
                 name: "tb_m_type_statuses",
                 columns: table => new
                 {
-                    TypeStatusId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NameTypeStatus = table.Column<int>(type: "int", nullable: false)
+                    TypeStatusId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -89,7 +89,7 @@ namespace API.Migrations
                 columns: table => new
                 {
                     AccountId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -114,10 +114,9 @@ namespace API.Migrations
                 name: "tb_m_statuses",
                 columns: table => new
                 {
-                    StatusId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StatusId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TypeStatusId = table.Column<int>(type: "int", nullable: false),
+                    TypeStatusId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -129,7 +128,7 @@ namespace API.Migrations
                         column: x => x.TypeStatusId,
                         principalTable: "tb_m_type_statuses",
                         principalColumn: "TypeStatusId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -140,7 +139,7 @@ namespace API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CandidateId = table.Column<int>(type: "int", nullable: false),
                     CompanyId = table.Column<int>(type: "int", nullable: false),
-                    StatusId = table.Column<int>(type: "int", nullable: false),
+                    StatusId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     DateStart = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateEnd = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -164,23 +163,21 @@ namespace API.Migrations
                         column: x => x.StatusId,
                         principalTable: "tb_m_statuses",
                         principalColumn: "StatusId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "tb_m_schedule_interviews",
                 columns: table => new
                 {
-                    ScheduleInterviewId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ScheduleInterviewId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CandidateId = table.Column<int>(type: "int", nullable: false),
                     CompanyId = table.Column<int>(type: "int", nullable: false),
                     CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     JobTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateInterview = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TimeStart = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TimeEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StatusId = table.Column<int>(type: "int", nullable: false),
+                    StartInterview = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndInterview = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StatusId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -204,13 +201,43 @@ namespace API.Migrations
                         column: x => x.StatusId,
                         principalTable: "tb_m_statuses",
                         principalColumn: "StatusId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tb_m_detail_schedule_interviews",
+                columns: table => new
+                {
+                    DetailScheduleInterviewId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ScheduleInterviewId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    EmailCandidate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmailCustomer = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TypeLocation = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tb_m_detail_schedule_interviews", x => x.DetailScheduleInterviewId);
+                    table.ForeignKey(
+                        name: "FK_tb_m_detail_schedule_interviews_tb_m_schedule_interviews_ScheduleInterviewId",
+                        column: x => x.ScheduleInterviewId,
+                        principalTable: "tb_m_schedule_interviews",
+                        principalColumn: "ScheduleInterviewId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_tb_m_account_roles_RoleId",
                 table: "tb_m_account_roles",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tb_m_detail_schedule_interviews_ScheduleInterviewId",
+                table: "tb_m_detail_schedule_interviews",
+                column: "ScheduleInterviewId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_tb_m_onboards_CandidateId",
@@ -254,16 +281,19 @@ namespace API.Migrations
                 name: "tb_m_account_roles");
 
             migrationBuilder.DropTable(
-                name: "tb_m_onboards");
+                name: "tb_m_detail_schedule_interviews");
 
             migrationBuilder.DropTable(
-                name: "tb_m_schedule_interviews");
+                name: "tb_m_onboards");
 
             migrationBuilder.DropTable(
                 name: "tb_m_accounts");
 
             migrationBuilder.DropTable(
                 name: "tb_m_roles");
+
+            migrationBuilder.DropTable(
+                name: "tb_m_schedule_interviews");
 
             migrationBuilder.DropTable(
                 name: "tb_m_candidates");

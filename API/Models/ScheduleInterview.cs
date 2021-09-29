@@ -11,7 +11,7 @@ namespace API.Models
     public class ScheduleInterview
     {
         [Key]
-        public int ScheduleInterviewId { get; set; }
+        public string ScheduleInterviewId { get; set; }
 
         [ForeignKey("Candidate")]
         public int CandidateId { get; set; }
@@ -23,16 +23,18 @@ namespace API.Models
 
         public string CustomerName { get; set; }
         public string JobTitle { get; set; }
-        public DateTime DateInterview { get; set; }
-        public DateTime TimeStart { get; set; }
-        public DateTime TimeEnd { get; set; }
+        public DateTime StartInterview { get; set; }
+        public DateTime EndInterview { get; set; }
+
 
         [ForeignKey("Status")]
-        public int StatusId { get; set; }
+        public string StatusId { get; set; }
         public virtual Status Status { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+
+        public virtual ICollection<DetailScheduleInterview> DetailScheduleInterviews { get; set; }
 
     }
 }

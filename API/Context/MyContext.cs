@@ -18,6 +18,7 @@ namespace API.Context
         public DbSet<Onboard> Onboards { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<ScheduleInterview> ScheduleInterviews { get; set; }
+        public DbSet<DetailScheduleInterview> DetailScheduleInterviews { get; set; }
         public DbSet<Status> Statuses { get; set; }
         public DbSet<TypeStatus> TypeStatuses { get; set; }
 
@@ -37,9 +38,8 @@ namespace API.Context
 
             modelBuilder.Entity<Status>().HasMany(x => x.Onboards).WithOne(x => x.Status);
             modelBuilder.Entity<Status>().HasMany(x => x.ScheduleInterviews).WithOne(x => x.Status);
-            // modelBuilder.Entity<Status>().HasMany(x => x.Candidates).WithOne(x => x.Status);
 
-
+            modelBuilder.Entity<ScheduleInterview>().HasMany(x => x.DetailScheduleInterviews).WithOne(x => x.ScheduleInterview);
         }
     }
 }

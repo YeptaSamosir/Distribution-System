@@ -11,8 +11,12 @@ namespace API.Models
     public class TypeStatus
     {
         [Key]
-        public int TypeStatusId { get; set; }
-        public int NameTypeStatus { get; set; }
+        public string TypeStatusId { get; set; }
+        public string Name { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+
         public virtual ICollection<Status> Status { get; set; }
+
     }
 }
