@@ -1,4 +1,5 @@
 using API.Context;
+using API.Repository.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,7 +29,20 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            //services.AddControllers();
+            services.AddScoped<AccountRepository>();
+            services.AddScoped<CandidateRepository>();
+            services.AddScoped<CompanyRepository>();
+            services.AddScoped<DetailScheduleInterviewRepository>();
+            services.AddScoped<OnboardRepository>();
+            services.AddScoped<RoleRepository>();
+            services.AddScoped<ScheduleInterviewRepository>();
+            services.AddScoped<StatusRepository>();
+            services.AddScoped<TypeStatusRepository>();
+
+            services.AddControllersWithViews().AddNewtonsoftJson(options =>
+                            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
 
             services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")).UseLazyLoadingProxies());
             services.AddSwaggerGen(c =>
