@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "/home/ferddev21/Project/Distribution-System/Client/Client.csproj": {}
+    "C:\\Users\\Pluginnnnn\\source\\repos\\Project\\Distribution-System\\Client\\Client.csproj": {}
   },
   "projects": {
-    "/home/ferddev21/Project/Distribution-System/Client/Client.csproj": {
+    "C:\\Users\\Pluginnnnn\\source\\repos\\Project\\Distribution-System\\Client\\Client.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/ferddev21/Project/Distribution-System/Client/Client.csproj",
+        "projectUniqueName": "C:\\Users\\Pluginnnnn\\source\\repos\\Project\\Distribution-System\\Client\\Client.csproj",
         "projectName": "Client",
-        "projectPath": "/home/ferddev21/Project/Distribution-System/Client/Client.csproj",
-        "packagesPath": "/home/ferddev21/.nuget/packages/",
-        "outputPath": "/home/ferddev21/Project/Distribution-System/Client/obj/",
+        "projectPath": "C:\\Users\\Pluginnnnn\\source\\repos\\Project\\Distribution-System\\Client\\Client.csproj",
+        "packagesPath": "C:\\Users\\Pluginnnnn\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Pluginnnnn\\source\\repos\\Project\\Distribution-System\\Client\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/ferddev21/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Pluginnnnn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -47,12 +49,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[5.0.0, 5.0.0]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -61,7 +57,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.205/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

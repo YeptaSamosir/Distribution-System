@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace API.Models
@@ -11,12 +12,14 @@ namespace API.Models
     public class Company
     {
         [Key]
-        public int CompanyId { get; set; }
+        public int CandidateId { get; set; }
         public string Name { get; set; }
+        public string Grade { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-
-        public virtual ICollection<Onboard> Onboards { get; set; }
+        [JsonIgnore]
         public virtual ICollection<ScheduleInterview> ScheduleInterviews { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<Onboard> Onboards { get; set; }
     }
 }
