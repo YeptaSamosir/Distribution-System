@@ -397,3 +397,6 @@ API/obj/*
 Client/.vscode
 API/.vscode
 API/appsetings.json
+
+RestClient/
+RestClient/*.http
