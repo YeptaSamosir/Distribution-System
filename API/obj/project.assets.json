@@ -8083,7 +8083,7 @@
     ]
   },
   "packageFolders": {
-    "/home/ferddev21/.nuget/packages/": {}
+    "/root/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
@@ -8091,11 +8091,11 @@
       "projectUniqueName": "/home/ferddev21/Project/Distribution-System/API/API.csproj",
       "projectName": "API",
       "projectPath": "/home/ferddev21/Project/Distribution-System/API/API.csproj",
-      "packagesPath": "/home/ferddev21/.nuget/packages/",
+      "packagesPath": "/root/.nuget/packages/",
       "outputPath": "/home/ferddev21/Project/Distribution-System/API/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/ferddev21/.nuget/NuGet/NuGet.Config"
+        "/root/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net5.0"

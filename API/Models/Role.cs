@@ -11,7 +11,7 @@ namespace API.Models
     public class Role
     {
         [Key]
-        public int RoleId { get; set; }
+        public string RoleId { get; set; }
         public string Name { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

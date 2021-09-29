@@ -22,7 +22,7 @@ namespace API.Models
         public virtual Company Company { get; set; }
 
         [ForeignKey("Status")]
-        public int StatusId { get; set; }
+        public string StatusId { get; set; }
         public virtual Status Status { get; set; }
 
         public DateTime DateStart { get; set; }

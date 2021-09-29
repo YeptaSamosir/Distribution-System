@@ -14,7 +14,7 @@ namespace API.Models
         public virtual Account Account { get; set; }
 
         [ForeignKey("Role")]
-        public int RoleId { get; set; }
+        public string RoleId { get; set; }
         public virtual Role Role { get; set; }
 
         public DateTime CreatedAt { get; set; }
