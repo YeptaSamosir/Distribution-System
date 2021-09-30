@@ -30,10 +30,15 @@ namespace API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
@@ -42,7 +47,8 @@ namespace API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.HasKey("AccountId");
 
@@ -55,7 +61,7 @@ namespace API.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(16)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -81,10 +87,12 @@ namespace API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Grade")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -105,7 +113,8 @@ namespace API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -119,6 +128,7 @@ namespace API.Migrations
                 {
                     b.Property<int>("DetailScheduleInterviewId")
                         .ValueGeneratedOnAdd()
+                        .HasMaxLength(16)
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -126,16 +136,15 @@ namespace API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EmailCandidate")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("EmailCustomer")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("ScheduleInterviewId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(16)");
 
                     b.Property<int>("TypeLocation")
                         .HasColumnType("int");
@@ -163,6 +172,9 @@ namespace API.Migrations
                     b.Property<int>("CompanyId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("DateEnd")
                         .HasColumnType("datetime2");
 
@@ -170,7 +182,10 @@ namespace API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("StatusId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(16)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("OnboardId");
 
@@ -180,19 +195,21 @@ namespace API.Migrations
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("tb_m_onboards");
+                    b.ToTable("tb_tr_onboards");
                 });
 
             modelBuilder.Entity("API.Models.Role", b =>
                 {
                     b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -205,7 +222,8 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.ScheduleInterview", b =>
                 {
                     b.Property<string>("ScheduleInterviewId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
 
                     b.Property<int>("CandidateId")
                         .HasColumnType("int");
@@ -217,19 +235,24 @@ namespace API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CustomerName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<DateTime>("EndInterview")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("JobTitle")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartInterview")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("StatusId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(16)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -242,22 +265,24 @@ namespace API.Migrations
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("tb_m_schedule_interviews");
+                    b.ToTable("tb_tr_schedule_interviews");
                 });
 
             modelBuilder.Entity("API.Models.Status", b =>
                 {
                     b.Property<string>("StatusId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("TypeStatusId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(16)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -272,13 +297,15 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.TypeStatus", b =>
                 {
                     b.Property<string>("TypeStatusId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
