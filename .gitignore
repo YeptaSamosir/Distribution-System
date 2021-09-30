@@ -400,3 +400,9 @@ API/appsetings.json
 
 RestClient/
 RestClient/*.http
+
+
+API/obj/
+Client/obj/
+
+*.cache
