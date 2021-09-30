@@ -12,7 +12,9 @@ namespace API.Models
     public class Role
     {
         [Key]
+        [StringLength(16)]
         public string RoleId { get; set; }
+        [StringLength(64)]
         public string Name { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

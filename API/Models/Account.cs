@@ -13,9 +13,12 @@ namespace API.Models
     {
         [Key]
         public int AccountId { get; set; }
+        [StringLength(64)]
         public string Name { get; set; }
         public string Password { get; set; }
+        [StringLength(64)]
         public string Username { get; set; }
+        [StringLength(64)]
         public string Email { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }

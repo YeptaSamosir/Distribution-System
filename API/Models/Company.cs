@@ -12,9 +12,9 @@ namespace API.Models
     public class Company
     {
         [Key]
-        public int CandidateId { get; set; }
+        public int CompanyId { get; set; }
+        [StringLength(64)]
         public string Name { get; set; }
-        public string Grade { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         [JsonIgnore]
