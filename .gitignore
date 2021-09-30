@@ -400,4 +400,7 @@ API/appsetings.json
 
 RestClient/
 RestClient/*.http
-API/obj/Debug/net5.0/API.csproj.AssemblyReference.cache
+
+
+API/obj/
+Client/obj/
