@@ -26,38 +26,14 @@ namespace API.Base
         public ActionResult GetAll()
         {
             var Entity = repository.GetAll();
-            if (Entity == null)
-            {
-                return Ok(new ResponseVM
-                {
-                    Result = Entity,
-                    Message = "Data tidak ditemukan"
-                });
-            }
-            return Ok(new ResponseVM
-            {
-                Result = Entity,
-                Message = "Data ditemukan"
-            });
+            return Ok(Entity);
         }
 
         [HttpGet("{key}")]
         public ActionResult Get(TKey key)
         {
             var Entity = repository.Get(key);
-            if (Entity == null)
-            {
-                return Ok(new ResponseVM
-                {
-                    Result = Entity,
-                    Message = "Data tidak ditemukan"
-                });
-            }
-            return Ok(new ResponseVM
-            {
-                Result = Entity,
-                Message = "Data Not Found"
-            });
+            return Ok(Entity);
         }
 
         [HttpPost]
@@ -66,17 +42,11 @@ namespace API.Base
             try
             {
                 repository.Insert(entity);
-                return Ok(new ResponseVM
-                {
-                    Message = "Success created"
-                });
-            } 
+                return Ok("Success created");
+            }
             catch (System.Exception e)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new ResponseVM
-                {
-                    Message = e.Message
-                });
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
         }
 
@@ -86,37 +56,25 @@ namespace API.Base
             try
             {
                 repository.Update(entity);
-                return Ok(new ResponseVM
-                {
-                    Message = "Success updated"
-                });
+                return Ok("Success created");
             }
             catch (System.Exception e)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new ResponseVM
-                {
-                    Message = e.Message
-                });
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("{key}")]
         public ActionResult Delete(TKey key)
         {
             try
             {
                 repository.Delete(key);
-                return Ok(new ResponseVM
-                {
-                    Message = "Success Deleted"
-                });
+                return Ok("Success Delete");
             }
             catch (System.Exception e)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new ResponseVM
-                {
-                    Message = e.Message
-                });
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
         }
     }
