@@ -10,5 +10,7 @@ namespace API.Models.ViewModels
         public int Status { get; set; }
         public Object Result { get; set; }
         public string Message { get; set; }
+
+        public string Token { get; set; }
     }
 }

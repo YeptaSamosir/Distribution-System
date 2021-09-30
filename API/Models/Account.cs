@@ -11,6 +11,18 @@ namespace API.Models
     [Table("tb_m_accounts")]
     public class Account
     {
+        public Account(string name, string password, string username, string email, bool isActive, DateTime createdAt, DateTime updatedAt)
+        {
+            
+            Name = name;
+            Password = password;
+            Username = username;
+            Email = email;
+            IsActive = isActive;
+            CreatedAt = createdAt;
+            UpdatedAt = updatedAt;
+        }
+
         [Key]
         public int AccountId { get; set; }
         public string Name { get; set; }
