@@ -12,16 +12,17 @@ namespace API.Models
     public class DetailScheduleInterview
     {
         [Key]
+        [StringLength(16)]
         public int DetailScheduleInterviewId { get; set; }
 
         [ForeignKey("ScheduleInterview")]
         public string ScheduleInterviewId { get; set; }
         [JsonIgnore]
         public virtual ScheduleInterview ScheduleInterview { get; set; }
-
+        [StringLength(64)]
         public string EmailCandidate { get; set; }
+        [StringLength(64)]
         public string EmailCustomer { get; set; }
-        public string Location { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 

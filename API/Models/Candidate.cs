@@ -13,7 +13,9 @@ namespace API.Models
     {
         [Key]
         public int CandidateId { get; set; }
+        [StringLength(64)]
         public string Name { get; set; }
+        [StringLength(64)]
         public string Grade { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

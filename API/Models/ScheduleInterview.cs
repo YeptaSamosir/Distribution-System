@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace API.Models
 {
-    [Table("tb_m_schedule_interviews")]
+    [Table("tb_tr_schedule_interviews")]
     public class ScheduleInterview
     {
         [Key]
+        [StringLength(16)]
         public string ScheduleInterviewId { get; set; }
 
         [ForeignKey("Candidate")]
@@ -21,9 +22,11 @@ namespace API.Models
         [ForeignKey("Company")]
         public int CompanyId { get; set; }
         public virtual Company Company { get; set; }
-
+        [StringLength(64)]
         public string CustomerName { get; set; }
+        [StringLength(64)]
         public string JobTitle { get; set; }
+        public string Location { get; set; }
         public DateTime StartInterview { get; set; }
         public DateTime EndInterview { get; set; }
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace API.Models
 {
-    [Table("tb_m_onboards")]
+    [Table("tb_tr_onboards")]
     public class Onboard
     {
         [Key]
