@@ -404,5 +404,3 @@ RestClient/*.http
 
 API/obj/
 Client/obj/
-
-*.cache
