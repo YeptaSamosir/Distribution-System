@@ -13,7 +13,7 @@ using API.Repository.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
-
+using API.Helper;
 
 namespace API.Base.Controllers
 {
@@ -25,9 +25,10 @@ namespace API.Base.Controllers
         private readonly MyContext myContext;
         private readonly AccountRepository accountRepository;
         public IConfiguration configuration;
-        public AccountController(IConfiguration config, AccountRepository repository, MyContext myContext) : base(repository)
+
+        public AccountController(IConfiguration config, AccountRepository accountRepository) : base(accountRepository)
         {
-            this.accountRepository = repository;
+            this.accountRepository = accountRepository;
             this.configuration = config;
             this.myContext = myContext;
         }
@@ -54,21 +55,32 @@ namespace API.Base.Controllers
                 claim.Add(new Claim("Username", data[0].Username));
                 foreach (var d in data)
                 {
-                    claim.Add(new Claim("Roles", d.Role));
+                    return BadRequest("Role tidak ditemukan pada akun ini");
                 }
+
+                //create claims details based on the user information
+                var identity = new ClaimsIdentity("JWT");
+                identity.AddClaim(new Claim(JwtRegisteredClaimNames.Sub, configuration["Jwt:Subject"]));
+                identity.AddClaim(new Claim("email", accountData.Email));
+                identity.AddClaim(new Claim("username", accountData.Username));
+                foreach (var item in getRole)
+                {
+                    identity.AddClaim(new Claim("role", item.Role));
+                }
+
+                //create token
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
-
                 var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                var token = new JwtSecurityToken(
+                    configuration["Jwt:Issuer"], configuration["Jwt:Audience"],
+                    identity.Claims,
+                    expires: DateTime.UtcNow.AddDays(1),
+                    signingCredentials: signIn
+                );
 
-                var token = new JwtSecurityToken(configuration["Jwt:Issuer"],
-                                                 configuration["Jwt:Audience"],
-                                                 claim, expires: DateTime.UtcNow.AddDays(1),
-                                                 signingCredentials: signIn);
-
-                return Ok(new ResponseVM
+                return Ok(new JWTokenVM
                 {
                     Token = new JwtSecurityTokenHandler().WriteToken(token),
-                    Message = "Login Success !"
                 });
 
 
@@ -86,6 +98,10 @@ namespace API.Base.Controllers
                 {
                     Message = "Data tidak ditemukan"
                 });
+            }
+            catch (System.Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
         }
 
@@ -110,7 +126,6 @@ namespace API.Base.Controllers
                 {
                     return BadRequest(new
                     {
-
                         status = HttpStatusCode.BadRequest,
                         message = "Username Sudah Digunakan"
                     });
@@ -119,7 +134,6 @@ namespace API.Base.Controllers
                 {
                     return BadRequest(new
                     {
-
                         status = HttpStatusCode.BadRequest,
                         message = "Email Sudah Digunakan"
                     });
@@ -134,14 +148,13 @@ namespace API.Base.Controllers
                     });
                 }
             }
-            catch
+            catch (System.Exception e)
             {
                 return BadRequest(new
                 {
                     status = HttpStatusCode.BadRequest,
                     message = "Username Sudah Digunakan"
                 });
-
             }
         }
 

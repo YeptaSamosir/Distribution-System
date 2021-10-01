@@ -1,0 +1,72 @@
+### ENV
+@contentType = application/json
+@base_url = https://localhost:5001/api
+
+### CREATE NEW ROLE
+POST {{base_url}}/role HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+   "RoleId" : "ADM", 
+   "name" : "admin"
+}
+
+### GET ROLE BY ID
+GET {{base_url}}/role/ADM HTTP/1.1
+
+### PUT ROLE
+PUT {{base_url}}/role HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+   "RoleId" : "USR", 
+   "name" : "User"
+}
+
+### DELETE ROLE
+DELETE {{base_url}}/role/USR HTTP/1.1
+
+
+### GET ALL ACCOUNT
+GET {{base_url}}/account HTTP/1.1
+
+### CREATE NEW ACCOUNT
+POST {{base_url}}/account/register HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "name": "juned",
+    "username": "juned",
+    "email": "juned@gmail.com",
+    "password": "juned123",
+    "RoleId":"ADM"
+}
+
+### LOGIN
+POST {{base_url}}/account/login HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "username": "juned",
+    "password": "juned123"
+}
+
+### RESET PASSWORD
+// Mengirmkan password reset yg digunakan untuk login
+POST {{base_url}}/account/resetPassword HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "email" : "juned@gmail.com"
+}
+
+POST {{base_url}}/account/changePassword HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "email" : "juned@gmail.com",
+  "password" : "123FAD",
+  "newpassword": "juned123"
+}
+
+
