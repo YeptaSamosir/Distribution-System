@@ -25,35 +25,35 @@ namespace API.Base.Controllers
         private readonly MyContext myContext;
         private readonly AccountRepository accountRepository;
         public IConfiguration configuration;
+
         public AccountController(IConfiguration config, AccountRepository accountRepository) : base(accountRepository)
         {
             this.accountRepository = accountRepository;
             this.configuration = config;
+            this.myContext = myContext;
         }
 
         [HttpPost("login")]
         public ActionResult Login(LoginVM loginVM)
         {
-            try
+            var action = accountRepository.Login(loginVM);
+            if (action == 1)
             {
-                //check data by username
-                var accountData = accountRepository.FindUsername(loginVM.Username);
-                if (accountData == null)
-                {
-                    return BadRequest("Pengguna tidak ditemukan!");
-                }
+                var data = (from a in myContext.Accounts
+                            join b in myContext.AccountRoles on
+                            a.AccountId equals b.AccountId
+                            join c in myContext.Roles on
+                            b.RoleId equals c.RoleId
+                            where a.Username == $"{loginVM.Username}"
+                            select new RoleVM
+                            {
+                                Username = a.Username,
+                                Role = c.Name
+                            }).ToList();
 
-                //check password BCrypt
-                if (!BCrypt.Net.BCrypt.Verify(loginVM.Password, accountData.Password))
-                {
-                    return BadRequest("Password salah!");
-                }
-
-                //------Create Token----//
-
-                // getRole
-                var getRole = accountRepository.getRole(accountData.AccountId);
-                if (getRole == null)
+                var claim = new List<Claim>();
+                claim.Add(new Claim("Username", data[0].Username));
+                foreach (var d in data)
                 {
                     return BadRequest("Role tidak ditemukan pada akun ini");
                 }
@@ -82,6 +82,22 @@ namespace API.Base.Controllers
                 {
                     Token = new JwtSecurityTokenHandler().WriteToken(token),
                 });
+
+
+            }
+            else if (action == 2)
+            {
+                return BadRequest(new ResponseVM
+                {
+                    Message = "Bad Req",
+                });
+            }
+            else
+            {
+                return Ok(new ResponseVM
+                {
+                    Message = "Data tidak ditemukan"
+                });
             }
             catch (System.Exception e)
             {
@@ -103,107 +119,102 @@ namespace API.Base.Controllers
                         status = HttpStatusCode.BadRequest,
                         message = "Pendaftaran Berhasil"
                     });
+
+
                 }
                 else if (status == 201)
                 {
                     return BadRequest(new
                     {
                         status = HttpStatusCode.BadRequest,
-                        message = "Username Sudah Terdaftar. Gunakan Username yang Lain"
+                        message = "Username Sudah Digunakan"
                     });
                 }
-                else
+                else if (status == 202)
                 {
                     return BadRequest(new
                     {
                         status = HttpStatusCode.BadRequest,
-                        message = "Email Sudah Digunakan. Gunakan Email yang Lain"
+                        message = "Email Sudah Digunakan"
+                    });
+                }
+                else
+                {
+                    return Ok(new
+                    {
+
+                        status = HttpStatusCode.BadRequest,
+                        message = "Berhasil Mendaftar"
                     });
                 }
             }
             catch (System.Exception e)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+                return BadRequest(new
+                {
+                    status = HttpStatusCode.BadRequest,
+                    message = "Username Sudah Digunakan"
+                });
             }
         }
 
-        [HttpPost("resetPassword")]
-        public ActionResult SendPasswordReset(LoginVM loginVM)
+        [HttpPost("changepassword")]
+        public ActionResult ChangePassword(ChangePassword changePassword)
         {
-            //validating
-            if (string.IsNullOrEmpty(loginVM.Email))
-            {
-                return BadRequest(null);
-            }
             try
             {
-                //check email
-                var account = accountRepository.FindEmail(loginVM.Email);
-                if (account == null)
+                var action = accountRepository.ChangePassword(changePassword);
+                if (action == 1)
                 {
-                    return BadRequest("Email tidak terdaftar");
+                    return Ok(new
+                    {
+                        data = action,
+                        status = HttpStatusCode.OK,
+                        message = "Password Berhasil Diubah"
+                    });
                 }
-
-                //Generate Reset password with random alphanumstring
-                string passwordReset = Helper.Helper.GetRandomAlphanumericString(8);
-                string subjectMail = "Reset Password [" + DateTime.Now + "]";
-                //Reset password
-                if (accountRepository.ChangePassword(account.AccountId, passwordReset))
+                else if (action == 0)
                 {
-                    //send password to email
-                    Helper.Helper.SendEmail(loginVM.Email, subjectMail, "Hello "
-                                  + loginVM.Email + "<br><br>berikut reset password anda, jangan lupa ganti dengan password baru<br><br><b>"
-                                  + passwordReset + "<b><br><br>Thanks<br>netcore-api.com");
-
-                    return Ok("reset Password berhasil dikirim ke email " + loginVM.Email + ".");
+                    return NotFound(new
+                    {
+                        data = action,
+                        status = HttpStatusCode.OK,
+                        message = "Password Anda Salah"
+                    });
                 }
-
-                return StatusCode((int)HttpStatusCode.InternalServerError, "Gagal reset password");
+                else
+                {
+                    return NotFound(new
+                    {
+                        data = action,
+                        status = HttpStatusCode.OK,
+                        message = "Email tidak terdaftar"
+                    });
+                }
             }
-            catch (System.Exception e)
+            catch
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+
+                return BadRequest(new
+                {
+                    status = HttpStatusCode.OK,
+                    message = "Password Confirmasi anda tidak sama"
+                });
             }
         }
 
-        [HttpPost("changePassword")]
-        public ActionResult ChangePassword(LoginVM loginVM)
+
+        [HttpPost("forgotpassword")]
+        public ActionResult ForgotPassword(ForgotPassword forgotPassword)
         {
-            //validating
-            if (string.IsNullOrEmpty(loginVM.Email) || string.IsNullOrEmpty(loginVM.Password) || string.IsNullOrEmpty(loginVM.NewPassword))
+
+            accountRepository.ForgotPassword(forgotPassword);
+            return StatusCode((int)HttpStatusCode.Created, new
             {
-                return BadRequest(null);
-            }
+                status = HttpStatusCode.OK,
+                message = "Success"
+            });
 
-            try
-            {
-                //check email
-                var account = accountRepository.FindEmail(loginVM.Email);
-
-                if (account == null)
-                {
-                    return BadRequest("Email tidak terdaftar");
-                }
-
-
-                //check password match
-                if (!BCrypt.Net.BCrypt.Verify(loginVM.Password, account.Password))
-                {
-                    return BadRequest("Password lama salah");
-                }
-
-                //change password
-                if (accountRepository.ChangePassword(account.AccountId, loginVM.NewPassword))
-                {
-                    return Ok("Password berhasil diupdate");
-                }
-                return StatusCode((int)HttpStatusCode.InternalServerError, "Gagal Change Password");
-            }
-            catch (System.Exception e)
-            {
-
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
-            }
         }
     }
 }

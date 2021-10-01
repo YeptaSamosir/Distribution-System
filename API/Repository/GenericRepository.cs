@@ -62,5 +62,16 @@ namespace API.Repository
             }
             throw new ArgumentNullException();
         }
+        public int Update(TEntity entity)
+        {
+            if (entity == null)
+            {
+                throw new Exception();
+            }
+            myContext.Entry(entity).State = EntityState.Modified;
+            var update = myContext.SaveChanges();
+
+            return update;
+        }
     }
 }

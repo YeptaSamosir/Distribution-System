@@ -6,6 +6,8 @@ using API.Context;
 using API.Models;
 using API.Hash;
 using API.Models.ViewModels;
+using System.Net.Mail;
+using System.Net;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Repository.Data
@@ -108,5 +110,89 @@ namespace API.Repository.Data
         {
             throw new NotImplementedException();
         }
+
+        public int ChangePassword(ChangePassword changePassword)
+        {
+            try
+            {
+                var emailCheck = myContext.Accounts.SingleOrDefault(x => x.Email.Equals(changePassword.Email));
+                if (emailCheck == null)
+                {
+                    return 3;
+                }
+                else
+                {
+                    var passwordCheck = myContext.Accounts.SingleOrDefault(x => x.AccountId.Equals(emailCheck.AccountId));
+                    if (emailCheck != null)
+                    {
+                        if (Hashing.ValidatePassword(changePassword.CurrentPassword, passwordCheck.Password))
+                        {
+                            var account = myContext.Accounts.Where(n => n.AccountId == emailCheck.AccountId).FirstOrDefault();
+                            account.Password = BCrypt.Net.BCrypt.HashPassword(changePassword.NewPassword);
+                            Update(account);
+                            myContext.SaveChanges();
+                            return 1;
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    }
+                    else
+                    {
+                        return 2;
+                    }
+                }
+            }
+            catch
+            {
+                throw new Exception();
+            }
+        }
+
+        public static void Email(string stringHtmlMessage, string destinationEmail)
+        {
+
+            MailMessage message = new MailMessage();
+            SmtpClient client = new SmtpClient();
+            message.From = new MailAddress("lapungproject@gmail.com");
+            message.To.Add(new MailAddress(destinationEmail));
+            message.Subject = "Reset Password";
+            message.IsBodyHtml = true;
+            message.Body = stringHtmlMessage;
+            client.EnableSsl = true;
+            client.UseDefaultCredentials = false;
+            client.Credentials = new NetworkCredential("lapungproject@gmail.com", "lapungproject19");
+            client.Host = "smtp.gmail.com";
+            client.Port = 587;
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.Send(message);
+        }
+
+        public void ForgotPassword(ForgotPassword forgetPassword)
+        {
+            var emailCheck = myContext.Accounts.Where(x
+                => x.Email.Equals(forgetPassword.Email)).FirstOrDefault();
+
+            //if email exist
+            if (emailCheck != null)
+            {
+                // generate guid
+                string guid = Guid.NewGuid().ToString();
+                string stringHtmlMessage = $"Password Baru Anda: {guid}";
+                string hashPW = Hashing.HashPassword(guid);
+                // update database
+                var checkEmail = myContext.Accounts.SingleOrDefault(x => x.Email.Equals(emailCheck.Email));
+                checkEmail.Password = hashPW;
+                Update(checkEmail);
+
+                Email(stringHtmlMessage, forgetPassword.Email);
+            }
+            else
+            {
+
+            }
+        }
     }
+
 }
