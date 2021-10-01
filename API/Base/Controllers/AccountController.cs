@@ -25,32 +25,18 @@ namespace API.Base.Controllers
         private readonly MyContext myContext;
         private readonly AccountRepository accountRepository;
         public IConfiguration configuration;
-        public AccountController(IConfiguration config, AccountRepository repository) : base(repository)
+        public AccountController(IConfiguration config, AccountRepository repository, MyContext myContext) : base(repository)
         {
             this.accountRepository = repository;
             this.configuration = config;
+            this.myContext = myContext;
         }
 
         [HttpPost("login")]
         public ActionResult Login(LoginVM loginVM)
         {
             var action = accountRepository.Login(loginVM);
-            if(action == 100)
-            {
-                return Ok(new ResponseVM
-                {
-                    Message = "Data tidak ditemukan"
-                });
-
-            }
-            else if (action == 200)
-            {
-                return BadRequest(new ResponseVM
-                {
-                    Message = "Bad Req",
-                });
-            }
-            else
+            if (action == 1)
             {
                 var data = (from a in myContext.Accounts
                             join b in myContext.AccountRoles on
@@ -84,11 +70,27 @@ namespace API.Base.Controllers
                     Token = new JwtSecurityTokenHandler().WriteToken(token),
                     Message = "Login Success !"
                 });
+
+
+            }
+            else if (action == 2)
+            {
+                return BadRequest(new ResponseVM
+                {
+                    Message = "Bad Req",
+                });
+            }
+            else
+            {
+                return Ok(new ResponseVM
+                {
+                    Message = "Data tidak ditemukan"
+                });
             }
         }
 
         [HttpPost("register")]
-        public ActionResult Register (AccountRegisterVM accountRegisterVM)
+        public ActionResult Register(AccountRegisterVM accountRegisterVM)
         {
             try
             {
@@ -101,6 +103,8 @@ namespace API.Base.Controllers
                         status = HttpStatusCode.BadRequest,
                         message = "Pendaftaran Berhasil"
                     });
+
+
                 }
                 else if (status == 201)
                 {
@@ -108,27 +112,96 @@ namespace API.Base.Controllers
                     {
 
                         status = HttpStatusCode.BadRequest,
-                        message = "Username Sudah Terdaftar. Gunakan Username yang Lain"
+                        message = "Username Sudah Digunakan"
                     });
                 }
-                else
+                else if (status == 202)
                 {
                     return BadRequest(new
                     {
 
                         status = HttpStatusCode.BadRequest,
-                        message = "Email Sudah Digunakan. Gunakan Email yang Lain"
+                        message = "Email Sudah Digunakan"
                     });
                 }
-                
+                else
+                {
+                    return Ok(new
+                    {
+
+                        status = HttpStatusCode.BadRequest,
+                        message = "Berhasil Mendaftar"
+                    });
+                }
             }
             catch
             {
-                return BadRequest(new ResponseVM
+                return BadRequest(new
                 {
-                    Message = "Telah terdaftar"
+                    status = HttpStatusCode.BadRequest,
+                    message = "Username Sudah Digunakan"
+                });
+
+            }
+        }
+
+        [HttpPost("changepassword")]
+        public ActionResult ChangePassword(ChangePassword changePassword)
+        {
+            try
+            {
+                var action = accountRepository.ChangePassword(changePassword);
+                if (action == 1)
+                {
+                    return Ok(new
+                    {
+                        data = action,
+                        status = HttpStatusCode.OK,
+                        message = "Password Berhasil Diubah"
+                    });
+                }
+                else if (action == 0)
+                {
+                    return NotFound(new
+                    {
+                        data = action,
+                        status = HttpStatusCode.OK,
+                        message = "Password Anda Salah"
+                    });
+                }
+                else
+                {
+                    return NotFound(new
+                    {
+                        data = action,
+                        status = HttpStatusCode.OK,
+                        message = "Email tidak terdaftar"
+                    });
+                }
+            }
+            catch
+            {
+
+                return BadRequest(new
+                {
+                    status = HttpStatusCode.OK,
+                    message = "Password Confirmasi anda tidak sama"
                 });
             }
+        }
+
+
+        [HttpPost("forgotpassword")]
+        public ActionResult ForgotPassword(ForgotPassword forgotPassword)
+        {
+
+            accountRepository.ForgotPassword(forgotPassword);
+            return StatusCode((int)HttpStatusCode.Created, new
+            {
+                status = HttpStatusCode.OK,
+                message = "Success"
+            });
+
         }
     }
 }
