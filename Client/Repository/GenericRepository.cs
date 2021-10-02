@@ -5,8 +5,9 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Client.Base.Urls;
+using Client.Config;
 using Client.Repository.Interface;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace Client.Repository
@@ -14,17 +15,17 @@ namespace Client.Repository
     public class GenericRepository<TEntity, TKey> : IGenericRepository<TEntity, TKey>
     where TEntity : class
     {
-        private readonly Address address;
+        private readonly MyConfiguration myConfiguration;
         private readonly string request;
         private readonly HttpClient httpClient;
 
-        public GenericRepository(Address address, string request)
+        public GenericRepository(string request, IOptions<MyConfiguration> myConfiguration)
         {
-            this.address = address;
             this.request = request;
+            this.myConfiguration = myConfiguration.Value;
             httpClient = new HttpClient
             {
-                BaseAddress = new Uri(address.link)
+                BaseAddress = new Uri(this.myConfiguration.BaseUrlApis)
             };
         }
 

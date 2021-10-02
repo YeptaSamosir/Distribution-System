@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Base.Controllers
 {
-    [Route("[controller]")]
     public class AccountController : BaseController<Account, AccountRepository, int>
     {
         private readonly AccountRepository repository;

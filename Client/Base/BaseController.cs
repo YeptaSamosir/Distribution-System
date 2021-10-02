@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Base
 {
+    [Route("master/data/[controller]")]
     public class BaseController<TEntity, TRepository, TKey> : Controller
     where TEntity : class
     where TRepository : IGenericRepository<TEntity, TKey>

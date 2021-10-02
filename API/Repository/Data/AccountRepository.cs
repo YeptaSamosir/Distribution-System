@@ -18,12 +18,12 @@ namespace API.Repository.Data
     {
         private readonly MyContext myContext;
         private readonly DbSet<Account> dbSet;
-        private readonly EmailConfiguration emailConfiguration;
-        public AccountRepository(MyContext myContext, IOptions<EmailConfiguration> emailConfiguration) : base(myContext)
+        private readonly MyConfiguration myConfiguration;
+        public AccountRepository(MyContext myContext, IOptions<MyConfiguration> myConfiguration) : base(myContext)
         {
             this.myContext = myContext;
             dbSet = myContext.Set<Account>();
-            this.emailConfiguration = emailConfiguration.Value;
+            this.myConfiguration = myConfiguration.Value;
         }
 
         internal int Register(AccountRegisterVM accountRegisterVM)
@@ -111,9 +111,9 @@ namespace API.Repository.Data
             message.Body = "<html><body> " + stringHtmlMessage + " </body></html>";
 
 
-            var smtpClient = new SmtpClient(emailConfiguration.SmtpServer)
+            var smtpClient = new SmtpClient(myConfiguration.SmtpServer)
             {
-                Port = emailConfiguration.Port,
+                Port = myConfiguration.Port,
                 Credentials = new NetworkCredential(fromMail, fromPassword),
                 EnableSsl = true,
             };
@@ -138,7 +138,7 @@ namespace API.Repository.Data
                 checkEmail.Password = Hashing.HashPassword(resetPassword);
                 Update(checkEmail);
 
-                Email(stringHtmlMessage, forgetPassword.Email, emailConfiguration.Email, emailConfiguration.Password);
+                Email(stringHtmlMessage, forgetPassword.Email, myConfiguration.Email, myConfiguration.Password);
 
                 return true;
             }

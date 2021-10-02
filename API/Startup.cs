@@ -44,7 +44,7 @@ namespace API
             services.AddScoped<StatusRepository>();
             services.AddScoped<TypeStatusRepository>();
 
-            services.Configure<EmailConfiguration>(Configuration.GetSection("EmailConfiguration"));
+            services.Configure<MyConfiguration>(Configuration.GetSection("MyConfiguration"));
 
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
                             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

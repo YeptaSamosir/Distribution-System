@@ -36,7 +36,8 @@ namespace API.Base.Controllers
         public ActionResult Login(LoginVM loginVM)
         {
             var accountData = accountRepository.FindUsername(loginVM.Username);
-            if (accountData == null) {
+            if (accountData == null)
+            {
                 return BadRequest("Pengguna tidak ditemukan!");
             }
 
@@ -52,7 +53,8 @@ namespace API.Base.Controllers
 
             // getRole
             var getRole = accountRepository.getRole(accountData.AccountId);
-            if (getRole == null) {
+            if (getRole == null)
+            {
                 return BadRequest("Role tidak ditemukan pada akun ini");
             }
 
@@ -137,7 +139,8 @@ namespace API.Base.Controllers
         [HttpPost("forgotpassword")]
         public ActionResult ForgotPassword(ForgotPassword forgotPassword)
         {
-            if (accountRepository.ForgotPassword(forgotPassword)) {
+            if (accountRepository.ForgotPassword(forgotPassword))
+            {
                 return Ok("Reset Password Reset berhasil, Check email ${forgotPassword.Email}");
             }
             return BadRequest("Reset Password Gagal, Hubungi admin!");

@@ -8,7 +8,6 @@ using Client.Repository.Data;
 
 namespace Client.Base.Controllers
 {
-    [Route("[controller]")]
     public class RoleController : BaseController<Role, RoleRepository, string>
     {
         private readonly RoleRepository repository;

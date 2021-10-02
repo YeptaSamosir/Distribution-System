@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Client.Config;
 using API.Models;
-using Client.Base.Urls;
+using Microsoft.Extensions.Options;
 
 namespace Client.Repository.Data
 {
     public class StatusRepository : GenericRepository<Status, string>
     {
-        private readonly Address address;
+        private readonly MyConfiguration myConfiguration;
         private readonly Status status;
         private readonly string request;
         private readonly HttpClient httpClient;
-        public StatusRepository(Address address, string request = "status/") : base(address, request)
+        public StatusRepository(IOptions<MyConfiguration> myConfiguration, string request = "status/") : base(request, myConfiguration)
         {
-            this.address = address;
             this.request = request;
         }
     }
