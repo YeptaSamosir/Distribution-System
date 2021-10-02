@@ -1,3 +1,4 @@
+using API.Config;
 using API.Context;
 using API.Repository.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -42,6 +43,8 @@ namespace API
             services.AddScoped<ScheduleInterviewRepository>();
             services.AddScoped<StatusRepository>();
             services.AddScoped<TypeStatusRepository>();
+
+            services.Configure<MyConfiguration>(Configuration.GetSection("MyConfiguration"));
 
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
                             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

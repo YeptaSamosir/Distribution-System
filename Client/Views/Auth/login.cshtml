@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_LayoutAuth";
+}
+<div class="login_wrapper">
+    <div class="animate form login_form">
+        <section class="login_content">
+            <form method="POST" enctype="multipart/form-data" asp-action="checkLogin" asp-controller="auth">
+                <h1> Distribution System</h1>
+                <span>Sorry your Ur</span>
+                <div>
+                    <input type="text" class="form-control" placeholder="Username" name="username" required="" />
+                </div>
+                <div>
+                    <input type="password" class="form-control" placeholder="Password" name="password" required="" />
+                </div>  
+                <div>
+                    <button class="btn btn-primary" type="submit">
+                        Login
+                    </button>
+                    <a class="reset_pass" href="#">Lost your password?</a>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="separator">
+
+                    <div class="clearfix"></div>
+                    <br />
+
+                    <p>
+                        ©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and
+                        Terms
+                    </p>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>

@@ -8,7 +8,6 @@ using Client.Repository.Data;
 
 namespace Client.Base.Controllers
 {
-    [Route("[controller]")]
     public class DetailScheduleInterviewController : BaseController<DetailScheduleInterview, DetailScheduleInterviewRepository, int>
     {
         private readonly DetailScheduleInterviewRepository repository;
