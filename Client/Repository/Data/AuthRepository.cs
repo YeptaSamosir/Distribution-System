@@ -34,9 +34,18 @@ namespace Client.Repository.Data
             JWTokenVM jwtTokenVM = null;
             StringContent content = new StringContent(JsonConvert.SerializeObject(loginVM), Encoding.UTF8, "application/json");
             var response = await httpClient.PostAsync(request + "login", content);
+
             string apiResponse = response.Content.ReadAsStringAsync().Result;
             jwtTokenVM = JsonConvert.DeserializeObject<JWTokenVM>(apiResponse);
             return jwtTokenVM;
+
+        }
+
+        public string SendResetPassword(ForgotPassword forgotPassword)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(forgotPassword), Encoding.UTF8, "application/json");
+      
+            return httpClient.PostAsync(request + "forgotpassword", content).Result.Content.ReadAsStringAsync().Result;
         }
     } 
 }
