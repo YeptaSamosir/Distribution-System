@@ -199,7 +199,7 @@ namespace API.Base.Controllers
             return StatusCode((int)HttpStatusCode.Created, new
             {
                 status = HttpStatusCode.OK,
-                message = "Success"
+                message = "Cek email untuk password baru"
             });
 
         }
