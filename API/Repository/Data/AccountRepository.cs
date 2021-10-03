@@ -41,6 +41,11 @@ namespace API.Repository.Data
                 return myContext.SaveChanges();
          }
 
+        internal Account FindUsernameOrEmail(string username)
+        {
+            return myContext.Accounts.Where(x => x.Username.Equals(username) || x.Email.Equals(username)).FirstOrDefault();
+        }
+
         internal Account FindUsername(string username)
         {
             return myContext.Accounts.Where(x => x.Username.Equals(username)).FirstOrDefault();
@@ -55,6 +60,22 @@ namespace API.Repository.Data
                 AccountId = AccountRole.AccountId,
                 Role = Role.Name
             }).ToList();
+        }
+
+        internal int DeactivateLoginAccount(Account accountData)
+        {
+            try
+            {
+                accountData.IsActive = false;
+                Update(accountData);
+                myContext.SaveChanges();
+                return 1;
+            }
+            catch {
+                throw new Exception();
+            }
+            
+            
         }
 
         internal string ValidationUnique(string username, string email)
@@ -132,7 +153,7 @@ namespace API.Repository.Data
 
                 //generate ResetPassword
                 string resetPassword = Helper.Helper.GetRandomAlphanumericString(5);
-                string stringHtmlMessage = $"Password Baru Anda: {resetPassword}";
+                string stringHtmlMessage = $"Password Baru Anda: <b> {resetPassword} </b> <br> Gunakan password reset ini untuk login";
                 // update database
                 var checkEmail = myContext.Accounts.SingleOrDefault(x => x.Email.Equals(emailCheck.Email));
                 checkEmail.Password = Hashing.HashPassword(resetPassword);

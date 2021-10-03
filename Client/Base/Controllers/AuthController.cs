@@ -22,24 +22,24 @@ namespace Client.Base.Controllers
         }
 
         [HttpGet("login")]
-        public IActionResult login()
+        public IActionResult Login()
         {
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("index", "Admin");
             }
-
             return View();
         }
 
-       [HttpPost("check-login")]
-        public async Task<IActionResult> checkLogin(LoginVM loginVM)
+        [HttpPost("check-login")]
+        public async Task<IActionResult> CheckLogin(LoginVM loginVM)
         {
             var jwtToken = await repository.Auth(loginVM);
             var token = jwtToken.Token;
-
+            var message = jwtToken.Massage;
             if (token == null)
             {
+                TempData["Message"] = message;
                 return RedirectToAction("login");
             }
 
@@ -56,6 +56,20 @@ namespace Client.Base.Controllers
             HttpContext.Session.Clear();
 
             return RedirectToAction("login");
+        }
+
+        [HttpGet("forgot-password")]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost("send-reset-password")]
+        public IActionResult SendResetPassword(ForgotPassword forgotPassword)
+        {
+            var result = repository.SendResetPassword(forgotPassword);
+            TempData["Message"] = result;
+            return RedirectToAction("forgot-password");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

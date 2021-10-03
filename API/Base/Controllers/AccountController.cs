@@ -13,6 +13,8 @@ using API.Repository.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Http;
+using System.Web;
 
 namespace API.Base.Controllers
 {
@@ -24,7 +26,6 @@ namespace API.Base.Controllers
         private readonly MyContext myContext;
         private readonly AccountRepository accountRepository;
         public IConfiguration configuration;
-
         public AccountController(IConfiguration config, AccountRepository accountRepository) : base(accountRepository)
         {
             this.accountRepository = accountRepository;
@@ -35,18 +36,40 @@ namespace API.Base.Controllers
         [HttpPost("login")]
         public ActionResult Login(LoginVM loginVM)
         {
-            var accountData = accountRepository.FindUsername(loginVM.Username);
+            var accountData = accountRepository.FindUsernameOrEmail(loginVM.Username);
             if (accountData == null)
             {
-                return BadRequest("Pengguna tidak ditemukan!");
+                return BadRequest(new JWTokenVM { Massage = "Pengguna tidak ditemukan!" });
+            }
+
+            if (accountData.IsActive == false)
+            {
+                return BadRequest(new JWTokenVM { Massage = "Account anda terblokir, hubungi admin!" });
             }
 
             //check password BCrypt
             if (!BCrypt.Net.BCrypt.Verify(loginVM.Password, accountData.Password))
             {
-                return BadRequest("Password salah!");
+                HttpContext.Session.SetInt32("LoginCount", Convert.ToInt32(HttpContext.Session.GetInt32("LoginCount")) + 1);
+
+                var loginCountCurrent = 3 - HttpContext.Session.GetInt32("LoginCount");
+
+                if (loginCountCurrent == 0) {
+                    //daactive account login
+                    if (accountRepository.DeactivateLoginAccount(accountData) == 1)
+                    {
+                        return BadRequest(new JWTokenVM { Massage = "Account anda terblokir, hubungi admin!" });
+                    }
+                    else {
+                        return StatusCode((int)HttpStatusCode.InternalServerError);
+                    }
+                }
+
+                return BadRequest(new JWTokenVM { Massage = $"Password salah! (tersisa {loginCountCurrent} kali lagi!)" });
             }
 
+
+           
 
             //------Create Token----//
 
@@ -55,7 +78,7 @@ namespace API.Base.Controllers
             var getRole = accountRepository.getRole(accountData.AccountId);
             if (getRole == null)
             {
-                return BadRequest("Role tidak ditemukan pada akun ini");
+                return BadRequest(new JWTokenVM { Massage = "Role tidak ditemukan pada akun ini" });
             }
 
             //create claims details based on the user information
@@ -67,7 +90,7 @@ namespace API.Base.Controllers
             {
                 identity.AddClaim(new Claim("role", item.Role));
             }
-
+          
             //create token
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
             var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -77,7 +100,7 @@ namespace API.Base.Controllers
                 expires: DateTime.UtcNow.AddDays(1),
                 signingCredentials: signIn
             );
-
+            
             return Ok(new JWTokenVM
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
@@ -141,9 +164,9 @@ namespace API.Base.Controllers
         {
             if (accountRepository.ForgotPassword(forgotPassword))
             {
-                return Ok("Reset Password Reset berhasil, Check email ${forgotPassword.Email}");
+                return Ok($"Reset Password berhasil, Check email {forgotPassword.Email}");
             }
-            return BadRequest("Reset Password Gagal, Hubungi admin!");
+            return BadRequest("Reset Password Gagal!");
         }
     }
 }
