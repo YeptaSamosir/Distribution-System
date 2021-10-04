@@ -1,3 +1,4 @@
+using API.Config;
 using API.Context;
 using API.Repository.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -32,6 +33,12 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.IsEssential = true;
+            });
+
             //services.AddControllers();
             services.AddScoped<AccountRepository>();
             services.AddScoped<CandidateRepository>();
@@ -42,6 +49,8 @@ namespace API
             services.AddScoped<ScheduleInterviewRepository>();
             services.AddScoped<StatusRepository>();
             services.AddScoped<TypeStatusRepository>();
+
+            services.Configure<MyConfiguration>(Configuration.GetSection("MyConfiguration"));
 
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
                             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
@@ -82,6 +91,8 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseSession();
 
             app.UseAuthentication();
 

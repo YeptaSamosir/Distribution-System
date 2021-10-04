@@ -13,7 +13,8 @@ using API.Repository.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
-
+using Microsoft.AspNetCore.Http;
+using System.Web;
 
 namespace API.Base.Controllers
 {
@@ -25,9 +26,9 @@ namespace API.Base.Controllers
         private readonly MyContext myContext;
         private readonly AccountRepository accountRepository;
         public IConfiguration configuration;
-        public AccountController(IConfiguration config, AccountRepository repository, MyContext myContext) : base(repository)
+        public AccountController(IConfiguration config, AccountRepository accountRepository) : base(accountRepository)
         {
-            this.accountRepository = repository;
+            this.accountRepository = accountRepository;
             this.configuration = config;
             this.myContext = myContext;
         }
@@ -35,58 +36,76 @@ namespace API.Base.Controllers
         [HttpPost("login")]
         public ActionResult Login(LoginVM loginVM)
         {
-            var action = accountRepository.Login(loginVM);
-            if (action == 1)
+            var accountData = accountRepository.FindUsernameOrEmail(loginVM.Username);
+            if (accountData == null)
             {
-                var data = (from a in myContext.Accounts
-                            join b in myContext.AccountRoles on
-                            a.AccountId equals b.AccountId
-                            join c in myContext.Roles on
-                            b.RoleId equals c.RoleId
-                            where a.Username == $"{loginVM.Username}"
-                            select new RoleVM
-                            {
-                                Username = a.Username,
-                                Role = c.Name
-                            }).ToList();
+                return BadRequest(new JWTokenVM { Massage = "Pengguna tidak ditemukan!" });
+            }
 
-                var claim = new List<Claim>();
-                claim.Add(new Claim("Username", data[0].Username));
-                foreach (var d in data)
-                {
-                    claim.Add(new Claim("Roles", d.Role));
+            if (accountData.IsActive == false)
+            {
+                return BadRequest(new JWTokenVM { Massage = "Account anda terblokir, hubungi admin!" });
+            }
+
+            //check password BCrypt
+            if (!BCrypt.Net.BCrypt.Verify(loginVM.Password, accountData.Password))
+            {
+                HttpContext.Session.SetInt32("LoginCount", Convert.ToInt32(HttpContext.Session.GetInt32("LoginCount")) + 1);
+
+                var loginCountCurrent = 3 - HttpContext.Session.GetInt32("LoginCount");
+
+                if (loginCountCurrent == 0) {
+                    //daactive account login
+                    if (accountRepository.DeactivateLoginAccount(accountData) == 1)
+                    {
+                        return BadRequest(new JWTokenVM { Massage = "Account anda terblokir, hubungi admin!" });
+                    }
+                    else {
+                        return StatusCode((int)HttpStatusCode.InternalServerError);
+                    }
                 }
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
 
-                var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-                var token = new JwtSecurityToken(configuration["Jwt:Issuer"],
-                                                 configuration["Jwt:Audience"],
-                                                 claim, expires: DateTime.UtcNow.AddDays(1),
-                                                 signingCredentials: signIn);
-
-                return Ok(new ResponseVM
-                {
-                    Token = new JwtSecurityTokenHandler().WriteToken(token),
-                    Message = "Login Success !"
-                });
-
-
+                return BadRequest(new JWTokenVM { Massage = $"Password salah! (tersisa {loginCountCurrent} kali lagi!)" });
             }
-            else if (action == 2)
+
+
+           
+
+            //------Create Token----//
+
+
+            // getRole
+            var getRole = accountRepository.getRole(accountData.AccountId);
+            if (getRole == null)
             {
-                return BadRequest(new ResponseVM
-                {
-                    Message = "Bad Req",
-                });
+                return BadRequest(new JWTokenVM { Massage = "Role tidak ditemukan pada akun ini" });
             }
-            else
+
+            //create claims details based on the user information
+            var identity = new ClaimsIdentity("JWT");
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Sub, configuration["Jwt:Subject"]));
+            identity.AddClaim(new Claim("email", accountData.Email));
+            identity.AddClaim(new Claim("username", accountData.Username));
+            foreach (var item in getRole)
             {
-                return Ok(new ResponseVM
-                {
-                    Message = "Data tidak ditemukan"
-                });
+                identity.AddClaim(new Claim("role", item.Role));
             }
+          
+            //create token
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
+            var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                configuration["Jwt:Issuer"], configuration["Jwt:Audience"],
+                identity.Claims,
+                expires: DateTime.UtcNow.AddDays(1),
+                signingCredentials: signIn
+            );
+            
+            return Ok(new JWTokenVM
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+            });
+
         }
 
         [HttpPost("register")]
@@ -94,54 +113,23 @@ namespace API.Base.Controllers
         {
             try
             {
-                var status = accountRepository.Register(accountRegisterVM);
-                if (status == 200)
+                //check validate
+                var response = accountRepository.ValidationUnique(accountRegisterVM.Username, accountRegisterVM.Email);
+                if (response != null)
                 {
-                    return Ok(new
-                    {
-
-                        status = HttpStatusCode.BadRequest,
-                        message = "Pendaftaran Berhasil"
-                    });
-
-
+                    return BadRequest(response);
                 }
-                else if (status == 201)
+
+                //insert user to database
+                if (accountRepository.Register(accountRegisterVM) == 1)
                 {
-                    return BadRequest(new
-                    {
-
-                        status = HttpStatusCode.BadRequest,
-                        message = "Username Sudah Digunakan"
-                    });
-                }
-                else if (status == 202)
-                {
-                    return BadRequest(new
-                    {
-
-                        status = HttpStatusCode.BadRequest,
-                        message = "Email Sudah Digunakan"
-                    });
-                }
-                else
-                {
-                    return Ok(new
-                    {
-
-                        status = HttpStatusCode.BadRequest,
-                        message = "Berhasil Mendaftar"
-                    });
-                }
+                    return Ok("Berhasil Register");
+                };
+                return BadRequest("Gagal Register");
             }
-            catch
+            catch (System.Exception e)
             {
-                return BadRequest(new
-                {
-                    status = HttpStatusCode.BadRequest,
-                    message = "Username Sudah Digunakan"
-                });
-
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
         }
 
@@ -153,40 +141,20 @@ namespace API.Base.Controllers
                 var action = accountRepository.ChangePassword(changePassword);
                 if (action == 1)
                 {
-                    return Ok(new
-                    {
-                        data = action,
-                        status = HttpStatusCode.OK,
-                        message = "Password Berhasil Diubah"
-                    });
+                    return Ok("Password Berhasil Diubah");
                 }
-                else if (action == 0)
+                else if (action == 2)
                 {
-                    return NotFound(new
-                    {
-                        data = action,
-                        status = HttpStatusCode.OK,
-                        message = "Password Anda Salah"
-                    });
+                    return BadRequest("Password Anda Salah");
                 }
                 else
                 {
-                    return NotFound(new
-                    {
-                        data = action,
-                        status = HttpStatusCode.OK,
-                        message = "Email tidak terdaftar"
-                    });
+                    return BadRequest("Email tidak terdaftar");
                 }
             }
-            catch
+            catch (System.Exception e)
             {
-
-                return BadRequest(new
-                {
-                    status = HttpStatusCode.OK,
-                    message = "Password Confirmasi anda tidak sama"
-                });
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
         }
 
@@ -194,14 +162,11 @@ namespace API.Base.Controllers
         [HttpPost("forgotpassword")]
         public ActionResult ForgotPassword(ForgotPassword forgotPassword)
         {
-
-            accountRepository.ForgotPassword(forgotPassword);
-            return StatusCode((int)HttpStatusCode.Created, new
+            if (accountRepository.ForgotPassword(forgotPassword))
             {
-                status = HttpStatusCode.OK,
-                message = "Cek email untuk password baru"
-            });
-
+                return Ok($"Reset Password berhasil, Check email {forgotPassword.Email}");
+            }
+            return BadRequest("Reset Password Gagal!");
         }
     }
 }

@@ -8,7 +8,6 @@ using Client.Repository.Data;
 
 namespace Client.Base.Controllers
 {
-    [Route("[controller]")]
     public class CandidateController : BaseController<Candidate, CandidateRepository, int>
     {
         private readonly CandidateRepository repository;

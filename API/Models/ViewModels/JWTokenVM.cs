@@ -5,12 +5,9 @@ using System.Threading.Tasks;
 
 namespace API.Models.ViewModels
 {
-    public class ResponseVM
+    public class JWTokenVM
     {
-        public int Status { get; set; }
-        public Object Result { get; set; }
-        public string Message { get; set; }
-
         public string Token { get; set; }
+        public string Massage { get; set; }
     }
 }
