@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Base
 {
-    [Route("master/data/[controller]")]
+    [Route("admin/[controller]")]
     public class BaseController<TEntity, TRepository, TKey> : Controller
     where TEntity : class
     where TRepository : IGenericRepository<TEntity, TKey>
@@ -20,21 +20,21 @@ namespace Client.Base
             this.repository = repository;
         }
 
-        [HttpGet]
+        [HttpGet("get")]
         public async Task<JsonResult> GetAll()
         {
             var result = await repository.GetAll();
             return Json(result);
         }
 
-        [HttpGet("{key}")]
+        [HttpGet("get/{key}")]
         public async Task<JsonResult> Get(TKey key)
         {
             var result = await repository.Get(key);
             return Json(result);
         }
 
-        [HttpPost]
+        [HttpPost("post")]
         public JsonResult Post(TEntity entity)
         {
             var result = repository.Post(entity);
@@ -42,14 +42,14 @@ namespace Client.Base
             return Json(result);
         }
 
-        [HttpPut]
-        public JsonResult Put(TKey key, TEntity entity)
+        [HttpPut("update")]
+        public JsonResult Put(TEntity entity)
         {
-            var result = repository.Put(key, entity);
+            var result = repository.Put(entity);
             return Json(result);
         }
 
-        [HttpDelete("{key}")]
+        [HttpDelete("delete/{key}")]
         public JsonResult Delete(TKey key)
         {
             var result = repository.Delete(key);

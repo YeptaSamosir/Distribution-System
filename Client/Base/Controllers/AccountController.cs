@@ -15,5 +15,11 @@ namespace Client.Base.Controllers
         {
             this.repository = repository;
         }
+
+        [HttpGet("")]
+        public IActionResult Index()
+        {
+            return View();
+        }
     }
 }

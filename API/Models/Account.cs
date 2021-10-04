@@ -39,7 +39,7 @@ namespace API.Models
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual ICollection<AccountRole> AccountRoles { get; set; }
     }
 }

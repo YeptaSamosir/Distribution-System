@@ -12,7 +12,7 @@ namespace Client.Repository.Interface
         Task<List<TEntity>> GetAll();
         Task<TEntity> Get(TKey key);
         string Post(TEntity entity);
-        string Put(TKey key, TEntity entity);
+        string Put(TEntity entity);
         HttpStatusCode Delete(TKey key);
     }
 
