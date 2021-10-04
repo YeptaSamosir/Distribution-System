@@ -3,6 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Base\Controllers\AccountController.cs~RF76f3f33.TMP" />
+  </ItemGroup>
  
   <ItemGroup>
     <ProjectReference Include="..\API\API.csproj" />

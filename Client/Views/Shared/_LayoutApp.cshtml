@@ -27,8 +27,17 @@
     <!-- bootstrap-daterangepicker -->
     <link href="~/assets/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
+    <!-- Datatables -->
+    <link href="~/assets/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+
     <!-- Custom Theme Style -->
     <link href="~/assets/build/css/custom.min.css" rel="stylesheet">
+    <!-- Sweet Alert 2-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="nav-md">
@@ -48,14 +57,14 @@
                         <div class="menu_section">
                             <h3>Home</h3>
                             <ul class="nav side-menu">
-                                <li class="active"><a><i class="fa fa-home"></i> Dashboard</a></li>
+                                <li class=""><a href="~/admin"><i class="fa fa-home"></i> Dashboard</a></li>
                             </ul>
                         </div>
                         <div class="menu_section">
                             <h3>Super Admin</h3>
                             <ul class="nav side-menu">
-                                <li class=""><a><i class="fa fa-users"></i> Account Manajement</a></li>
-                                <li class=""><a><i class="fa fa-eye"></i> Access Role</a></li>
+                                <li class=""><a href="~/admin/account"><i class="fa fa-users"></i> Account Manajement</a></li>
+                                <li class=""><a href="~/admin/role"><i class="fa fa-eye"></i> Access Role</a></li>
                             </ul>
                         </div>
                         <div class="menu_section">
@@ -63,8 +72,10 @@
                             <ul class="nav side-menu">
                                 <li class=""><a><i class="fa fa-briefcase"></i>Onboard Manajement</a></li>
                                 <li class=""><a><i class="fa fa-folder"></i> Master Candidate</a></li>
-                                <li><a><i class="fa fa-building-o"></i> Customer Manajement <span
-                                            class="fa fa-chevron-down"></span></a>
+                                <li>
+                                    <a>
+                                        <i class="fa fa-building-o"></i> Customer Manajement <span class="fa fa-chevron-down"></span>
+                                    </a>
                                     <ul class="nav child_menu">
                                         <li><a href="projects.html">Interview Scheduling</a></li>
                                         <li><a href="e_commerce.html">Company Data</a></li>
@@ -75,7 +86,8 @@
                         <div class="menu_section">
                             <h3>Settings</h3>
                             <ul class="nav side-menu">
-                                <li><a><i class="fa fa-cog"></i> Account <span class="fa fa-chevron-down"></span></a>
+                                <li>
+                                    <a><i class="fa fa-cog"></i> Account <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="profile.html">Profile</a></li>
                                         <li><a href="e_commerce.html">Change Password</a></li>
@@ -88,7 +100,6 @@
 
                     </div>
                     <!-- /sidebar menu -->
-
                     <!-- /menu footer buttons -->
                     <div class="sidebar-footer hidden-small">
 
@@ -107,20 +118,22 @@
                         <ul class=" navbar-right">
                             <li class="nav-item dropdown open" style="padding-left: 15px;">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true"
-                                    id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                                   id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
                                     <img src="~/assets/production/images/img.jpg" alt="">John Doe
                                 </a>
                                 <div class="dropdown-menu dropdown-usermenu pull-right"
-                                    aria-labelledby="navbarDropdown">
+                                     aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="javascript:;"> Profile</a>
-                                    <a class="dropdown-item" href="login.html"><i class="fa fa-sign-out pull-right"></i>
-                                        Log Out</a>
+                                    <a class="dropdown-item" href="login.html">
+                                        <i class="fa fa-sign-out pull-right"></i>
+                                        Log Out
+                                    </a>
                                 </div>
                             </li>
 
                             <li role="presentation" class="nav-item dropdown open">
                                 <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1"
-                                    data-toggle="dropdown" aria-expanded="false">
+                                   data-toggle="dropdown" aria-expanded="false">
                                     <i class="fa fa-envelope-o"></i>
                                     <span class="badge bg-green">6</span>
                                 </a>
@@ -207,6 +220,7 @@
         </div>
     </div>
 
+
     <!-- jQuery -->
     <script src="~/assets/vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
@@ -245,8 +259,35 @@
     <script src="~/assets/vendors/moment/min/moment.min.js"></script>
     <script src="~/assets/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 
+    <!-- Datatables -->
+    <script src="~/assets/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/assets/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/assets/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/assets/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="~/assets/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="~/assets/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/assets/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="~/assets/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="~/assets/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="~/assets/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/assets/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="~/assets/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="~/assets/vendors/jszip/dist/jszip.min.js"></script>
+    <script src="~/assets/vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="~/assets/vendors/pdfmake/build/vfs_fonts.js"></script>
+
     <!-- Custom Theme Scripts -->
     <script src="~/assets/build/js/custom.min.js"></script>
+    @if (ViewData["Title"] == "Account Role")
+    {
+        <script src="~/data/dataRole.js"></script>
+    }
+
+    @if (ViewData["Title"] == "Account Manajement")
+    {
+        <script src="~/data/dataAccount.js"></script>
+    }
+
 
 </body>
 
