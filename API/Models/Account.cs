@@ -29,15 +29,34 @@ namespace API.Models
 
         [Key]
         public int AccountId { get; set; }
-        [StringLength(64)]
+
+        [Required(ErrorMessage = "Name tidak boleh kosong")]
+        [StringLength(64, MinimumLength = 3, ErrorMessage ="Nama harus mengandung 3-64 karakter")]
+        [RegularExpression("^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$", ErrorMessage = "Bukan sebuah karakter nama")]
         public string Name { get; set; }
+
+        [Required(ErrorMessage = "Password tidak boleh kosong")]
+        [MinLength(5, ErrorMessage = "Password minimal 5 karakter")]
+        [RegularExpression("^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\\D*\\d)[^:&.~\\s]{5,20}$",ErrorMessage = "Harus mengandung angka, huruf besar dan kecil")]
         public string Password { get; set; }
-        [StringLength(64)]
+
+        [Required(ErrorMessage = "Username tidak boleh kosong")]
+        [StringLength(64, MinimumLength = 3, ErrorMessage = "Username harus mengandung 3-64 karakter")]
+        [RegularExpression("^[a-zA-Z0-9.\\-_$@*!]{3,30}$", ErrorMessage = "Username tidak dapat digunakan")]
         public string Username { get; set; }
-        [StringLength(64)]
+
+        [Required(ErrorMessage = "Email tidak boleh kosong")]
+        [StringLength(64, MinimumLength = 3, ErrorMessage = "Email harus mengandung 3-64 karakter")]
+        [EmailAddress(ErrorMessage = "Bukan sebuah email")]
         public string Email { get; set; }
+
+        [Required]
         public bool IsActive { get; set; }
+
+        [Required]
         public DateTime CreatedAt { get; set; }
+
+        [Required]
         public DateTime UpdatedAt { get; set; }
         //[JsonIgnore]
         public virtual ICollection<AccountRole> AccountRoles { get; set; }

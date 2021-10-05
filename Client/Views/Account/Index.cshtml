@@ -45,10 +45,10 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="card-box table-responsive">
-                                <button type="button" class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-lg">Registrasi akun baru</button>
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalCreate">Registrasi akun baru</button>
 
-                                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg">
+                                <div id="modalCreate" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog">
                                         <div class="modal-content">
 
                                             <div class="modal-header">
@@ -57,62 +57,53 @@
                                                     <span aria-hidden="true">×</span>
                                                 </button>
                                             </div>
-                                            <form class="" method="post" novalidate>
+                                            <form id="form-create-account" method="post">
                                                 <div class="modal-body">
-                                                    <div class="field item form-group">
-                                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Nama Lengkap<span class="required">*</span></label>
-                                                        <div class="col-md-6 col-sm-6">
-                                                            <input class="form-control" data-validate-length-range="6" data-validate-words="2" name="name" required="required" />
+                                                    <div class="form-group">
+                                                        <label for="inputName">Full Name</label>
+                                                        <input id="inputName" type="text" class="form-control" value="">
+                                                        <div class="invalid-feedback">
+                                                            <span id="messageName"></span>
                                                         </div>
                                                     </div>
-
-                                                    <div class="field item form-group">
-                                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Username<span class="required">*</span></label>
-                                                        <div class="col-md-6 col-sm-6">
-                                                            <input class="form-control" data-validate-length-range="6" data-validate-words="2" name="username" required="required" />
+                                                    <div class="form-group">
+                                                        <label for="inputUsername">Username</label>
+                                                        <input id="inputUsername" type="text" class="form-control" value="">
+                                                        <div class="invalid-feedback">
+                                                            <span id="messageUsername"></span>
                                                         </div>
                                                     </div>
-
-                                                    <div class="field item form-group">
-                                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Email<span class="required">*</span></label>
-                                                        <div class="col-md-6 col-sm-6">
-                                                            <input class="form-control" name="email" class='email' required="required" type="email" />
+                                                    <div class="form-group">
+                                                        <label for="inputEmail">Email</label>
+                                                        <input id="inputEmail" type="text" class="form-control" value="">
+                                                        <div class="invalid-feedback">
+                                                            <span id="messageEmail"></span>
                                                         </div>
                                                     </div>
-
-                                                    <div class="field item form-group">
-                                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Kata sandi<span class="required">*</span></label>
-                                                        <div class="col-md-6 col-sm-6">
-                                                            <input class="form-control" type="password" id="password1" name="password" pattern="^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\\D*\\d)[^:&.~\\s]{5,20}$" title="Minimum 8 Characters Including An Upper And Lower Case Letter, A Number And A Unique Character" required />
-
-                                                            <span style="position: absolute;right:15px;top:7px;" onclick="hideshow()">
-                                                                <i id="slash" class="fa fa-eye-slash"></i>
-                                                                <i id="eye" class="fa fa-eye"></i>
-                                                            </span>
+                                                    <div class="form-group">
+                                                        <label for="inputPassword">Password</label>
+                                                        <input id="inputPassword" type="password" class="form-control" value="">
+                                                        <div class="invalid-feedback">
+                                                            <span id="messagePassword"></span>
+                                                        </div>
+                                                        <span style="position: absolute; right: 30px; top: 280px;" onclick="hideshow()">
+                                                            <i id="slash" class="fa fa-eye-slash"></i>
+                                                            <i id="eye" class="fa fa-eye"></i>
+                                                        </span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="inputRole">Role</label>
+                                                        <div class="form-check">
+                                                            <div id="inputRole"></div>
+                                                        </div>
+                                                        <div class="invalid-feedback d-block">
+                                                            <span id="messageRoles"></span>
                                                         </div>
                                                     </div>
-
-                                                    <div class="field item form-group">
-                                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Repeat password<span class="required">*</span></label>
-                                                        <div class="col-md-6 col-sm-6">
-                                                            <input class="form-control" type="password" name="password2" data-validate-linked='password' required='required' />
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="field item form-group">
-                                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Role Account</label>
-                                                        <div class="col-md-6 col-sm-6 ">
-                                                            <select class="form-control">
-                                                                <option>Administrator</option>
-                                                                <option>Super Adminstartor</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-success">Buat Account</button>
+                                                    <button type="submit" class="btn btn-success">Buat akun baru</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -141,6 +132,65 @@
         </div>
     </div>
 </div>
+
+<div id="modalEdit" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Edit akun</h4>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form id="form-edit-account" method="post">
+                <input id="inputAccountId" type="hidden" />
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="inputNameEdit">Full Name</label>
+                        <input id="inputNameEdit" type="text" class="form-control" value="">
+                        <div class="invalid-feedback">
+                            <span id="messageNameEdit"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputUsernameEdit">Username</label>
+                        <input id="inputUsernameEdit" type="text" class="form-control" value="">
+                        <div class="invalid-feedback">
+                            <span id="messageUsernameEdit"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmailEdit">Email</label>
+                        <input id="inputEmailEdit" type="text" class="form-control" value="">
+                        <div class="invalid-feedback">
+                            <span id="messageEmailEdit"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputRoleEdit">Role</label>
+                        <div class="form-check">
+                            <div id="inputRoleEdit"></div>
+                        </div>
+                        <div class="invalid-feedback d-block">
+                            <span id="messageRolesEdit"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputIsActiveEdit">Is Active</label>
+                        <select id="inputIsActiveEdit" class="form-control">
+                            <option value="false">Inactive</option>
+                            <option value="true">Active</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- /page content -->
-
-

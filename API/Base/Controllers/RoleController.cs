@@ -4,13 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Models;
 using API.Repository.Data;
+using Microsoft.AspNetCore.Mvc;
 
 namespace API.Base.Controllers
 {
     public class RoleController : BaseController<Role, RoleRepository, string>
     {
-        public RoleController(RoleRepository repository) : base(repository)
+        private readonly RoleRepository roleRepository;
+        public RoleController(RoleRepository repository, RoleRepository roleRepository) : base(repository)
         {
+            this.roleRepository = roleRepository;
         }
     }
 }
