@@ -39,12 +39,12 @@ namespace API.Base.Controllers
             var accountData = accountRepository.FindUsernameOrEmail(loginVM.Username);
             if (accountData == null)
             {
-                return BadRequest(new JWTokenVM { Massage = "Pengguna tidak ditemukan!" });
+                return BadRequest(new JWTokenVM { Message = "Pengguna tidak ditemukan!" });
             }
 
             if (accountData.IsActive == false)
             {
-                return BadRequest(new JWTokenVM { Massage = "Account anda terblokir, hubungi admin!" });
+                return BadRequest(new JWTokenVM { Message = "Account anda terblokir, hubungi admin!" });
             }
 
             //check password BCrypt
@@ -60,14 +60,14 @@ namespace API.Base.Controllers
                     //daactive account login
                     if (accountRepository.DeactivateLoginAccount(accountData) == 1)
                     {
-                        return BadRequest(new JWTokenVM { Massage = "Account anda terblokir, hubungi admin!" });
+                        return BadRequest(new JWTokenVM { Message = "Account anda terblokir, hubungi admin!" });
                     }
                     else {
                         return StatusCode((int)HttpStatusCode.InternalServerError);
                     }
                 }
 
-                return BadRequest(new JWTokenVM { Massage = $"Password salah! (tersisa {loginCountCurrent} kali lagi!)" });
+                return BadRequest(new JWTokenVM { Message = $"Password salah! (tersisa {loginCountCurrent} kali lagi!)" });
             }
 
 
@@ -80,7 +80,7 @@ namespace API.Base.Controllers
             var getRole = accountRepository.getRole(accountData.AccountId);
             if (getRole == null)
             {
-                return BadRequest(new JWTokenVM { Massage = "Role tidak ditemukan pada akun ini" });
+                return BadRequest(new JWTokenVM { Message = "Role tidak ditemukan pada akun ini" });
             }
 
             //create claims details based on the user information
@@ -125,13 +125,31 @@ namespace API.Base.Controllers
                 //insert user to database
                 if (accountRepository.Register(accountRegisterVM) == 1)
                 {
-                    return Ok("Berhasil Register");
+                    return Ok(new {Message = "Berhasil Register" });
                 };
                 return BadRequest("Gagal Register");
             }
             catch (System.Exception e)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = e.Message });
+            }
+        }
+
+        [HttpPut("register/update")]
+        public ActionResult AccountUpdate(AccountRegisterVM accountRegisterVM)
+        {
+            try
+            {
+                 //insert user to database
+                if (accountRepository.UpdateAccount(accountRegisterVM) == 1)
+                {
+                    return Ok(new { Message = "Berhasil Update" });
+                };
+                return BadRequest(new { Message = "Gagal Update" });
+            }
+            catch (System.Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = e.Message });
             }
         }
 

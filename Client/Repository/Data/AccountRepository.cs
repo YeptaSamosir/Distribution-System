@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using Client.Config;
 using API.Models;
 using Microsoft.Extensions.Options;
+using API.Models.ViewModels;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace Client.Repository.Data
 {
@@ -19,6 +22,25 @@ namespace Client.Repository.Data
         public AccountRepository(IOptions<MyConfiguration> myConfiguration, string request = "account/") : base(request, myConfiguration)
         {
             this.request = request;
+            this.myConfiguration = myConfiguration.Value;
+            httpClient = new HttpClient
+            {
+                BaseAddress = new Uri(this.myConfiguration.BaseUrlApis)
+            };
+        }
+
+        public string InsertRegister(AccountRegisterVM registerVM)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(registerVM), Encoding.UTF8, "application/json");
+            var response = httpClient.PostAsync(request + "register", content).Result.Content.ReadAsStringAsync().Result;
+            return response;
+        }
+
+        internal string UpdateAccount(AccountRegisterVM accountregister)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(accountregister), Encoding.UTF8, "application/json");
+            var response = httpClient.PutAsync(request + "register/update", content).Result.Content.ReadAsStringAsync().Result;
+            return response;
         }
     }
 }

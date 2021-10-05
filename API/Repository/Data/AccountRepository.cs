@@ -33,11 +33,18 @@ namespace API.Repository.Data
                 myContext.Accounts.Add(account);
                 myContext.SaveChanges();
 
-                myContext.AccountRoles.Add(new AccountRole()
+                foreach (string role in accountRegisterVM.Roles)
                 {
-                    RoleId = accountRegisterVM.RoleId,
-                    AccountId = account.AccountId,
-                });
+
+                    myContext.AccountRoles.Add(new AccountRole()
+                    {
+                        RoleId = role,
+                        AccountId = account.AccountId,
+                    });
+                    myContext.SaveChanges();
+
+                }
+
                 return myContext.SaveChanges();
          }
 
@@ -141,6 +148,41 @@ namespace API.Repository.Data
 
             smtpClient.Send(message);
 
+        }
+
+        internal int UpdateAccount(AccountRegisterVM accountRegisterVM)
+        {
+
+            //update entity account
+            var account = myContext.Accounts.Where(x => x.AccountId == accountRegisterVM.AccountId).FirstOrDefault();
+            account.Name = accountRegisterVM.Name;
+            account.Username = accountRegisterVM.Username;
+            account.Email = accountRegisterVM.Email;
+            account.IsActive = accountRegisterVM.IsActive;
+            account.UpdatedAt = DateTime.Now;
+            Update(account);
+            myContext.SaveChanges();
+
+            var roleAccount =  myContext.AccountRoles.Where(x => x.AccountId == account.AccountId);
+            foreach (var role in roleAccount)
+            {
+                //delete entity accountrole
+                myContext.AccountRoles.Remove(role);
+                myContext.SaveChanges();
+            }
+
+            //update entity accountrole
+            foreach (string role in accountRegisterVM.Roles)
+            {
+                myContext.AccountRoles.Add(new AccountRole()
+                {
+                    RoleId = role,
+                    AccountId = account.AccountId,
+                });
+                myContext.SaveChanges();
+            }
+            return myContext.SaveChanges();
+            
         }
 
         internal bool ForgotPassword(ForgotPassword forgetPassword)

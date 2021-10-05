@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,11 +14,18 @@ namespace API.Models
     public class Role
     {
         [Key]
-        [StringLength(16)]
+        [Required(ErrorMessage = "Role ID tidak boleh kosong")]
+        [StringLength(64, MinimumLength = 3, ErrorMessage = "Role ID harus mengandung 3-64 karakter")]
         public string RoleId { get; set; }
-        [StringLength(64)]
+
+        [Required(ErrorMessage = "Nama role tidak boleh kosong")]
+        [StringLength(64, MinimumLength = 3, ErrorMessage = "Role harus mengandung 3-64 karakter")]
         public string Name { get; set; }
+
+        [Required]
         public DateTime CreatedAt { get; set; }
+
+        [Required]
         public DateTime UpdatedAt { get; set; }
         [JsonIgnore]
         public virtual ICollection<AccountRole> AccountRoles { get; set; }

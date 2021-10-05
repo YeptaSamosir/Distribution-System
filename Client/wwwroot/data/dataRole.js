@@ -108,6 +108,14 @@
     TableManageButtons.init();
 }
 
+function checkValidation(errorMsg, elementById, elementMsg) {
+    if (errorMsg != undefined) {
+        document.getElementById(`${elementById}`).className = "form-control is-invalid";
+        $(`#${elementMsg}`).html(` ${errorMsg}`);
+    } else {
+        document.getElementById(`${elementById}`).className = "form-control is-valid";
+    }
+}
 
 //create data
 $("#form-create-role").submit(function (event) {
@@ -122,10 +130,11 @@ $("#form-create-role").submit(function (event) {
 
     var data_input = new Object();
     data_input.RoleId = $("#inputRoleId").val();
-    data_input.Name = $("#inputRole").val();
+    data_input.Name = $("#inputRoleName").val();
     data_input.UpdatedAt = dateTime;
     data_input.CreatedAt = dateTime;
 
+   
     console.log(data_input);
 
     $.ajax({
@@ -135,10 +144,19 @@ $("#form-create-role").submit(function (event) {
         contentType: 'application/x-www-form-urlencoded',
         data: data_input,
         success: function (response) {
-                console.log(response);
+               
+            var obj = JSON.parse(response);
+
+            console.log(obj);
+
+            if (obj.errors != undefined) {
+                checkValidation(obj.errors.RoleId, "inputRoleId", "messageRoleId");
+                checkValidation(obj.errors.Name, "inputRoleName", "messageRoleName");
+
+            } else {
 
                 //idmodal di hide
-                $('#form-create-role').className("modal fade");
+                document.getElementById("modalCreate").className = "modal fade";
                 $('.modal-backdrop').remove();
 
 
@@ -146,19 +164,19 @@ $("#form-create-role").submit(function (event) {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: `${response}`,
+                    title: `${obj.message}`,
                     showConfirmButton: false,
                     timer: 1500
                 })
 
                 //reload only datatable
                 $('#datatable-role').DataTable().ajax.reload();
-
+            }
             
         },
         error: function (xhr, status, error) {
             var err = eval(xhr.responseJSON);
-
+            console.log(err);
         }
     })
 });
@@ -171,8 +189,8 @@ editModalRole = (id) => {
         //console.log(result);
 
         //set value
-        $('#roleId').val(`${result.roleId}`);
-        $('#roleName').val(`${result.name}`);
+        $('#inputRoleIdEdit').val(`${result.roleId}`);
+        $('#inputRoleNameEdit').val(`${result.name}`);
        
     }).fail((result) => {
         console.log(result);
@@ -192,8 +210,8 @@ $("#form-edit-role").submit(function (event) {
     let dateTime = cDate + ' ' + cTime;
 
     var data_input = {
-        "RoleId": $("#roleId").val(),
-        "Name": $("#roleName").val(),
+        "RoleId": $("#inputRoleIdEdit").val(),
+        "Name": $("#inputRoleNameEdit").val(),
         "UpdatedAt": dateTime
     }
 
@@ -206,26 +224,32 @@ $("#form-edit-role").submit(function (event) {
         contentType: 'application/x-www-form-urlencoded',
         data: data_input,
         success: function (response) {
+                    
+            var obj = JSON.parse(response);
 
-            console.log(response);
+            console.log(obj);
 
-            //idmodal di hide
-            $('#modalEdit').hide();
-            $('.modal-backdrop').remove();
+            if (obj.errors != undefined) {
+                checkValidation(obj.errors.Name, "inputRoleNameEdit", "messageRoleNameEdit");
+            } else {
+
+                //idmodal di hide
+                document.getElementById("modalEdit").className = "modal fade";
+                $('.modal-backdrop').remove();
 
 
-            //sweet alert message success
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: `${response}`,
-                showConfirmButton: false,
-                timer: 1500
-            })
+                //sweet alert message success
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: `${obj.message}`,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
 
-            //reload only datatable
-            $('#datatable-role').DataTable().ajax.reload();
-
+                //reload only datatable
+                $('#datatable-role').DataTable().ajax.reload();
+            }
             
         },
         error: function (xhr, status, error) {
@@ -255,11 +279,10 @@ deleteModalRole = (id) => {
                 method: 'DELETE',
                 contentType: 'application/x-www-form-urlencoded',
                 success: function (response) {
-                    console.log(response);
 
                     Swal.fire(
                         'Deleted!',
-                        'Data berhasil dihapus.',
+                        `Data berhasil di hapus`,
                         'success'
                     )
 

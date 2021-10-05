@@ -42,7 +42,7 @@ namespace API.Base
             try
             {
                 repository.Insert(entity);
-                return Ok("Success Created");
+                return Ok(new { Message = "Success Created" });
             }
             catch (System.Exception e)
             {
@@ -56,7 +56,7 @@ namespace API.Base
             try
             {
                 repository.Update(entity);
-                return Ok("Success Update");
+                return Ok(new {Message = "Success Update" });
             }
             catch (System.Exception e)
             {
@@ -70,7 +70,7 @@ namespace API.Base
             try
             {
                 repository.Delete(key);
-                return Ok("Success Delete");
+                return Ok(new {Message = "Success Delete" });
             }
             catch (System.Exception e)
             {
