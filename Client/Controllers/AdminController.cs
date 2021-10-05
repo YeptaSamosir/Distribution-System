@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Client.Controllers
 {
+    [Route("[controller]")]
     public class AdminController : Controller
     {
         private readonly ILogger<AdminController> _logger;
@@ -18,11 +19,13 @@ namespace Client.Controllers
             _logger = logger;
         }
 
+        [HttpGet("")]
         public IActionResult Index()
         {
             return View();
         }
 
+        [HttpGet("error")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

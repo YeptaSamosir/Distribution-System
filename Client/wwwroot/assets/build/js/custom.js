@@ -2476,7 +2476,7 @@ function init_calendar() {
 };
 
 /* DATA TABLES */
-
+/*
 function init_DataTables() {
 
     console.log('run_datatables');
@@ -2560,7 +2560,7 @@ function init_DataTables() {
 
     TableManageButtons.init();
 
-};
+};*/
 
 /* CHART - MORRIS  */
 

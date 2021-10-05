@@ -17,7 +17,7 @@ namespace API.Models
 
         [ForeignKey("Role")]
         public string RoleId { get; set; }
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual Role Role { get; set; }
 
         public DateTime CreatedAt { get; set; }

@@ -50,7 +50,9 @@ namespace API.Base.Controllers
             //check password BCrypt
             if (!BCrypt.Net.BCrypt.Verify(loginVM.Password, accountData.Password))
             {
-                HttpContext.Session.SetInt32("LoginCount", Convert.ToInt32(HttpContext.Session.GetInt32("LoginCount")) + 1);
+                var login = Convert.ToInt32(HttpContext.Session.GetInt32("LoginCount")) + 1;
+               
+                HttpContext.Session.SetInt32("LoginCount", login);
 
                 var loginCountCurrent = 3 - HttpContext.Session.GetInt32("LoginCount");
 

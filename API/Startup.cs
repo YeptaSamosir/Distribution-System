@@ -33,11 +33,7 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
-                options.Cookie.IsEssential = true;
-            });
+            services.AddSession();
 
             //services.AddControllers();
             services.AddScoped<AccountRepository>();
@@ -92,13 +88,13 @@ namespace API
 
             app.UseRouting();
 
-            app.UseSession();
-
             app.UseAuthentication();
 
             app.UseAuthorization();
-
+                 
             app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader());
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
