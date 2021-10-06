@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace API.Models.ViewModels
 {
-    public class AccountRegisterVM
+    public class AccountUpdateWithRole
     {
         public int AccountId { get; set; }
 
@@ -14,10 +14,6 @@ namespace API.Models.ViewModels
         [StringLength(64, MinimumLength = 3, ErrorMessage = "Nama harus mengandung 3-64 karakter")]
         [RegularExpression("^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$", ErrorMessage = "Bukan sebuah karakter nama")]
         public string Name { get; set; }
-
-        [Required(ErrorMessage = "Password tidak boleh kosong")]
-        [MinLength(5, ErrorMessage = "Password minimal 5 karakter")]
-        [RegularExpression("^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\\D*\\d)[^:&.~\\s]{5,20}$", ErrorMessage = "Harus mengandung angka, huruf besar dan kecil")]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Username tidak boleh kosong")]

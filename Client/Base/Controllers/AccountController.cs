@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using API.Models;
 using API.Models.ViewModels;
 using Client.Repository.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Base.Controllers
 {
+    [Authorize(Roles = "Super Adminstrator")]
     public class AccountController : BaseController<Account, AccountRepository, int>
     {
         private readonly AccountRepository repository;
@@ -31,9 +33,9 @@ namespace Client.Base.Controllers
         }
 
         [HttpPut("register/update")]
-        public JsonResult Put(AccountRegisterVM accountregister)
+        public JsonResult Put(AccountUpdateWithRole accountUpdateWithRole)
         {
-            var result = repository.UpdateAccount(accountregister);
+            var result = repository.UpdateAccount(accountUpdateWithRole);
             return Json(result);
         }
     }

@@ -13,18 +13,33 @@
                 buttons: [
                     {
                         extend: "csv",
+                        exportOptions: {
+                            columns: [1,2,3,4]
+                        },
                         className: "btn-sm",
                     },
                     {
                         extend: "excel",
+                        exportOptions: {
+                            columns: [1, 2, 3, 4]
+                        },
                         className: "btn-sm",
                     },
                     {
                         extend: "pdfHtml5",
+                        exportOptions: {
+                            columns: [1, 2, 3, 4]
+                        },
                         className: "btn-sm",
                     },
                 ],
                 responsive: true,
+                order: [[1, 'asc']],
+                columnDefs: [{
+                    searchable: false,
+                    orderable: false,
+                    targets: [0, 5]
+                }],
                 ajax: {
                     url: "/admin/account/get",
                     datatype: "json",
@@ -58,7 +73,7 @@
                         render: function (data, type, row, meta) {
                             var a = `
                             <div class="float-right">
-                                <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalEdit"  onclick="editModalRole('${row["accountId"]}','${row["accountRoles"]}')">
+                                <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalEdit"  onclick="editModalRole('${row["accountId"]}')">
                                     Edit
                                 </button>
                       
@@ -313,15 +328,15 @@ deleteModalAccount = (id) => {
 
 
 //Edit
-editModalRole = (id, accountRoles) => {
+editModalRole = (id) => {
 
     $.ajax({
         url: `/admin/account/get/${id}`,
     }).done((result) => {
         //console.log(result);
         document.getElementById('form-edit-account').reset();
-      
-
+        
+        $('#terakhirUpdate').html(`<i>${result.updatedAt}</i>`);
         //set value
         $('#inputAccountId').val(`${result.accountId}`);
         $("#inputNameEdit").val(`${result.name}`);

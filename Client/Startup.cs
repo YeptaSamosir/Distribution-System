@@ -30,10 +30,13 @@ namespace Client
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDistributedMemoryCache();
+            services.AddMvc();
+            services.AddMemoryCache();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(10);//You can set Time   
             });
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.Configure<MyConfiguration>(Configuration.GetSection("MyConfiguration"));
 
@@ -47,7 +50,8 @@ namespace Client
             services.AddScoped<RoleRepository>();
             services.AddScoped<ScheduleInterviewRepository>();
             services.AddScoped<StatusRepository>();
-    
+            services.AddScoped<SettingRepository>();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.RequireHttpsMetadata = false;

@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using API.Models;
 using Client.Repository.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Client.Base.Controllers
 {
+    [Authorize(Roles = "Super Adminstrator")]
     public class RoleController : BaseController<Role, RoleRepository, string>
     {
         private readonly RoleRepository repository;
