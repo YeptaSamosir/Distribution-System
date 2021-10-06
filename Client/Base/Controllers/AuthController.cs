@@ -36,7 +36,7 @@ namespace Client.Base.Controllers
         {
             var jwtToken = await repository.Auth(loginVM);
             var token = jwtToken.Token;
-            var message = jwtToken.Massage;
+            var message = jwtToken.Message;
             if (token == null)
             {
                 TempData["Message"] = message;
