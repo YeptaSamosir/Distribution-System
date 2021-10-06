@@ -122,6 +122,14 @@
     TableManageButtons.init();
 }
 
+function checkValidation(errorMsg, elementById, elementMsg) {
+    if (errorMsg != undefined) {
+        document.getElementById(`${elementById}`).className = "form-control is-invalid";
+        $(`#${elementMsg}`).html(` ${errorMsg}`);
+    } else {
+        document.getElementById(`${elementById}`).className = "form-control is-valid";
+    }
+}
 
 //create data
 $("#form-create-candidate").submit(function (event) {
@@ -149,27 +157,31 @@ $("#form-create-candidate").submit(function (event) {
         contentType: 'application/x-www-form-urlencoded',
         data: data_input,
         success: function (response) {
-                console.log(response);
+            console.log(response);
+            var obj = JSON.parse(response);
 
-                //idmodal di hide
-                //$('#form-create-candidate').className("modal fade");
-                //$('.modal-backdrop').remove();
-            $('#modalCandidate').modal('hide');
-           
+            console.log(obj);
+            if (obj.errors != undefined) {
+                checkValidation(obj.errors.Name, "inputNamaLengkap", "messageName");
+                checkValidation(obj.errors.Grade, "inputGrade", "messageGrade");
+
+            } else {
+                $('#modalCandidate').modal('hide');
+
 
 
                 //sweet alert message success
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: `${response}`,
-                showConfirmButton: false,
-                timer: 1500
-            })
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: `${response}`,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
 
-            //reload only datatable
-            $('#datatable-candidate').DataTable().ajax.reload();
-
+                //reload only datatable
+                $('#datatable-candidate').DataTable().ajax.reload();
+            }
 
 
         },
