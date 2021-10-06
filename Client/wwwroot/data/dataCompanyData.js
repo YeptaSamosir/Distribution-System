@@ -13,14 +13,23 @@
                 buttons: [
                     {
                         extend: "csv",
+                        exportOptions: {
+                            columns: [0, 1]
+                        },
                         className: "btn-sm",
                     },
                     {
                         extend: "excel",
+                        exportOptions: {
+                            columns: [0, 1]
+                        },
                         className: "btn-sm",
                     },
                     {
                         extend: "pdfHtml5",
+                        exportOptions: {
+                            columns: [0, 1]
+                        },
                         className: "btn-sm",
                     },
                 ],
@@ -32,7 +41,9 @@
                 },
                 columns: [
                     {
-                        data: null,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
                     },
                     {
                         data: "name",
@@ -42,7 +53,7 @@
 
                             return `
                                 <div class="float-right">
-                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalEdit"  onclick="editModalRole('${row["roleId"]}')">
+                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalEdit"  onclick="editModalCompany('${row["companyId"]}')">
                                         Edit
                                     </button>
                                     <button type="button" class="btn btn-danger btn-sm"  onclick="deleteModalCompany('${row["companyId"]}')">
@@ -136,9 +147,10 @@ $("#form-create-company").submit(function (event) {
         success: function (response) {
             console.log(response);
 
-            //idmodal di hide
-            $('#form-create-company').className("modal fade");
-            $('.modal-backdrop').remove();
+            ////idmodal di hide
+            //$('#form-create-company').className("modal fade");
+            //$('.modal-backdrop').remove();
+            $('#modalCompany').modal('hide');
 
 
             //sweet alert message success
@@ -151,7 +163,7 @@ $("#form-create-company").submit(function (event) {
             })
 
             //reload only datatable
-            $('#datatable-company').DataTable().ajax.reload(2000);
+            $('#datatable-company').DataTable().ajax.reload();
 
 
         },
@@ -163,15 +175,15 @@ $("#form-create-company").submit(function (event) {
 });
 
 //Edit
-editModalRole = (id) => {
+editModalCompany = (id) => {
     $.ajax({
-        url: `/admin/role/get/${id}`,
+        url: `/admin/company/get/${id}`,
     }).done((result) => {
-        //console.log(result);
+        console.log(result);
 
         //set value
-        $('#roleId').val(`${result.roleId}`);
-        $('#roleName').val(`${result.name}`);
+        $('#companyId').val(`${result.companyId}`);
+        $('#companyName').val(`${result.name}`);
 
     }).fail((result) => {
         console.log(result);
@@ -179,7 +191,7 @@ editModalRole = (id) => {
 }
 
 //update
-$("#form-edit-candidate").submit(function (event) {
+$("#form-edit-company").submit(function (event) {
 
 
     /* stop form from submitting normally */
@@ -191,15 +203,15 @@ $("#form-edit-candidate").submit(function (event) {
     let dateTime = cDate + ' ' + cTime;
 
     var data_input = {
-        "RoleId": $("#roleId").val(),
-        "Name": $("#roleName").val(),
+        "CompanyId": $("#companyId").val(),
+        "Name": $("#companyName").val(),
         "UpdatedAt": dateTime
     }
 
     console.log(JSON.stringify(data_input));
 
     $.ajax({
-        url: `/admin/role/update`,
+        url: `/admin/company/update`,
         method: 'PUT',
         dataType: 'json',
         contentType: 'application/x-www-form-urlencoded',
@@ -263,7 +275,7 @@ deleteModalCompany = (id) => {
                     )
 
                     //reload only datatable
-                    $('#datatable-candidate').DataTable().ajax.reload();
+                    $('#datatable-company').DataTable().ajax.reload();
                 },
             })
         }

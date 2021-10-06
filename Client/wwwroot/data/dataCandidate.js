@@ -13,14 +13,23 @@
                 buttons: [
                     {
                         extend: "csv",
+                        exportOptions: {
+                            columns: [0, 1, 2]
+                        },
                         className: "btn-sm",
                     },
                     {
                         extend: "excel",
+                        exportOptions: {
+                            columns: [0, 1, 2]
+                        },
                         className: "btn-sm",
                     },
                     {
                         extend: "pdfHtml5",
+                        exportOptions: {
+                            columns: [0, 1, 2]
+                        },
                         className: "btn-sm",
                     },
                 ],
@@ -32,7 +41,9 @@
                 },
                 columns: [
                     {
-                        data: null,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
                     },
                     {
                         data: "name",
@@ -141,21 +152,24 @@ $("#form-create-candidate").submit(function (event) {
                 console.log(response);
 
                 //idmodal di hide
-                $('#form-create-candidate').className("modal fade");
-                $('.modal-backdrop').remove();
+                //$('#form-create-candidate').className("modal fade");
+                //$('.modal-backdrop').remove();
+            $('#modalCandidate').modal('hide');
+           
 
 
                 //sweet alert message success
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: `${response}`,
-                    showConfirmButton: false,
-                    timer: 1500
-                })
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: `${response}`,
+                showConfirmButton: false,
+                timer: 1500
+            })
 
-                //reload only datatable
-                $('#datatable-candidate').DataTable().ajax.reload();
+            //reload only datatable
+            $('#datatable-candidate').DataTable().ajax.reload();
+
 
 
         },
@@ -177,6 +191,7 @@ editModalCandidate = (id) => {
         $('#candidateId').val(`${result.candidateId}`);
         $('#candidateName').val(`${result.name}`);
         $('#grade').val(`${result.grade}`);
+        
 
     }).fail((result) => {
         console.log(result);

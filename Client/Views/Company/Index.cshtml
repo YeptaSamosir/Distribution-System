@@ -47,7 +47,7 @@
                             <div class="card-box table-responsive">
                                 <button type="button" class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-lg">Registrasi Company baru</button>
 
-                                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div id="modalCompany" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
 
@@ -95,3 +95,36 @@
     </div>
 </div>
 <!-- /page content -->
+<!-- /page content -->
+<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="editLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editLabel">Edit Company</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="form-edit-company" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input id="companyId" type="hidden" value="">
+
+                        <label for="companyName">Nama Perusahaan</label>
+                        <input id="companyName" type="text" class="form-control" value="">
+
+                       
+                        <div class="invalid-feedback">
+                            <span id="messageCandidate"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
