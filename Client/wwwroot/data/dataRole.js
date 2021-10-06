@@ -13,18 +13,33 @@
                 buttons: [
                     {
                         extend: "csv",
+                        exportOptions: {
+                            columns: [1]
+                        },
                         className: "btn-sm",
                     },
                     {
                         extend: "excel",
+                        exportOptions: {
+                            columns: [1]
+                        },
                         className: "btn-sm",
                     },
                     {
                         extend: "pdfHtml5",
+                        exportOptions: {
+                            columns: [1]
+                        },
                         className: "btn-sm",
                     },
                 ],
                 responsive: true,
+                order: [[1, 'asc']],
+                columnDefs: [{
+                    searchable: false,
+                    orderable: false,
+                    targets: [0, 2]
+                }],
                 ajax: {
                     url: "/admin/role/get",
                     datatype: "json",

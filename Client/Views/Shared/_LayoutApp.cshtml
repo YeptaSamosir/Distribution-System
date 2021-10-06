@@ -1,3 +1,11 @@
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["LogName"] = HttpContextAccessor.HttpContext.Session.GetString("LogName");
+
+}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -89,8 +97,8 @@
                                 <li>
                                     <a><i class="fa fa-cog"></i> Account <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="profile.html">Profile</a></li>
-                                        <li><a href="">Change Password</a></li>
+                                        <li><a href="~/admin/setting/profile">Profile</a></li>
+                                        <li><a href="~/admin/setting/profile/change-password">Change Password</a></li>
                                     </ul>
                                 </li>
 
@@ -119,7 +127,7 @@
                             <li class="nav-item dropdown open" style="padding-left: 15px;">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true"
                                    id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="~/assets/production/images/img.jpg" alt="">John Doe
+                                    <img src="~/assets/production/images/img.jpg" alt="">@ViewData["LogName"]
                                 </a>
                                 <div class="dropdown-menu dropdown-usermenu pull-right"
                                      aria-labelledby="navbarDropdown">
@@ -287,7 +295,6 @@
     {
         <script src="~/data/dataAccount.js"></script>
     }
-
     @if (ViewData["Title"] == "Master Candidate")
     {
         <script src="~/data/dataCandidate.js"></script>
@@ -295,6 +302,11 @@
     @if (ViewData["Title"] == "Company Data")
     {
         <script src="~/data/dataCompanyData.js"></script>
+    }
+  
+    @if (ViewData["Title"] == "Setting")
+    {
+        <script src="~/data/dataSetting.js"></script>
     }
 
 </body>

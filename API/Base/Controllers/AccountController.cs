@@ -86,8 +86,9 @@ namespace API.Base.Controllers
             //create claims details based on the user information
             var identity = new ClaimsIdentity("JWT");
             identity.AddClaim(new Claim(JwtRegisteredClaimNames.Sub, configuration["Jwt:Subject"]));
-            identity.AddClaim(new Claim("email", accountData.Email));
-            identity.AddClaim(new Claim("username", accountData.Username));
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Email, accountData.Email));
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Name, accountData.Name));
+            identity.AddClaim(new Claim("AccountId", accountData.AccountId.ToString()));
             foreach (var item in getRole)
             {
                 identity.AddClaim(new Claim("role", item.Role));
@@ -119,7 +120,7 @@ namespace API.Base.Controllers
                 var response = accountRepository.ValidationUnique(accountRegisterVM.Username, accountRegisterVM.Email);
                 if (response != null)
                 {
-                    return BadRequest(response);
+                    return BadRequest(new { Message = response });
                 }
 
                 //insert user to database
@@ -127,7 +128,7 @@ namespace API.Base.Controllers
                 {
                     return Ok(new {Message = "Berhasil Register" });
                 };
-                return BadRequest("Gagal Register");
+                return BadRequest(new { Message = "Gagal Register" });
             }
             catch (System.Exception e)
             {
@@ -136,12 +137,12 @@ namespace API.Base.Controllers
         }
 
         [HttpPut("register/update")]
-        public ActionResult AccountUpdate(AccountRegisterVM accountRegisterVM)
+        public ActionResult AccountUpdate(AccountUpdateWithRole accountUpdateWithRole)
         {
             try
             {
                  //insert user to database
-                if (accountRepository.UpdateAccount(accountRegisterVM) == 1)
+                if (accountRepository.UpdateAccount(accountUpdateWithRole) == 1)
                 {
                     return Ok(new { Message = "Berhasil Update" });
                 };
@@ -190,4 +191,3 @@ namespace API.Base.Controllers
         }
     }
 }
-
