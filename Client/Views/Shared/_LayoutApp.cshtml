@@ -79,14 +79,14 @@
                             <h3>Admin</h3>
                             <ul class="nav side-menu">
                                 <li class=""><a><i class="fa fa-briefcase"></i>Onboard Manajement</a></li>
-                                <li class=""><a><i class="fa fa-folder"></i> Master Candidate</a></li>
+                                <li class=""><a href="~/admin/candidate"><i class="fa fa-folder"></i> Master Candidate</a></li>
                                 <li>
                                     <a>
                                         <i class="fa fa-building-o"></i> Customer Manajement <span class="fa fa-chevron-down"></span>
                                     </a>
                                     <ul class="nav child_menu">
                                         <li><a href="projects.html">Interview Scheduling</a></li>
-                                        <li><a href="e_commerce.html">Company Data</a></li>
+                                        <li><a href="~/admin/company">Company Data</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -295,12 +295,19 @@
     {
         <script src="~/data/dataAccount.js"></script>
     }
-
+    @if (ViewData["Title"] == "Master Candidate")
+    {
+        <script src="~/data/dataCandidate.js"></script>
+    }
+    @if (ViewData["Title"] == "Company Data")
+    {
+        <script src="~/data/dataCompanyData.js"></script>
+    }
+  
     @if (ViewData["Title"] == "Setting")
     {
         <script src="~/data/dataSetting.js"></script>
     }
-
 
 </body>
 
