@@ -20,7 +20,9 @@ namespace API.Models
         //[JsonIgnore]
         public virtual Role Role { get; set; }
 
+        [JsonIgnore]
         public DateTime CreatedAt { get; set; }
+        [JsonIgnore]
         public DateTime UpdatedAt { get; set; }
     }
 }

@@ -23,6 +23,11 @@ namespace Client.Controllers
         [HttpGet("")]
         public IActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("login", "Auth");
+            }
+
             ViewBag.Token = HttpContext.Session.GetString("JWToken");
             ViewBag.EmailLogin = HttpContext.Session.GetString("LogEmail");
             return View();

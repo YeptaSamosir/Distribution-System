@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Client.Base.Controllers
 {
-    [Authorize(Roles = "Super Adminstrator")]
+    [Authorize(Roles = "Super Administrator")]
     public class RoleController : BaseController<Role, RoleRepository, string>
     {
         private readonly RoleRepository repository;

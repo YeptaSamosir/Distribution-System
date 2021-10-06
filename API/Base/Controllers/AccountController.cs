@@ -154,7 +154,7 @@ namespace API.Base.Controllers
             }
         }
 
-        [HttpPost("changepassword")]
+        [HttpPut("changepassword")]
         public ActionResult ChangePassword(ChangePassword changePassword)
         {
             try
@@ -162,20 +162,20 @@ namespace API.Base.Controllers
                 var action = accountRepository.ChangePassword(changePassword);
                 if (action == 1)
                 {
-                    return Ok("Password Berhasil Diubah");
+                    return Ok(new { Message = "Password Berhasil Diubah" });
                 }
                 else if (action == 2)
                 {
-                    return BadRequest("Password Anda Salah");
+                    return BadRequest(new { Message = "Password Anda Salah" });
                 }
                 else
                 {
-                    return BadRequest("Email tidak terdaftar");
+                    return BadRequest(new { Message = "Email tidak terdaftar" });
                 }
             }
             catch (System.Exception e)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError,new { Message = e.Message });
             }
         }
 
