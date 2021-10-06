@@ -2,13 +2,16 @@
 using API.Models.ViewModels;
 using Client.Models;
 using Client.Repository.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using Client.Handler;
 
 namespace Client.Base.Controllers
 {
@@ -21,6 +24,7 @@ namespace Client.Base.Controllers
             this.repository = repository;
         }
 
+        [AllowAnonymous]
         [HttpGet("login")]
         public IActionResult Login()
         {
@@ -31,9 +35,11 @@ namespace Client.Base.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost("check-login")]
         public async Task<IActionResult> CheckLogin(LoginVM loginVM)
         {
+            
             var jwtToken = await repository.Auth(loginVM);
             var token = jwtToken.Token;
             var message = jwtToken.Message;
@@ -43,10 +49,17 @@ namespace Client.Base.Controllers
                 return RedirectToAction("login");
             }
 
+            //Reading claims
+            string getEmail = JwtHandler.GetClaim(token, JwtRegisteredClaimNames.Email);
+            string getName = JwtHandler.GetClaim(token, JwtRegisteredClaimNames.Name);
+            string getAccountId = JwtHandler.GetClaim(token, "AccountId");
+            
+            //set session
             HttpContext.Session.SetString("JWToken", token);
-            // HttpContext.Session.SetString("Name", jwtHandler.GetName(token));
-            // HttpContext.Session.SetString("ProfilePicture", "assets/img/theme/user.png");
-
+            HttpContext.Session.SetString("LogEmail", getEmail);
+            HttpContext.Session.SetString("LogID", getAccountId);
+            HttpContext.Session.SetString("LogName", getName);
+          
             return RedirectToAction("index", "Admin");
         }
 
@@ -58,12 +71,14 @@ namespace Client.Base.Controllers
             return RedirectToAction("login");
         }
 
+        [AllowAnonymous]
         [HttpGet("forgot-password")]
         public IActionResult ForgotPassword()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost("send-reset-password")]
         public IActionResult SendResetPassword(ForgotPassword forgotPassword)
         {

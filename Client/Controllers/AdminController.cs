@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
 namespace Client.Controllers
 {
@@ -22,6 +23,8 @@ namespace Client.Controllers
         [HttpGet("")]
         public IActionResult Index()
         {
+            ViewBag.Token = HttpContext.Session.GetString("JWToken");
+            ViewBag.EmailLogin = HttpContext.Session.GetString("LogEmail");
             return View();
         }
 

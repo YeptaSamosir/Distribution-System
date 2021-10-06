@@ -42,5 +42,6 @@ namespace Client.Repository.Data
             var response = httpClient.PutAsync(request + "register/update", content).Result.Content.ReadAsStringAsync().Result;
             return response;
         }
+
     }
 }

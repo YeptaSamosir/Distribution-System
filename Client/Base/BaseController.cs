@@ -4,10 +4,12 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Client.Repository.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Base
 {
+    [Authorize]
     [Route("admin/[controller]")]
     public class BaseController<TEntity, TRepository, TKey> : Controller
     where TEntity : class

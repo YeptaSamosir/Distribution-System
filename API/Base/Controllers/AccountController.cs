@@ -86,8 +86,9 @@ namespace API.Base.Controllers
             //create claims details based on the user information
             var identity = new ClaimsIdentity("JWT");
             identity.AddClaim(new Claim(JwtRegisteredClaimNames.Sub, configuration["Jwt:Subject"]));
-            identity.AddClaim(new Claim("email", accountData.Email));
-            identity.AddClaim(new Claim("username", accountData.Username));
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Email, accountData.Email));
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Name, accountData.Name));
+            identity.AddClaim(new Claim("AccountId", accountData.AccountId.ToString()));
             foreach (var item in getRole)
             {
                 identity.AddClaim(new Claim("role", item.Role));
