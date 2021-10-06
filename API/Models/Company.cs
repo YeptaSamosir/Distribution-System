@@ -13,7 +13,9 @@ namespace API.Models
     {
         [Key]
         public int CompanyId { get; set; }
-        [StringLength(64)]
+
+        [Required(ErrorMessage = "Nama Perusahaan tidak boleh kosong")]
+        [StringLength(64, MinimumLength = 1, ErrorMessage = "Nama harus mengandung 1-64 karakter")]
         public string Name { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

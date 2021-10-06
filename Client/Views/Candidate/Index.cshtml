@@ -63,12 +63,18 @@
                                                         <label class="col-form-label col-md-3 col-sm-3  label-align">Nama Lengkap<span class="required">*</span></label>
                                                         <div class="col-md-6 col-sm-6">
                                                             <input class="form-control" id="inputNamaLengkap" data-validate-length-range="15" data-validate-words="2" name="namaLengkap" required="required" />
+                                                            <div class="invalid-feedback">
+                                                                <span id="messageName"></span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="field item form-group">
                                                         <label class="col-form-label col-md-3 col-sm-3  label-align">Grade<span class="required">*</span></label>
                                                         <div class="col-md-6 col-sm-6">
                                                             <input class="form-control" id="inputGrade" data-validate-length-range="15" data-validate-words="1" name="grade" required="required" />
+                                                            <div class="invalid-feedback">
+                                                                <span id="messageGrade"></span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

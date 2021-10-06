@@ -119,6 +119,15 @@
     TableManageButtons.init();
 }
 
+function checkValidation(errorMsg, elementById, elementMsg) {
+    if (errorMsg != undefined) {
+        document.getElementById(`${elementById}`).className = "form-control is-invalid";
+        $(`#${elementMsg}`).html(` ${errorMsg}`);
+    } else {
+        document.getElementById(`${elementById}`).className = "form-control is-valid";
+    }
+}
+
 
 //create data
 $("#form-create-company").submit(function (event) {
@@ -146,25 +155,29 @@ $("#form-create-company").submit(function (event) {
         data: data_input,
         success: function (response) {
             console.log(response);
+            var obj = JSON.parse(response);
 
-            ////idmodal di hide
-            //$('#form-create-company').className("modal fade");
-            //$('.modal-backdrop').remove();
-            $('#modalCompany').modal('hide');
+            console.log(obj);
+
+            if (obj.errors != undefined) {
+                checkValidation(obj.errors.Name, "inputNamaPerusahaan", "messageCompany");
+
+            } else {
+                $('#modalCompany').modal('hide');
 
 
-            //sweet alert message success
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: `${response}`,
-                showConfirmButton: false,
-                timer: 1500
-            })
+                //sweet alert message success
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: `${response}`,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
 
-            //reload only datatable
-            $('#datatable-company').DataTable().ajax.reload();
-
+                //reload only datatable
+                $('#datatable-company').DataTable().ajax.reload();
+            }   
 
         },
         error: function (xhr, status, error) {
