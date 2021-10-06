@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Client.Base.Controllers
 {
-    [Authorize(Roles = "Adminstrator, Super Adminstrator")]
+    [Authorize]
     public class SettingController : BaseController<Account,AccountRepository , int>
     {
         private readonly AccountRepository repository;
@@ -33,9 +33,19 @@ namespace Client.Base.Controllers
             string getAccountId = HttpContext.Session.GetString("LogID");
             var account = await repository.Get(int.Parse(getAccountId));
 
+            ViewBag.AccountId = account.AccountId;
             ViewBag.AccountName = account.Name;
             ViewBag.AccountUsername = account.Username;
             ViewBag.AccountEmail = account.Email;
+            ViewBag.AccountPassword = account.Password;
+
+            return View();
+        }
+
+        [HttpGet("change-password")]
+        public async Task<IActionResult> ChangePassword()
+        {
+            ViewBag.AccountEmail = HttpContext.Session.GetString("LogEmail");
 
             return View();
         }

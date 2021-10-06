@@ -35,9 +35,8 @@ namespace API.Models
         [RegularExpression("^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$", ErrorMessage = "Bukan sebuah karakter nama")]
         public string Name { get; set; }
 
+        [JsonIgnore]
         [Required(ErrorMessage = "Password tidak boleh kosong")]
-        [MinLength(5, ErrorMessage = "Password minimal 5 karakter")]
-        [RegularExpression("^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\\D*\\d)[^:&.~\\s]{5,20}$",ErrorMessage = "Harus mengandung angka, huruf besar dan kecil")]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Username tidak boleh kosong")]

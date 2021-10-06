@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Base.Controllers
 {
-    [Authorize(Roles = "Super Adminstrator")]
+    [Authorize(Roles = "Super Administrator")]
     public class AccountController : BaseController<Account, AccountRepository, int>
     {
         private readonly AccountRepository repository;
@@ -33,9 +33,17 @@ namespace Client.Base.Controllers
         }
 
         [HttpPut("register/update")]
-        public JsonResult Put(AccountUpdateWithRole accountUpdateWithRole)
+        public JsonResult UpdateAccount(AccountUpdateWithRole accountUpdateWithRole)
         {
             var result = repository.UpdateAccount(accountUpdateWithRole);
+            return Json(result);
+        }
+
+        [HttpPut("change-password")]
+        public JsonResult ChangePassword(ChangePassword changePassword)
+        {
+            var result = repository.ChangePassword(changePassword);
+
             return Json(result);
         }
     }

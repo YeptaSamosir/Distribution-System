@@ -33,11 +33,12 @@ namespace API.Repository
         TEntity IGenericRepository<TEntity, TKey>.Get(TKey key)
         {
             var data = dbSet.Find(key);
-            if (data != null)
+            return data;
+            /*if (data != null)
             {
                 return data;
             }
-            throw new ArgumentNullException();
+            throw new ArgumentNullException();*/
         }
 
         int IGenericRepository<TEntity, TKey>.Insert(TEntity entity)

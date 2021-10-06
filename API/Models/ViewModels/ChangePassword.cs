@@ -8,10 +8,10 @@ namespace API.Models.ViewModels
 {
     public class ChangePassword
     {
-        [Required]
+        [Required(ErrorMessage = "Password sekarang tidak boleh kosong")]
         public string CurrentPassword { get; set; }
      
-        [Required(ErrorMessage = "Password tidak boleh kosong")]
+        [Required(ErrorMessage = "Password baru tidak boleh kosong")]
         [DataType(DataType.Password)]
         [MinLength(5, ErrorMessage = "Password minimal 5 karakter")]
         [RegularExpression("^(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])(?=\\D*\\d)[^:&.~\\s]{5,20}$", ErrorMessage = "Harus mengandung angka, huruf besar dan kecil")]
@@ -19,10 +19,10 @@ namespace API.Models.ViewModels
 
         [DataType(DataType.Password)]
         [Compare("NewPassword", ErrorMessage = "Password tidak cocok.")]
+        [Required(ErrorMessage = "Password konfirmasi tidak boleh kosong")]
         public string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "Email tidak boleh kosong")]
-        [StringLength(64, MinimumLength = 3, ErrorMessage = "Email harus mengandung 3-64 karakter")]
         [EmailAddress(ErrorMessage = "Bukan sebuah email")]
         public string Email { get; set; }
     }

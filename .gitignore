@@ -401,6 +401,7 @@ API/appsetings.json
 RestClient/
 RestClient/*.http
 
+API/appsetting.json
 
 API/obj/
 Client/obj/

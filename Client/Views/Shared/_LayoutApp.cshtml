@@ -2,8 +2,7 @@
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 @{
-    ViewData["LogName"] = HttpContextAccessor.HttpContext.Session.GetString("LogName");
-
+    ViewData["LogEmail"] = HttpContextAccessor.HttpContext.Session.GetString("LogEmail");
 }
 
 <!DOCTYPE html>
@@ -68,29 +67,37 @@
                                 <li class=""><a href="~/admin"><i class="fa fa-home"></i> Dashboard</a></li>
                             </ul>
                         </div>
-                        <div class="menu_section">
-                            <h3>Super Admin</h3>
-                            <ul class="nav side-menu">
-                                <li class=""><a href="~/admin/account"><i class="fa fa-users"></i> Account Manajement</a></li>
-                                <li class=""><a href="~/admin/role"><i class="fa fa-eye"></i> Access Role</a></li>
-                            </ul>
-                        </div>
-                        <div class="menu_section">
-                            <h3>Admin</h3>
-                            <ul class="nav side-menu">
-                                <li class=""><a><i class="fa fa-briefcase"></i>Onboard Manajement</a></li>
-                                <li class=""><a href="~/admin/candidate"><i class="fa fa-folder"></i> Master Candidate</a></li>
-                                <li>
-                                    <a>
-                                        <i class="fa fa-building-o"></i> Customer Manajement <span class="fa fa-chevron-down"></span>
-                                    </a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="projects.html">Interview Scheduling</a></li>
-                                        <li><a href="~/admin/company">Company Data</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
+                        @if (User.IsInRole("Super Administrator") == true)
+                        {
+                            <div class="menu_section">
+                                <h3>Super Admin</h3>
+                                <ul class="nav side-menu">
+                                    <li class=""><a href="~/admin/account"><i class="fa fa-users"></i> Account Manajement</a></li>
+                                    <li class=""><a href="~/admin/role"><i class="fa fa-eye"></i> Access Role</a></li>
+                                </ul>
+                            </div>
+                        }
+
+                        @if (User.IsInRole("Administrator") == true)
+                        {
+                            <div class="menu_section">
+                                <h3>Admin</h3>
+                                <ul class="nav side-menu">
+                                    <li class=""><a><i class="fa fa-briefcase"></i>Onboard Manajement</a></li>
+                                    <li class=""><a href="~/admin/candidate"><i class="fa fa-folder"></i> Master Candidate</a></li>
+                                    <li>
+                                        <a>
+                                            <i class="fa fa-building-o"></i> Customer Manajement <span class="fa fa-chevron-down"></span>
+                                        </a>
+                                        <ul class="nav child_menu">
+                                            <li><a href="projects.html">Interview Scheduling</a></li>
+                                            <li><a href="~/admin/company">Company Data</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        }
+
                         <div class="menu_section">
                             <h3>Settings</h3>
                             <ul class="nav side-menu">
@@ -98,7 +105,7 @@
                                     <a><i class="fa fa-cog"></i> Account <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="~/admin/setting/profile">Profile</a></li>
-                                        <li><a href="~/admin/setting/profile/change-password">Change Password</a></li>
+                                        <li><a href="~/admin/setting/change-password">Change Password</a></li>
                                     </ul>
                                 </li>
 
@@ -127,87 +134,16 @@
                             <li class="nav-item dropdown open" style="padding-left: 15px;">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true"
                                    id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="~/assets/production/images/img.jpg" alt="">@ViewData["LogName"]
+                                    <img src="~/assets/production/images/user.png" alt="">@ViewData["LogEmail"]
                                 </a>
                                 <div class="dropdown-menu dropdown-usermenu pull-right"
                                      aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="javascript:;"> Profile</a>
-                                    <a class="dropdown-item" href="login.html">
+                                    <a class="dropdown-item" href="~/admin/setting/profile"> Profile</a>
+                                    <a class="dropdown-item" asp-controller="auth" asp-action="logout">
                                         <i class="fa fa-sign-out pull-right"></i>
                                         Log Out
                                     </a>
                                 </div>
-                            </li>
-
-                            <li role="presentation" class="nav-item dropdown open">
-                                <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1"
-                                   data-toggle="dropdown" aria-expanded="false">
-                                    <i class="fa fa-envelope-o"></i>
-                                    <span class="badge bg-green">6</span>
-                                </a>
-                                <ul class="dropdown-menu list-unstyled msg_list" role="menu"
-                                    aria-labelledby="navbarDropdown1">
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-                                            <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were
-                                                where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-                                            <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were
-                                                where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-                                            <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were
-                                                where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-                                            <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were
-                                                where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <div class="text-center">
-                                            <a class="dropdown-item">
-                                                <strong>See All Alerts</strong>
-                                                <i class="fa fa-angle-right"></i>
-                                            </a>
-                                        </div>
-                                    </li>
-                                </ul>
                             </li>
                         </ul>
                     </nav>
@@ -303,10 +239,15 @@
     {
         <script src="~/data/dataCompanyData.js"></script>
     }
-  
-    @if (ViewData["Title"] == "Setting")
+
+    @if (ViewData["Title"] == "Profile")
     {
-        <script src="~/data/dataSetting.js"></script>
+        <script src="~/data/dataProfile.js"></script>
+    }
+
+    @if (ViewData["Title"] == "Change Password")
+    {
+        <script src="~/data/dataChangePassword.js"></script>
     }
 
 </body>
