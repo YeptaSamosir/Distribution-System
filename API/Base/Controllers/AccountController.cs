@@ -119,7 +119,7 @@ namespace API.Base.Controllers
                 var response = accountRepository.ValidationUnique(accountRegisterVM.Username, accountRegisterVM.Email);
                 if (response != null)
                 {
-                    return BadRequest(response);
+                    return BadRequest(new { Message = response });
                 }
 
                 //insert user to database
@@ -127,7 +127,7 @@ namespace API.Base.Controllers
                 {
                     return Ok(new {Message = "Berhasil Register" });
                 };
-                return BadRequest("Gagal Register");
+                return BadRequest(new { Message = "Gagal Register" });
             }
             catch (System.Exception e)
             {
@@ -136,12 +136,12 @@ namespace API.Base.Controllers
         }
 
         [HttpPut("register/update")]
-        public ActionResult AccountUpdate(AccountRegisterVM accountRegisterVM)
+        public ActionResult AccountUpdate(AccountUpdateWithRole accountUpdateWithRole)
         {
             try
             {
                  //insert user to database
-                if (accountRepository.UpdateAccount(accountRegisterVM) == 1)
+                if (accountRepository.UpdateAccount(accountUpdateWithRole) == 1)
                 {
                     return Ok(new { Message = "Berhasil Update" });
                 };

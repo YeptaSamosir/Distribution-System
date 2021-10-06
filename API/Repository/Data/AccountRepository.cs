@@ -28,25 +28,21 @@ namespace API.Repository.Data
 
         internal int Register(AccountRegisterVM accountRegisterVM)
         {
-                DateTime dateNow = DateTime.Now;
-                Account account = new Account(accountRegisterVM.Name, Hashing.HashPassword(accountRegisterVM.Password), accountRegisterVM.Username, accountRegisterVM.Email, true, dateNow, dateNow);
-                myContext.Accounts.Add(account);
-                myContext.SaveChanges();
+            DateTime dateNow = DateTime.Now;
+            Account account = new Account(accountRegisterVM.Name, Hashing.HashPassword(accountRegisterVM.Password), accountRegisterVM.Username, accountRegisterVM.Email, true, dateNow, dateNow);
+            myContext.Accounts.Add(account);
+            myContext.SaveChanges();
 
-                foreach (string role in accountRegisterVM.Roles)
+            foreach (string role in accountRegisterVM.Roles)
+            {
+                myContext.AccountRoles.Add(new AccountRole()
                 {
-
-                    myContext.AccountRoles.Add(new AccountRole()
-                    {
-                        RoleId = role,
-                        AccountId = account.AccountId,
-                    });
-                    myContext.SaveChanges();
-
-                }
-
-                return myContext.SaveChanges();
-         }
+                    RoleId = role,
+                    AccountId = account.AccountId,
+                });
+            }
+            return myContext.SaveChanges();
+        }
 
         internal Account FindUsernameOrEmail(string username)
         {
@@ -150,39 +146,43 @@ namespace API.Repository.Data
 
         }
 
-        internal int UpdateAccount(AccountRegisterVM accountRegisterVM)
+        internal int UpdateAccount(AccountUpdateWithRole accountUpdateWithRole)
         {
-
-            //update entity account
-            var account = myContext.Accounts.Where(x => x.AccountId == accountRegisterVM.AccountId).FirstOrDefault();
-            account.Name = accountRegisterVM.Name;
-            account.Username = accountRegisterVM.Username;
-            account.Email = accountRegisterVM.Email;
-            account.IsActive = accountRegisterVM.IsActive;
-            account.UpdatedAt = DateTime.Now;
-            Update(account);
-            myContext.SaveChanges();
-
-            var roleAccount =  myContext.AccountRoles.Where(x => x.AccountId == account.AccountId);
-            foreach (var role in roleAccount)
-            {
-                //delete entity accountrole
-                myContext.AccountRoles.Remove(role);
+            try {
+                //update entity account
+                var account = myContext.Accounts.Where(x => x.AccountId == accountUpdateWithRole.AccountId).FirstOrDefault();
+                account.Name = accountUpdateWithRole.Name;
+                account.Username = accountUpdateWithRole.Username;
+                account.Email = accountUpdateWithRole.Email;
+                account.IsActive = accountUpdateWithRole.IsActive;
+                account.UpdatedAt = DateTime.Now;
+                Update(account);
                 myContext.SaveChanges();
-            }
 
-            //update entity accountrole
-            foreach (string role in accountRegisterVM.Roles)
-            {
-                myContext.AccountRoles.Add(new AccountRole()
+                var roleAccount = myContext.AccountRoles.Where(x => x.AccountId == account.AccountId);
+                foreach (var role in roleAccount)
                 {
-                    RoleId = role,
-                    AccountId = account.AccountId,
-                });
+                    //delete entity accountrole
+                    myContext.AccountRoles.Remove(role);
+                }
                 myContext.SaveChanges();
+
+                //update entity accountrole
+                foreach (string role in accountUpdateWithRole.Roles)
+                {
+                    myContext.AccountRoles.Add(new AccountRole()
+                    {
+                        RoleId = role,
+                        AccountId = account.AccountId,
+                    });
+                }
+                myContext.SaveChanges();
+                return 1;
             }
-            return myContext.SaveChanges();
-            
+            catch {
+                throw new Exception();
+            }
+
         }
 
         internal bool ForgotPassword(ForgotPassword forgetPassword)

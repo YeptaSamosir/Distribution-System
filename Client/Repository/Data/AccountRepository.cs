@@ -36,9 +36,9 @@ namespace Client.Repository.Data
             return response;
         }
 
-        internal string UpdateAccount(AccountRegisterVM accountregister)
+        internal string UpdateAccount(AccountUpdateWithRole accountUpdateWithRole)
         {
-            StringContent content = new StringContent(JsonConvert.SerializeObject(accountregister), Encoding.UTF8, "application/json");
+            StringContent content = new StringContent(JsonConvert.SerializeObject(accountUpdateWithRole), Encoding.UTF8, "application/json");
             var response = httpClient.PutAsync(request + "register/update", content).Result.Content.ReadAsStringAsync().Result;
             return response;
         }

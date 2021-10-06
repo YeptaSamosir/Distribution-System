@@ -31,9 +31,9 @@ namespace Client.Base.Controllers
         }
 
         [HttpPut("register/update")]
-        public JsonResult Put(AccountRegisterVM accountregister)
+        public JsonResult Put(AccountUpdateWithRole accountUpdateWithRole)
         {
-            var result = repository.UpdateAccount(accountregister);
+            var result = repository.UpdateAccount(accountUpdateWithRole);
             return Json(result);
         }
     }
