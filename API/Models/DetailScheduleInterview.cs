@@ -1,10 +1,13 @@
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 namespace API.Models
 {
@@ -12,7 +15,6 @@ namespace API.Models
     public class DetailScheduleInterview
     {
         [Key]
-        [StringLength(16)]
         public int DetailScheduleInterviewId { get; set; }
 
         [ForeignKey("ScheduleInterview")]
@@ -26,7 +28,13 @@ namespace API.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        public enum typeLocation { Online, Offline }
+        [JsonConverter(typeof(StringEnumConverter))]
         public typeLocation TypeLocation { get; set; }
+    }
+    public enum typeLocation {
+        //[EnumMember(Value = "ONLINE")]
+        Online,
+        //[EnumMember(Value = "OFFLINE")]
+        Offline 
     }
 }

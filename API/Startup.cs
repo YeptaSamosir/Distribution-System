@@ -13,6 +13,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,8 +51,10 @@ namespace API
             services.Configure<MyConfiguration>(Configuration.GetSection("MyConfiguration"));
 
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
-                            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.Converters.Add(new StringEnumConverter());
+            }) ;
 
             services.AddDbContext<MyContext>(options => options.UseLazyLoadingProxies()
             .UseSqlServer(Configuration.GetConnectionString("NETCoreContext")));
