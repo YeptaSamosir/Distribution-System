@@ -5,10 +5,12 @@ using System.Net;
 using System.Threading.Tasks;
 using API.Models.ViewModels;
 using API.Repository.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Base
 {
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class BaseController<TEntity, TRepository, TKey> : ControllerBase

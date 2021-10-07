@@ -87,6 +87,15 @@ namespace Client.Base.Controllers
             return RedirectToAction("forgot-password");
         }
 
+        [AllowAnonymous]
+        [HttpPost("reset-password-account")]
+        public IActionResult ResetPasswordAccount(ResetPasswordVM resetPasswordVM)
+        {
+            var result = repository.ResetPasswordAccount(resetPasswordVM);
+            TempData["Message"] = result;
+            return RedirectToAction("login");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

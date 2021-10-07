@@ -12,6 +12,6 @@ namespace API.Config
         public int Port { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public string BaseUrlApis { get; }
+        public string BaseUrlClient { get; set; }
     }
 }

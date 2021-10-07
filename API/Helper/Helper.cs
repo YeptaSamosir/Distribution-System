@@ -5,6 +5,12 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using System.Text;
+using System.IO;
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.OpenSsl;
+using Org.BouncyCastle.Security;
+using Org.BouncyCastle.Crypto.Parameters;
 
 namespace API.Helper
 {
@@ -44,5 +50,37 @@ namespace API.Helper
             }
             return new string(result);
         }
+    }
+
+
+    public class RsaHelper
+    {
+        public string Encrypt(string strText)
+        {
+            CspParameters CSApars = new CspParameters();
+            CSApars.KeyContainerName = "Test001";
+
+            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(CSApars);
+
+            byte[] byteText = Encoding.UTF8.GetBytes(strText);
+            byte[] byteEntry = rsa.Encrypt(byteText, false);
+
+            return Convert.ToBase64String(byteEntry);
+        }
+
+
+        public string Decrypt(string strEntryText)
+        {
+            CspParameters CSApars = new CspParameters();
+            CSApars.KeyContainerName = "Test001";
+
+            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(CSApars);
+
+            byte[] byteEntry = Convert.FromBase64String(strEntryText);
+            byte[] byteText = rsa.Decrypt(byteEntry, false);
+
+            return Encoding.UTF8.GetString(byteText);
+        }
+      
     }
 }

@@ -47,5 +47,12 @@ namespace Client.Repository.Data
       
             return httpClient.PostAsync(request + "forgotpassword", content).Result.Content.ReadAsStringAsync().Result;
         }
+
+        internal string ResetPasswordAccount(ResetPasswordVM resetPasswordVM)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(resetPasswordVM), Encoding.UTF8, "application/json");
+
+            return httpClient.PostAsync(request + "resetpasswordaccount", content).Result.Content.ReadAsStringAsync().Result;
+        }
     } 
 }
