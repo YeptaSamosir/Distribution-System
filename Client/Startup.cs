@@ -33,12 +33,12 @@ namespace Client
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDistributedMemoryCache();
-            services.AddMvc().AddNewtonsoftJson(options =>
+            /*services.AddMvc().AddNewtonsoftJson(options =>
             {
-                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
                 options.SerializerSettings.Converters.Add(new StringEnumConverter());
-            });
-            //services.AddMvc();
+            });*/
+            services.AddMvc();
             services.AddMemoryCache();
             services.AddSession(options =>
             {

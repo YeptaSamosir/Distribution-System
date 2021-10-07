@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using API.Models;
 using System;
+using API.Hash;
 
 namespace API.Context
 {
@@ -40,6 +41,107 @@ namespace API.Context
             modelBuilder.Entity<Status>().HasMany(x => x.ScheduleInterviews).WithOne(x => x.Status);
 
             modelBuilder.Entity<ScheduleInterview>().HasMany(x => x.DetailScheduleInterviews).WithOne(x => x.ScheduleInterview);
+
+            //seed data
+            modelBuilder.Entity<Role>().HasData(
+                new Role { 
+                    RoleId = "SP-ADM",
+                    Name = "Super Administrator",
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
+                },
+                new Role
+                {
+                    RoleId = "ADM",
+                    Name = "Administrator",
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
+                }
+            );
+
+            modelBuilder.Entity<Account>().HasData(
+                new Account
+                {
+                    AccountId = 1,
+                    Name = "Super Administrator",
+                    Email = "admin@mail.com",
+                    Username = "Admin",
+                    Password = Hashing.HashPassword("Admin123"),
+                    AttemptCount = 0,
+                    IsActive = true,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
+                }
+            );
+
+            modelBuilder.Entity<AccountRole>().HasData(
+                new AccountRole
+                {
+                    AccountId = 1,
+                    RoleId = "SP-ADM",
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
+                },
+                new AccountRole
+                {
+                    AccountId = 1,
+                    RoleId = "ADM",
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
+                }
+            );
+
+            modelBuilder.Entity<TypeStatus>().HasData(
+                new TypeStatus {
+                    TypeStatusId = "ITV",
+                    Name = "Schedule Interview",
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
+                },
+                new TypeStatus {
+                    TypeStatusId = "ONB",
+                    Name = "Onboard Candidate",
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
+                }
+            );
+
+            modelBuilder.Entity<Status>().HasData(
+                new Status {
+                    StatusId = "ITV-WT",
+                    Name = "Waiting",
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
+                },
+                new Status
+                {
+                    StatusId = "ITV-DN",
+                    Name = "Done",
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
+                },
+                new Status
+                {
+                    StatusId = "ITV-CN",
+                    Name = "Cancel",
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
+                },
+                new Status
+                {
+                    StatusId = "ONB-OG",
+                    Name = "Cancel",
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
+                },
+                new Status
+                {
+                     StatusId = "ONB-DN",
+                     Name = "Done",
+                     CreatedAt = DateTime.Now,
+                     UpdatedAt = DateTime.Now
+                }
+            );
         }
     }
 }

@@ -11,6 +11,7 @@ using System.Net;
 using Microsoft.EntityFrameworkCore;
 using API.Config;
 using Microsoft.Extensions.Options;
+using API.Helper;
 
 namespace API.Repository.Data
 {
@@ -124,27 +125,6 @@ namespace API.Repository.Data
             }
         }
 
-        internal void Email(string stringHtmlMessage, string destinationEmail, string fromMail, string fromPassword)
-        {
-
-            MailMessage message = new MailMessage();
-            message.From = new MailAddress(fromMail);
-            message.To.Add(new MailAddress(destinationEmail));
-            message.Subject = "Reset Password From Distribution System" + DateTime.Now;
-            message.IsBodyHtml = true;
-            message.Body = "<html><body> " + stringHtmlMessage + " </body></html>";
-
-
-            var smtpClient = new SmtpClient(myConfiguration.SmtpServer)
-            {
-                Port = myConfiguration.Port,
-                Credentials = new NetworkCredential(fromMail, fromPassword),
-                EnableSsl = true,
-            };
-
-            smtpClient.Send(message);
-
-        }
 
         internal int UpdateAccount(AccountUpdateWithRole accountUpdateWithRole)
         {
@@ -192,20 +172,72 @@ namespace API.Repository.Data
             //if email exist
             if (emailCheck != null)
             {
+                //RSACryptoServiceProvider encrypt 
+                var rsaHelper = new RsaHelper();
+                var encrypted = rsaHelper.Encrypt(emailCheck.Email);
+
+                var linkReset = myConfiguration.BaseUrlClient + "reset?p=" + encrypted;
 
                 //generate ResetPassword
-                string resetPassword = Helper.Helper.GetRandomAlphanumericString(5);
-                string stringHtmlMessage = $"Password Baru Anda: <b> {resetPassword} </b> <br> Gunakan password reset ini untuk login";
-                // update database
+                /*string resetPassword = Helper.Helper.GetRandomAlphanumericString(5);*/
+
+                string stringHtmlMessageBody = 
+                    $"Dear {emailCheck.Name} <br><br> " +
+                    $"We have received your request to reset your password. " +
+                    $"Please click the link below to complete the reset: <br>" +
+                    $"<a href={linkReset}>Reset My Password </a> <br><br>" +
+                    $"If you need additional assistance, or you did not make this change, please contact admin <br><br>" +
+                    $"[Distribution System]";
+                                
+                /*// update database
                 var checkEmail = myContext.Accounts.SingleOrDefault(x => x.Email.Equals(emailCheck.Email));
                 checkEmail.Password = Hashing.HashPassword(resetPassword);
-                Update(checkEmail);
+                Update(checkEmail);*/
 
-                Email(stringHtmlMessage, forgetPassword.Email, myConfiguration.Email, myConfiguration.Password);
+                Email(stringHtmlMessageBody, forgetPassword.Email, myConfiguration.Email, myConfiguration.Password);
 
                 return true;
             }
             return false;
+        }
+
+        internal void Email(string stringHtmlMessageBody, string destinationEmail, string fromMail, string fromPassword)
+        {
+
+            MailMessage message = new MailMessage();
+            message.From = new MailAddress(fromMail);
+            message.To.Add(new MailAddress(destinationEmail));
+            message.Subject = "Reset your account password from Distribution System";
+            message.IsBodyHtml = true;
+            message.Body = "<html><body> " + stringHtmlMessageBody + " </body></html>";
+
+
+            var smtpClient = new SmtpClient(myConfiguration.SmtpServer)
+            {
+                Port = myConfiguration.Port,
+                Credentials = new NetworkCredential(fromMail, fromPassword),
+                EnableSsl = true,
+            };
+
+            smtpClient.Send(message);
+
+        }
+        internal int ResetPasswordAccount(ResetPasswordVM resetPasswordVM)
+        {
+            try
+            {
+                //update password account
+                var account = myContext.Accounts.Where(x => x.Email == resetPasswordVM.EmailAccount).FirstOrDefault();
+                account.Password = Hashing.HashPassword(resetPasswordVM.NewPassword);
+                account.UpdatedAt = DateTime.Now;
+                Update(account);
+                myContext.SaveChanges();
+                return 1;
+            }
+            catch
+            {
+                throw new Exception();
+            }
         }
     }
 

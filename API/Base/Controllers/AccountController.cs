@@ -15,6 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http;
 using System.Web;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Base.Controllers
 {
@@ -33,6 +34,7 @@ namespace API.Base.Controllers
             this.myContext = myContext;
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public ActionResult Login(LoginVM loginVM)
         {
@@ -50,13 +52,12 @@ namespace API.Base.Controllers
             //check password BCrypt
             if (!BCrypt.Net.BCrypt.Verify(loginVM.Password, accountData.Password))
             {
-                var login = Convert.ToInt32(HttpContext.Session.GetInt32("LoginCount")) + 1;
-               
-                HttpContext.Session.SetInt32("LoginCount", login);
-
-                var loginCountCurrent = 3 - HttpContext.Session.GetInt32("LoginCount");
-
-                if (loginCountCurrent == 0) {
+                var updateAttemptCount = accountData.AttemptCount + 1;
+                accountData.AttemptCount = updateAttemptCount;
+                accountRepository.Update(accountData);
+                                
+                if (updateAttemptCount >= 4) {
+                    accountData.AttemptCount = 0;
                     //daactive account login
                     if (accountRepository.DeactivateLoginAccount(accountData) == 1)
                     {
@@ -67,11 +68,12 @@ namespace API.Base.Controllers
                     }
                 }
 
-                return BadRequest(new JWTokenVM { Message = $"Password salah! (tersisa {loginCountCurrent} kali lagi!)" });
+                return BadRequest(new JWTokenVM { Message = $"Password salah! (tersisa {4 - updateAttemptCount} kali percobaan lagi!)" });
             }
 
-
-           
+            //update attempt count if success login
+            accountData.AttemptCount = 0;
+            accountRepository.Update(accountData);
 
             //------Create Token----//
 
@@ -180,12 +182,24 @@ namespace API.Base.Controllers
         }
 
 
+        [AllowAnonymous]
         [HttpPost("forgotpassword")]
         public ActionResult ForgotPassword(ForgotPassword forgotPassword)
         {
             if (accountRepository.ForgotPassword(forgotPassword))
             {
-                return Ok($"Reset Password berhasil, Check email {forgotPassword.Email}");
+                return Ok($"Check your email {forgotPassword.Email} for reset password");
+            }
+            return BadRequest("Reset Password Gagal!");
+        }
+
+        [AllowAnonymous]
+        [HttpPost("resetpasswordaccount")]
+        public ActionResult ResetPasswordAccount(ResetPasswordVM resetPasswordVM)
+        {
+            if (accountRepository.ResetPasswordAccount(resetPasswordVM) == 1)
+            {
+                return Ok($"Reset Password berhasil");
             }
             return BadRequest("Reset Password Gagal!");
         }
