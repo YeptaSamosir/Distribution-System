@@ -53,6 +53,9 @@ namespace API.Models
         [Required]
         public bool IsActive { get; set; }
 
+        [JsonIgnore]
+        public int AttemptCount { get; set; }
+
         [Required]
         public DateTime CreatedAt { get; set; }
 

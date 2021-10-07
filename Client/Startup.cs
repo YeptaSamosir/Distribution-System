@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +32,12 @@ namespace Client
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDistributedMemoryCache();
-            services.AddMvc();
+            services.AddMvc().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.Converters.Add(new StringEnumConverter());
+            });
+            //services.AddMvc();
             services.AddMemoryCache();
             services.AddSession(options =>
             {

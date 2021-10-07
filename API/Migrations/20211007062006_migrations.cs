@@ -13,11 +13,12 @@ namespace API.Migrations
                 {
                     AccountId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Username = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    AttemptCount = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -32,8 +33,9 @@ namespace API.Migrations
                 {
                     CandidateId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    Grade = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Grade = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -48,7 +50,7 @@ namespace API.Migrations
                 {
                     CompanyId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -61,8 +63,8 @@ namespace API.Migrations
                 name: "tb_m_roles",
                 columns: table => new
                 {
-                    RoleId = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    RoleId = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -90,7 +92,7 @@ namespace API.Migrations
                 columns: table => new
                 {
                     AccountId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(16)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(64)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -212,7 +214,7 @@ namespace API.Migrations
                 name: "tb_m_detail_schedule_interviews",
                 columns: table => new
                 {
-                    DetailScheduleInterviewId = table.Column<int>(type: "int", maxLength: 16, nullable: false)
+                    DetailScheduleInterviewId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ScheduleInterviewId = table.Column<string>(type: "nvarchar(16)", nullable: true),
                     EmailCandidate = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
