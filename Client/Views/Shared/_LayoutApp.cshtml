@@ -90,7 +90,7 @@
                                             <i class="fa fa-building-o"></i> Customer Manajement <span class="fa fa-chevron-down"></span>
                                         </a>
                                         <ul class="nav child_menu">
-                                            <li><a href="projects.html">Interview Scheduling</a></li>
+                                            <li><a href="~/admin/scheduleinterview">Interview Scheduling</a></li>
                                             <li><a href="~/admin/company">Company Data</a></li>
                                         </ul>
                                     </li>
@@ -248,6 +248,10 @@
     @if (ViewData["Title"] == "Change Password")
     {
         <script src="~/data/dataChangePassword.js"></script>
+    }
+    @if (ViewData["Title"] == "Schedule Interview")
+    {
+        <script src="~/data/dataScheduleInterview.js"></script>
     }
 
 </body>
