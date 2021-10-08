@@ -52,6 +52,21 @@
                         data: "grade",
                     },
                     {
+                        data: "email",
+                    },
+                    {
+                        render: function (data, type, row, meta) {
+                            var b = '';
+
+                            $.each(row['onboards'], function (key, val) {
+                                b += `<span class="m-1 p-2 badge badge-info">${val.status.name}</span>`;
+                            });
+
+                            return b;
+                        },
+                    },
+                    {
+
                         render: function (data, type, row, meta) {
 
                             return `
@@ -145,6 +160,7 @@ $("#form-create-candidate").submit(function (event) {
     var data_input = new Object();
     data_input.Name = $("#inputNamaLengkap").val();
     data_input.Grade = $("#inputGrade").val();
+    data_input.Email = $("#inputEmail").val();
     data_input.UpdatedAt = dateTime;
     data_input.CreatedAt = dateTime;
 
@@ -164,6 +180,7 @@ $("#form-create-candidate").submit(function (event) {
             if (obj.errors != undefined) {
                 checkValidation(obj.errors.Name, "inputNamaLengkap", "messageName");
                 checkValidation(obj.errors.Grade, "inputGrade", "messageGrade");
+                checkValidation(obj.errors.Email, "inputEmail", "messageEmail");
 
             } else {
                 $('#modalCandidate').modal('hide');
@@ -203,6 +220,7 @@ editModalCandidate = (id) => {
         $('#candidateId').val(`${result.candidateId}`);
         $('#candidateName').val(`${result.name}`);
         $('#grade').val(`${result.grade}`);
+        $('#email').val(`${result.email}`);
         
 
     }).fail((result) => {
@@ -226,6 +244,7 @@ $("#form-edit-candidate").submit(function (event) {
         "CandidateId": $("#candidateId").val(),
         "Name": $("#candidateName").val(),
         "Grade": $("#grade").val(),
+        "Email": $("#email").val(),
         "UpdatedAt": dateTime
     }
 

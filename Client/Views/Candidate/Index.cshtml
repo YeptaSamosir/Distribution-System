@@ -77,6 +77,15 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="field item form-group">
+                                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Email<span class="required">*</span></label>
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <input class="form-control" id="inputEmail" data-validate-length-range="15" data-validate-words="1" name="email" required="required" />
+                                                            <div class="invalid-feedback">
+                                                                <span id="messageEmail"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -93,6 +102,8 @@
                                             <th width="1%">No</th>
                                             <th>Candidate Name</th>
                                             <th>Grade Candidate</th>
+                                            <th>Email Candidate</th>
+                                            <th>Status Candidate</th>
                                             <th width="10%">Action</th>
                                         </tr>
                                     </thead>
@@ -128,6 +139,12 @@
 
                         <label for="grade">Grade</label>
                         <input id="grade" type="text" class="form-control" value="">
+                        <div class="invalid-feedback">
+                            <span id="messageCandidate"></span>
+                        </div>
+
+                        <label for="email">Email</label>
+                        <input id="email" type="text" class="form-control" value="">
                         <div class="invalid-feedback">
                             <span id="messageCandidate"></span>
                         </div>
