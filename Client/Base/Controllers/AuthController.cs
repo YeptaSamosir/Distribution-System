@@ -12,6 +12,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using Client.Handler;
+using Castle.Core.Internal;
 
 namespace Client.Base.Controllers
 {
@@ -39,7 +40,11 @@ namespace Client.Base.Controllers
         [HttpPost("check-login")]
         public async Task<IActionResult> CheckLogin(LoginVM loginVM)
         {
-            
+            if (loginVM.Username.IsNullOrEmpty() || loginVM.Password.IsNullOrEmpty()) {
+                TempData["Message"] = "Email or username and password cannot be empty";
+                return RedirectToAction("login");
+            }
+
             var jwtToken = await repository.Auth(loginVM);
             var token = jwtToken.Token;
             var message = jwtToken.Message;
@@ -82,6 +87,12 @@ namespace Client.Base.Controllers
         [HttpPost("send-reset-password")]
         public IActionResult SendResetPassword(ForgotPassword forgotPassword)
         {
+            if (forgotPassword.Email.IsNullOrEmpty())
+            {
+                TempData["Message"] = "Email cannot be empty";
+                return RedirectToAction("forgot-password");
+            }
+
             var result = repository.SendResetPassword(forgotPassword);
             TempData["Message"] = result;
             return RedirectToAction("forgot-password");
@@ -93,7 +104,7 @@ namespace Client.Base.Controllers
         {
             var result = repository.ResetPasswordAccount(resetPasswordVM);
             TempData["Message"] = result;
-            return RedirectToAction("login");
+            return Json(result);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

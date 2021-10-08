@@ -48,7 +48,7 @@ namespace API.Base
             }
             catch (System.Exception e)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { Message = e.Message } );
             }
         }
 
@@ -62,7 +62,7 @@ namespace API.Base
             }
             catch (System.Exception e)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { Message = e.Message });
             }
         }
 
@@ -76,7 +76,7 @@ namespace API.Base
             }
             catch (System.Exception e)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { Message = e.Message });
             }
         }
     }

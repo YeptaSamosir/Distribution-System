@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Sign in";
     Layout = "_LayoutAuth";
 }
 <div class="login_wrapper">
@@ -9,18 +9,17 @@
                 <h1> Distribution System</h1>
                 <span class="text-danger">@TempData["Message"]</span>
                 <div>
-                    <input type="text" class="form-control" placeholder="Username or Email" name="username" required="" />
+                    <input type="text" class="form-control" placeholder="Username or Email" name="username"/>
                 </div>
                 <div>
-                    <input type="password" class="form-control" placeholder="Password" name="password" required="" />
+                    <input type="password" class="form-control" placeholder="Password" name="password" />
                 </div>  
                 <div>
                     <button class="btn btn-success w-100" type="submit">
-                        Login
+                        Sign in
                     </button>
                     <a class="reset_pass" asp-action="forgot-password" asp-controller="auth">Lost your password?</a>
                 </div>
-
                 <div class="clearfix"></div>
             </form>
         </section>
