@@ -14,20 +14,25 @@ namespace API.Models
         [Key]
         public int CandidateId { get; set; }
 
-        [Required(ErrorMessage = "Nama tidak boleh kosong")]
-        [StringLength(64, MinimumLength = 3, ErrorMessage = "Nama harus mengandung 3-64 karakter")]
+        [Required]
+        [StringLength(64, MinimumLength = 3, ErrorMessage = "The name field must contain 3-64 characters")]
+        [RegularExpression("^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$", ErrorMessage = "The name field not a character name")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Grade tidak boleh kosong")]
-        [StringLength(64, MinimumLength = 1, ErrorMessage = "Grade harus mengandung minimal 1 karakter")]
+        [Required]
+        [StringLength(3, MinimumLength = 1, ErrorMessage = "The grade field must contain 1-3 characters")]
         public string Grade { get; set; }
 
-        [Required(ErrorMessage = "Email tidak boleh kosong")]
-        [StringLength(64, MinimumLength = 3, ErrorMessage = "Email harus mengandung 3-64 karakter")]
-        [EmailAddress(ErrorMessage = "Bukan sebuah email")]
+        [Required]
+        [StringLength(64, MinimumLength = 3, ErrorMessage = "The email field must contain 3-64 characters")]
+        [EmailAddress]
         public string Email { get; set; }
+
+        [Required]
         public DateTime CreatedAt { get; set; }
+
         public DateTime UpdatedAt { get; set; }
+
         [JsonIgnore]
         public virtual ICollection<ScheduleInterview> ScheduleInterviews { get; set; }
         [JsonIgnore]

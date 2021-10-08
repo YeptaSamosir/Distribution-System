@@ -14,10 +14,13 @@ namespace API.Models
         [Key]
         public int CompanyId { get; set; }
 
-        [Required(ErrorMessage = "Nama Perusahaan tidak boleh kosong")]
-        [StringLength(64, MinimumLength = 1, ErrorMessage = "Nama harus mengandung 1-64 karakter")]
+        [Required]
+        [StringLength(64, MinimumLength = 3, ErrorMessage = "The Name Company field must contain 3-64 characters")]
         public string Name { get; set; }
+
         public DateTime CreatedAt { get; set; }
+
+        [Required]
         public DateTime UpdatedAt { get; set; }
         [JsonIgnore]
         public virtual ICollection<ScheduleInterview> ScheduleInterviews { get; set; }

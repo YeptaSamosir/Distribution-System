@@ -41,12 +41,12 @@ namespace API.Base.Controllers
             var accountData = accountRepository.FindUsernameOrEmail(loginVM.Username);
             if (accountData == null)
             {
-                return BadRequest(new JWTokenVM { Message = "Pengguna tidak ditemukan!" });
+                return BadRequest(new JWTokenVM { Message = "Account not found" });
             }
 
             if (accountData.IsActive == false)
             {
-                return BadRequest(new JWTokenVM { Message = "Account anda terblokir, hubungi admin!" });
+                return BadRequest(new JWTokenVM { Message = "Your account is blocked, contact the admin!" });
             }
 
             //check password BCrypt
@@ -61,14 +61,14 @@ namespace API.Base.Controllers
                     //daactive account login
                     if (accountRepository.DeactivateLoginAccount(accountData) == 1)
                     {
-                        return BadRequest(new JWTokenVM { Message = "Account anda terblokir, hubungi admin!" });
+                        return BadRequest(new JWTokenVM { Message = "Your account is blocked, contact the admin!" });
                     }
                     else {
                         return StatusCode((int)HttpStatusCode.InternalServerError);
                     }
                 }
 
-                return BadRequest(new JWTokenVM { Message = $"Password salah! (tersisa {4 - updateAttemptCount} kali percobaan lagi!)" });
+                return BadRequest(new JWTokenVM { Message = $"Password wrong! ({4 - updateAttemptCount} more tries!)" });
             }
 
             //update attempt count if success login
@@ -82,7 +82,7 @@ namespace API.Base.Controllers
             var getRole = accountRepository.getRole(accountData.AccountId);
             if (getRole == null)
             {
-                return BadRequest(new JWTokenVM { Message = "Role tidak ditemukan pada akun ini" });
+                return BadRequest(new JWTokenVM { Message = "Role not found on this account" });
             }
 
             //create claims details based on the user information
@@ -128,9 +128,9 @@ namespace API.Base.Controllers
                 //insert user to database
                 if (accountRepository.Register(accountRegisterVM) == 1)
                 {
-                    return Ok(new {Message = "Berhasil Register" });
+                    return Ok(new {Message = "Account registration successful" });
                 };
-                return BadRequest(new { Message = "Gagal Register" });
+                return BadRequest(new {Message = "Account registration failed" });
             }
             catch (System.Exception e)
             {
@@ -146,9 +146,9 @@ namespace API.Base.Controllers
                  //insert user to database
                 if (accountRepository.UpdateAccount(accountUpdateWithRole) == 1)
                 {
-                    return Ok(new { Message = "Berhasil Update" });
+                    return Ok(new { Message = "Update Successful" });
                 };
-                return BadRequest(new { Message = "Gagal Update" });
+                return BadRequest(new { Message = "Update failed" });
             }
             catch (System.Exception e)
             {
@@ -164,15 +164,15 @@ namespace API.Base.Controllers
                 var action = accountRepository.ChangePassword(changePassword);
                 if (action == 1)
                 {
-                    return Ok(new { Message = "Password Berhasil Diubah" });
+                    return Ok(new { Message = "Account password has been successfully updated" });
                 }
                 else if (action == 2)
                 {
-                    return BadRequest(new { Message = "Password Anda Salah" });
+                    return BadRequest(new { Message = "Your password is wrong" });
                 }
                 else
                 {
-                    return BadRequest(new { Message = "Email tidak terdaftar" });
+                    return BadRequest(new { Message = "Your email is not registered" });
                 }
             }
             catch (System.Exception e)
@@ -190,7 +190,7 @@ namespace API.Base.Controllers
             {
                 return Ok($"Check your email {forgotPassword.Email} for reset password");
             }
-            return BadRequest("Reset Password Gagal!");
+            return BadRequest("Change password Account failed");
         }
 
         [AllowAnonymous]
@@ -199,9 +199,9 @@ namespace API.Base.Controllers
         {
             if (accountRepository.ResetPasswordAccount(resetPasswordVM) == 1)
             {
-                return Ok($"Reset Password berhasil");
+                return Ok($"Account password has been successfully updated");
             }
-            return BadRequest("Reset Password Gagal!");
+            return BadRequest("Account password has failed");
         }
     }
 }

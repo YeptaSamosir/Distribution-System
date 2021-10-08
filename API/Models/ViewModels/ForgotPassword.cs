@@ -8,9 +8,9 @@ namespace API.Models.ViewModels
 {
     public class ForgotPassword
     {
-        [Required(ErrorMessage = "Email tidak boleh kosong")]
-        [StringLength(64, MinimumLength = 3, ErrorMessage = "Email harus mengandung 3-64 karakter")]
-        [EmailAddress(ErrorMessage = "Bukan sebuah email")]
+        [Required]
+        [StringLength(64, MinimumLength = 3, ErrorMessage = "The email field must contain 3-64 characters")]
+        [EmailAddress]
         public string Email { get; set; }
     }
 }

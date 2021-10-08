@@ -14,26 +14,32 @@
                     {
                         extend: "csv",
                         exportOptions: {
-                            columns: [0, 1, 2]
+                            columns: [1, 2, 3]
                         },
                         className: "btn-sm",
                     },
                     {
                         extend: "excel",
                         exportOptions: {
-                            columns: [0, 1, 2]
+                            columns: [1, 2, 3]
                         },
                         className: "btn-sm",
                     },
                     {
                         extend: "pdfHtml5",
                         exportOptions: {
-                            columns: [0, 1, 2]
+                            columns: [1, 2, 3]
                         },
                         className: "btn-sm",
                     },
                 ],
                 responsive: true,
+                order: [[1, 'asc']],
+                columnDefs: [{
+                    searchable: false,
+                    orderable: false,
+                    targets: [0, 4]
+                }],
                 ajax: {
                     url: "/admin/candidate/get",
                     datatype: "json",
@@ -53,17 +59,6 @@
                     },
                     {
                         data: "email",
-                    },
-                    {
-                        render: function (data, type, row, meta) {
-                            var b = '';
-
-                            $.each(row['onboards'], function (key, val) {
-                                b += `<span class="m-1 p-2 badge badge-info">${val.status.name}</span>`;
-                            });
-
-                            return b;
-                        },
                     },
                     {
 
@@ -158,7 +153,7 @@ $("#form-create-candidate").submit(function (event) {
     let dateTime = cDate + ' ' + cTime;
 
     var data_input = new Object();
-    data_input.Name = $("#inputNamaLengkap").val();
+    data_input.Name = $("#inputCandidateName").val();
     data_input.Grade = $("#inputGrade").val();
     data_input.Email = $("#inputEmail").val();
     data_input.UpdatedAt = dateTime;
@@ -178,7 +173,7 @@ $("#form-create-candidate").submit(function (event) {
 
             console.log(obj);
             if (obj.errors != undefined) {
-                checkValidation(obj.errors.Name, "inputNamaLengkap", "messageName");
+                checkValidation(obj.errors.Name, "inputCandidateName", "messageCandidateName");
                 checkValidation(obj.errors.Grade, "inputGrade", "messageGrade");
                 checkValidation(obj.errors.Email, "inputEmail", "messageEmail");
 
@@ -191,7 +186,7 @@ $("#form-create-candidate").submit(function (event) {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: `${response}`,
+                    title: `${obj.message}`,
                     showConfirmButton: false,
                     timer: 1500
                 })
@@ -199,8 +194,6 @@ $("#form-create-candidate").submit(function (event) {
                 //reload only datatable
                 $('#datatable-candidate').DataTable().ajax.reload();
             }
-
-
         },
         error: function (xhr, status, error) {
             var err = eval(xhr.responseJSON);
@@ -218,9 +211,9 @@ editModalCandidate = (id) => {
 
         //set value
         $('#candidateId').val(`${result.candidateId}`);
-        $('#candidateName').val(`${result.name}`);
-        $('#grade').val(`${result.grade}`);
-        $('#email').val(`${result.email}`);
+        $('#inputCandidateNameEdit').val(`${result.name}`);
+        $('#inputGradeEdit').val(`${result.grade}`);
+        $('#inputEmailEdit').val(`${result.email}`);
         
 
     }).fail((result) => {
@@ -242,9 +235,9 @@ $("#form-edit-candidate").submit(function (event) {
 
     var data_input = {
         "CandidateId": $("#candidateId").val(),
-        "Name": $("#candidateName").val(),
-        "Grade": $("#grade").val(),
-        "Email": $("#email").val(),
+        "Name": $("#inputCandidateNameEdit").val(),
+        "Grade": $("#inputGradeEdit").val(),
+        "Email": $("#inputEmailEdit").val(),
         "UpdatedAt": dateTime
     }
 
@@ -257,27 +250,30 @@ $("#form-edit-candidate").submit(function (event) {
         contentType: 'application/x-www-form-urlencoded',
         data: data_input,
         success: function (response) {
-
             console.log(response);
+            var obj = JSON.parse(response);
 
-            //idmodal di hide
-            $('#modalEdit').hide();
-            $('.modal-backdrop').remove();
+            console.log(obj);
+            if (obj.errors != undefined) {
+                checkValidation(obj.errors.Name, "inputCandidateNameEdit", "messageCandidateNameEdit");
+                checkValidation(obj.errors.Grade, "inputGradeEdit", "messageGradeEdit");
+                checkValidation(obj.errors.Email, "inputEmailEdit", "messageEmailEdit");
 
+            } else {
+                $('#modalEdit').modal('hide');
 
-            //sweet alert message success
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: `${response}`,
-                showConfirmButton: false,
-                timer: 1500
-            })
+                //sweet alert message success
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: `${obj.message}`,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
 
-            //reload only datatable
-            $('#datatable-candidate').DataTable().ajax.reload();
-
-
+                //reload only datatable
+                $('#datatable-candidate').DataTable().ajax.reload();
+            }
         },
         error: function (xhr, status, error) {
             var err = eval(xhr.responseJSON);
@@ -291,8 +287,8 @@ deleteModalCandidate = (id) => {
     console.log(id);
 
     Swal.fire({
-        title: 'Hapus Data',
-        text: `Anda akan menghapus data !`,
+        title: 'Delete Data',
+        text: `You will delete this data ?`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -310,7 +306,7 @@ deleteModalCandidate = (id) => {
 
                     Swal.fire(
                         'Deleted!',
-                        'Data berhasil dihapus.',
+                        `Data deleted successfully`,
                         'success'
                     )
 

@@ -2,7 +2,6 @@
     ViewData["Title"] = "Master Candidate";
     Layout = "_LayoutApp";
 }
- page content
 <div class="right_col" role="main">
     <div class="row">
         <div class="col-12">
@@ -23,7 +22,7 @@
         <div class="col-md-12 col-sm-12 ">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Data Akun</h2>
+                    <h2>Candidate data</h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li>
                             <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -45,51 +44,43 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="card-box table-responsive">
-                                <button type="button" class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-lg">Registrasi Candidate baru</button>
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalCandidate">Create</button>
 
-                                <div id="modalCandidate" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div id="modalCandidate" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
 
                                             <div class="modal-header">
-                                                <h4 class="modal-title" id="myModalLabel">Registrasi Candidate baru</h4>
+                                                <h4 class="modal-title" id="myModalLabel">Create new candidate data</h4>
                                                 <button type="button" class="close" data-dismiss="modal">
                                                     <span aria-hidden="true">×</span>
                                                 </button>
                                             </div>
-                                            <form id="form-create-candidate" method="post" novalidate>
+                                            <form id="form-create-candidate" method="post">
                                                 <div class="modal-body">
-                                                    <div class="field item form-group">
-                                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Nama Lengkap<span class="required">*</span></label>
-                                                        <div class="col-md-6 col-sm-6">
-                                                            <input class="form-control" id="inputNamaLengkap" data-validate-length-range="15" data-validate-words="2" name="namaLengkap" required="required" />
-                                                            <div class="invalid-feedback">
-                                                                <span id="messageName"></span>
-                                                            </div>
+                                                    <div class="form-group">
+                                                        <label for="inputCandidateName">Candidate Name</label>
+                                                        <input id="inputCandidateName" type="text" class="form-control" value="">
+                                                        <div class="invalid-feedback">
+                                                            <span id="messageCandidateName"></span>
                                                         </div>
-                                                    </div>
-                                                    <div class="field item form-group">
-                                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Grade<span class="required">*</span></label>
-                                                        <div class="col-md-6 col-sm-6">
-                                                            <input class="form-control" id="inputGrade" data-validate-length-range="15" data-validate-words="1" name="grade" required="required" />
-                                                            <div class="invalid-feedback">
-                                                                <span id="messageGrade"></span>
-                                                            </div>
+
+                                                        <label for="inputGrade">Grade</label>
+                                                        <input id="inputGrade" type="text" class="form-control" value="">
+                                                        <div class="invalid-feedback">
+                                                            <span id="messageGrade"></span>
                                                         </div>
-                                                    </div>
-                                                    <div class="field item form-group">
-                                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Email<span class="required">*</span></label>
-                                                        <div class="col-md-6 col-sm-6">
-                                                            <input class="form-control" id="inputEmail" data-validate-length-range="15" data-validate-words="1" name="email" required="required" />
-                                                            <div class="invalid-feedback">
-                                                                <span id="messageEmail"></span>
-                                                            </div>
+
+                                                        <label for="inputEmail">Email</label>
+                                                        <input id="inputEmail" type="text" class="form-control" value="">
+                                                        <div class="invalid-feedback">
+                                                            <span id="messageEmail"></span>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-success">Daftar Candidate</button>
+                                                    <button type="submit" class="btn btn-success">Create</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -103,7 +94,6 @@
                                             <th>Candidate Name</th>
                                             <th>Grade Candidate</th>
                                             <th>Email Candidate</th>
-                                            <th>Status Candidate</th>
                                             <th width="10%">Action</th>
                                         </tr>
                                     </thead>
@@ -132,21 +122,23 @@
             <form id="form-edit-candidate" method="post">
                 <div class="modal-body">
                     <div class="form-group">
-                        <input id="candidateId" type="hidden" value="">
-
-                        <label for="candidateName">Candidate Name</label>
-                        <input id="candidateName" type="text" class="form-control" value="">
-
-                        <label for="grade">Grade</label>
-                        <input id="grade" type="text" class="form-control" value="">
+                        <input id="candidateId" type="hidden" />
+                        <label for="inputCandidateNameEdit">Candidate Name</label>
+                        <input id="inputCandidateNameEdit" type="text" class="form-control" value="">
                         <div class="invalid-feedback">
-                            <span id="messageCandidate"></span>
+                            <span id="messageCandidateNameEdit"></span>
                         </div>
 
-                        <label for="email">Email</label>
-                        <input id="email" type="text" class="form-control" value="">
+                        <label for="inputGradeEdit">Grade</label>
+                        <input id="inputGradeEdit" type="text" class="form-control" value="">
                         <div class="invalid-feedback">
-                            <span id="messageCandidate"></span>
+                            <span id="messageGradeEdit"></span>
+                        </div>
+
+                        <label for="inputEmailEdit">Email</label>
+                        <input id="inputEmailEdit" type="text" class="form-control" value="">
+                        <div class="invalid-feedback">
+                            <span id="messageEmailEdit"></span>
                         </div>
                     </div>
                 </div>

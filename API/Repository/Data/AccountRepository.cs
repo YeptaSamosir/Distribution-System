@@ -86,11 +86,11 @@ namespace API.Repository.Data
         {
             if (myContext.Accounts.Where(x => x.Email == email).Count() > 0)
             {
-                return "Email sudah digunakan";
+                return "Email already used";
             }
             if (myContext.Accounts.Where(x => x.Username == username).Count() > 0)
             {
-                return "Username sudah digunakan";
+                return "Username already used";
             }
 
             return null;

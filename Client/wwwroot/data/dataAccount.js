@@ -296,8 +296,8 @@ deleteModalAccount = (id) => {
     console.log(id);
 
     Swal.fire({
-        title: 'Hapus Data',
-        text: `Anda akan menghapus data !`,
+        title: 'Delete Data',
+        text: `You will delete this data ?`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -314,7 +314,7 @@ deleteModalAccount = (id) => {
 
                     Swal.fire(
                         'Deleted!',
-                        `Data berhasil di hapus`,
+                        `Data deleted successfully`,
                         'success'
                     )
 

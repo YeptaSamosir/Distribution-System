@@ -14,26 +14,32 @@
                     {
                         extend: "csv",
                         exportOptions: {
-                            columns: [0, 1]
+                            columns: [1]
                         },
                         className: "btn-sm",
                     },
                     {
                         extend: "excel",
                         exportOptions: {
-                            columns: [0, 1]
+                            columns: [1]
                         },
                         className: "btn-sm",
                     },
                     {
                         extend: "pdfHtml5",
                         exportOptions: {
-                            columns: [0, 1]
+                            columns: [1]
                         },
                         className: "btn-sm",
                     },
                 ],
                 responsive: true,
+                order: [[1, 'asc']],
+                columnDefs: [{
+                    searchable: false,
+                    orderable: false,
+                    targets: [0, 2]
+                }],
                 ajax: {
                     url: "/admin/company/get",
                     datatype: "json",
@@ -141,7 +147,7 @@ $("#form-create-company").submit(function (event) {
     let dateTime = cDate + ' ' + cTime;
 
     var data_input = new Object();
-    data_input.Name = $("#inputNamaPerusahaan").val();
+    data_input.Name = $("#inputCompanyName").val();
     data_input.UpdatedAt = dateTime;
     data_input.CreatedAt = dateTime;
 
@@ -160,7 +166,7 @@ $("#form-create-company").submit(function (event) {
             console.log(obj);
 
             if (obj.errors != undefined) {
-                checkValidation(obj.errors.Name, "inputNamaPerusahaan", "messageCompany");
+                checkValidation(obj.errors.Name, "inputCompanyName", "messageCompanyName");
 
             } else {
                 $('#modalCompany').modal('hide');
@@ -170,7 +176,7 @@ $("#form-create-company").submit(function (event) {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: `${response}`,
+                    title: `${obj.message}`,
                     showConfirmButton: false,
                     timer: 1500
                 })
@@ -196,7 +202,7 @@ editModalCompany = (id) => {
 
         //set value
         $('#companyId').val(`${result.companyId}`);
-        $('#companyName').val(`${result.name}`);
+        $('#companyNameEdit').val(`${result.name}`);
 
     }).fail((result) => {
         console.log(result);
@@ -217,7 +223,7 @@ $("#form-edit-company").submit(function (event) {
 
     var data_input = {
         "CompanyId": $("#companyId").val(),
-        "Name": $("#companyName").val(),
+        "Name": $("#companyNameEdit").val(),
         "UpdatedAt": dateTime
     }
 
@@ -230,26 +236,30 @@ $("#form-edit-company").submit(function (event) {
         contentType: 'application/x-www-form-urlencoded',
         data: data_input,
         success: function (response) {
-
             console.log(response);
+            var obj = JSON.parse(response);
 
-            //idmodal di hide
-            $('#modalEdit').hide();
-            $('.modal-backdrop').remove();
+            console.log(obj);
+
+            if (obj.errors != undefined) {
+                checkValidation(obj.errors.Name, "companyNameEdit", "messageCompanyNameEdit");
+
+            } else {
+                $('#modalEdit').modal('hide');
 
 
-            //sweet alert message success
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: `${response}`,
-                showConfirmButton: false,
-                timer: 1500
-            })
+                //sweet alert message success
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: `${obj.message}`,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
 
-            //reload only datatable
-            $('#datatable-company').DataTable().ajax.reload();
-
+                //reload only datatable
+                $('#datatable-company').DataTable().ajax.reload();
+            }
 
         },
         error: function (xhr, status, error) {
@@ -264,8 +274,8 @@ deleteModalCompany = (id) => {
     console.log(id);
 
     Swal.fire({
-        title: 'Hapus Data',
-        text: `Anda akan menghapus data !`,
+        title: 'Delete Data',
+        text: `You will delete this data ?`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -283,7 +293,7 @@ deleteModalCompany = (id) => {
 
                     Swal.fire(
                         'Deleted!',
-                        'Data berhasil dihapus.',
+                        `Data deleted successfully`,
                         'success'
                     )
 
