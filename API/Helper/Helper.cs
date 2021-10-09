@@ -11,6 +11,8 @@ using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.OpenSsl;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Crypto.Parameters;
+using API.Config;
+using Microsoft.Extensions.Options;
 
 namespace API.Helper
 {
@@ -83,4 +85,50 @@ namespace API.Helper
         }
       
     }
+
+    public class MailHelper {
+
+        private readonly MyConfiguration myConfiguration;
+
+        public MailHelper()
+        {
+        }
+
+        public MailHelper(IOptions<MyConfiguration> myConfiguration)
+        {
+            this.myConfiguration = myConfiguration.Value;
+        }
+
+
+        internal string SmtpClient(string MailSubject, string MailBody, string MailTo,string MailFrom, string MailFromEmail, string MailFromPassword,string SmptServer, int SmptPort)
+        {
+            try
+            {
+                MailMessage message = new MailMessage();
+                message.From = new MailAddress(MailFrom);
+                message.To.Add(new MailAddress(MailTo));
+                message.Subject = MailSubject;
+                message.IsBodyHtml = true;
+                message.Body = "<html><body> " + MailBody + " </body></html>";
+
+
+                var smtpClient = new SmtpClient(SmptServer)
+                {
+                    Port = SmptPort,
+                    Credentials = new NetworkCredential(MailFromEmail, MailFromPassword),
+                    EnableSsl = true,
+                };
+                smtpClient.Send(message);
+
+                return smtpClient.ToString();
+            }
+            catch (Exception e)
+            {
+
+                return e.Message;
+            }
+        }
+
+    }
+
 }

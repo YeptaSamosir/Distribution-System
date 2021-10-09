@@ -2,7 +2,6 @@
     ViewData["Title"] = "Schedule Interview";
     Layout = "_LayoutApp";
 }
- page content
 <div class="right_col" role="main">
     <div class="row">
         <div class="col-12">
@@ -45,124 +44,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="card-box table-responsive">
-                                <button type="button" class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-lg">Add New Interview Schedule</button>
-
-                                <div id="modalCandidate" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-
-                                            <div class="modal-header">
-                                                <h4 class="modal-title" id="myModalLabel">Add New Interview Schedule</h4>
-                                                <button type="button" class="close" data-dismiss="modal">
-                                                    <span aria-hidden="true">×</span>
-                                                </button>
-                                            </div>
-                                            <form id="form-create-schedule-interview" method="post" novalidate>
-                                                <div class="modal-body">
-                                                    <div class="field item form-group">
-                                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Schedule Interview ID<span class="required">*</span></label>
-                                                        <div class="col-md-6 col-sm-6">
-                                                            <input class="form-control" id="inputScheduleInterviewID" data-validate-length-range="15" data-validate-words="2" name="interviewID" required="required" />
-                                                            <div class="invalid-feedback">
-                                                                <span id="messageScheduleInterviewID"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="field item form-group">
-                                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Candidate ID<span class="required">*</span></label>
-                                                        <div class="col-md-6 col-sm-6">
-                                                            <input class="form-control" id="inputCandidateID" data-validate-length-range="15" data-validate-words="2" name="candidateID" required="required" />
-                                                            <div class="invalid-feedback">
-                                                                <span id="messageCandidateID"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="field item form-group">
-                                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Company ID<span class="required">*</span></label>
-                                                        <div class="col-md-6 col-sm-6">
-                                                            <input class="form-control" id="inputCompanyID" data-validate-length-range="15" data-validate-words="2" name="companyID" required="required" />
-                                                            <div class="invalid-feedback">
-                                                                <span id="messageCompanyID"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="field item form-group">
-                                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Status ID<span class="required">*</span></label>
-                                                        <div class="col-md-6 col-sm-6">
-                                                            <input class="form-control" id="statusID" data-validate-length-range="15" data-validate-words="2" name="statusID" required="required" />
-                                                            <div class="invalid-feedback">
-                                                                <span id="messageStatusID"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="field item form-group">
-                                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Customer Name<span class="required">*</span></label>
-                                                        <div class="col-md-6 col-sm-6">
-                                                            <input class="form-control" id="inputCustomerName" data-validate-length-range="15" data-validate-words="2" name="namaCustomer" required="required" />
-                                                            <div class="invalid-feedback">
-                                                                <span id="messageCustomerName"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="field item form-group">
-                                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Job Title<span class="required">*</span></label>
-                                                        <div class="col-md-6 col-sm-6">
-                                                            <input class="form-control" id="inputJobTitle" data-validate-length-range="15" data-validate-words="1" name="jobTitle" required="required" />
-                                                            <div class="invalid-feedback">
-                                                                <span id="messageJobTitle"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="field item form-group">
-                                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Location Interview<span class="required">*</span></label>
-                                                        <div class="col-md-6 col-sm-6">
-                                                            <input class="form-control" id="inputLocationInterview" data-validate-length-range="15" data-validate-words="1" name="locationInterview" required="required" />
-                                                            <div class="invalid-feedback">
-                                                                <span id="messageLocationInterview"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="field item form-group">
-                                                        <label class="col-form-label col-md-3 col-sm-3  label-align">Start Date<span class="required">*</span></label>
-                                                        <div class="col-md-6 col-sm-6">
-                                                            <input id="inputStartDate" class="date-picker form-control" placeholder="dd-mm-yyyy" type="text" required="required" type="text" onfocus="this.type='date'" onmouseover="this.type='date'" onclick="this.type='date'" onblur="this.type='text'" onmouseout="timeFunctionLong(this)">
-                                                            <script>
-                                                                function timeFunctionLong(input) {
-                                                                    setTimeout(function () {
-                                                                        input.type = 'text';
-                                                                    }, 60000);
-                                                                }
-                                                            </script>
-                                                            <div class="invalid-feedback">
-                                                                <span id="messageStartDate"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="field item form-group">
-                                                        <label class="col-form-label col-md-3 col-sm-3  label-align">End Date<span class="required">*</span></label>
-                                                        <div class="col-md-6 col-sm-6">
-                                                            <input id="inputEndDate" class="date-picker form-control" placeholder="dd-mm-yyyy" type="text" required="required" type="text" onfocus="this.type='date'" onmouseover="this.type='date'" onclick="this.type='date'" onblur="this.type='text'" onmouseout="timeFunctionLong(this)">
-                                                            <script>
-                                                                function timeFunctionLong(input) {
-                                                                    setTimeout(function () {
-                                                                        input.type = 'text';
-                                                                    }, 60000);
-                                                                }
-                                                            </script>
-                                                            <div class="invalid-feedback">
-                                                                <span id="messageEndDate"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-success">Daftar Candidate</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
+                                <a type="button" class="btn btn-success" href="~/admin/scheduleinterview/create" >Add New Interview Schedule</a>
 
                                 <table id="datatable-interview-schedule" class="table table-striped table-bordered" style="width:100%">
                                     <thead>

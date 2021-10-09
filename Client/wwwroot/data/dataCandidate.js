@@ -156,6 +156,7 @@ $("#form-create-candidate").submit(function (event) {
     data_input.Name = $("#inputCandidateName").val();
     data_input.Grade = $("#inputGrade").val();
     data_input.Email = $("#inputEmail").val();
+    data_input.Status = 0;
     data_input.UpdatedAt = dateTime;
     data_input.CreatedAt = dateTime;
 

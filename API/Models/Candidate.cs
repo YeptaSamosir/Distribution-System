@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -28,6 +29,9 @@ namespace API.Models
         [EmailAddress]
         public string Email { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
+        public status Status { get; set; }
+
         [Required]
         public DateTime CreatedAt { get; set; }
 
@@ -37,5 +41,13 @@ namespace API.Models
         public virtual ICollection<ScheduleInterview> ScheduleInterviews { get; set; }
         [JsonIgnore]
         public virtual ICollection<Onboard> Onboards { get; set; }
+    }
+
+    public enum status
+    {
+        //[EnumMember(Value = "Idle")]
+        Idle,
+        //[EnumMember(Value = "Onboard")]
+        Onboard
     }
 }

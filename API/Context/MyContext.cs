@@ -20,6 +20,7 @@ namespace API.Context
         public DbSet<Role> Roles { get; set; }
         public DbSet<ScheduleInterview> ScheduleInterviews { get; set; }
         public DbSet<DetailScheduleInterview> DetailScheduleInterviews { get; set; }
+        public DbSet<ScheduleInterviewDateOption> ScheduleInterviewDateOptions { get; set; }
         public DbSet<Status> Statuses { get; set; }
         public DbSet<TypeStatus> TypeStatuses { get; set; }
 
@@ -41,6 +42,8 @@ namespace API.Context
             modelBuilder.Entity<Status>().HasMany(x => x.ScheduleInterviews).WithOne(x => x.Status);
 
             modelBuilder.Entity<ScheduleInterview>().HasMany(x => x.DetailScheduleInterviews).WithOne(x => x.ScheduleInterview);
+
+            modelBuilder.Entity<ScheduleInterview>().HasMany(x => x.ScheduleInterviewDateOptions).WithOne(x => x.ScheduleInterview);
 
             //seed data
             modelBuilder.Entity<Role>().HasData(
@@ -108,8 +111,15 @@ namespace API.Context
 
             modelBuilder.Entity<Status>().HasData(
                 new Status {
-                    StatusId = "ITV-WT",
-                    Name = "Waiting",
+                    StatusId = "ITV-WD",
+                    Name = "Waiting Date",
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
+                },
+                new Status
+                {
+                    StatusId = "ITV-OG",
+                    Name = "On Going",
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now
                 },
@@ -130,7 +140,7 @@ namespace API.Context
                 new Status
                 {
                     StatusId = "ONB-OG",
-                    Name = "Cancel",
+                    Name = "On Going",
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now
                 },

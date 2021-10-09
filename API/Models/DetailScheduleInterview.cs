@@ -30,11 +30,13 @@ namespace API.Models
 
         [JsonConverter(typeof(StringEnumConverter))]
         public typeLocation TypeLocation { get; set; }
+        public enum typeLocation
+        {
+            //[EnumMember(Value = "ONLINE")]
+            Online,
+            //[EnumMember(Value = "OFFLINE")]
+            Offline
+        }
     }
-    public enum typeLocation {
-        //[EnumMember(Value = "ONLINE")]
-        Online,
-        //[EnumMember(Value = "OFFLINE")]
-        Offline 
-    }
+    
 }

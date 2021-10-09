@@ -11,6 +11,19 @@ namespace API.Models
     [Table("tb_tr_schedule_interviews")]
     public class ScheduleInterview
     {
+        public ScheduleInterview(string scheduleInterviewId, int candidateId, int companyId, string customerName, string jobTitle, string location, string statusId, DateTime createdAt, DateTime updatedAt)
+        {
+            ScheduleInterviewId = scheduleInterviewId;
+            CandidateId = candidateId;
+            CompanyId = companyId;
+            CustomerName = customerName;
+            JobTitle = jobTitle;
+            Location = location;
+            StatusId = statusId;
+            CreatedAt = createdAt;
+            UpdatedAt = updatedAt;
+        }
+
         [Key]
         [Required(ErrorMessage = "ID tidak boleh kosong")]
         [StringLength(16, MinimumLength = 1, ErrorMessage = "Role ID harus mengandung 3-64 karakter")]
@@ -54,8 +67,12 @@ namespace API.Models
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+
         [JsonIgnore]
         public virtual ICollection<DetailScheduleInterview> DetailScheduleInterviews { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<ScheduleInterviewDateOption> ScheduleInterviewDateOptions { get; set; }
 
     }
 }
