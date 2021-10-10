@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using API.Models;
 using Client.Repository.Data;
 using Microsoft.AspNetCore.Mvc;
+using API.Models.ViewModels;
 
 namespace Client.Base.Controllers
 {
@@ -20,6 +21,19 @@ namespace Client.Base.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet("create")]
+        public IActionResult CreateSchedule()
+        {
+            return View();
+        }
+
+        [HttpPost("create")]
+        public JsonResult InsertScedule(SceduleInterviewVM sceduleInterviewVM)
+        {
+            var result = repository.InsertSceduleInterview(sceduleInterviewVM);
+            return Json(result);
         }
     }
 }

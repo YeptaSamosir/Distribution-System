@@ -15,7 +15,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="images/favicon.ico" type="image/ico" />
-
+    <meta name="_csrf" content="${_csrf.token}" />
+    <meta name="_csrf_header" content="${_csrf.headerName}" />
     <title> @ViewData["Title"] - Distribution System </title>
 
     <!-- Bootstrap -->
@@ -26,7 +27,9 @@
     <link href="~/assets/vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- iCheck -->
     <link href="~/assets/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-
+    <!--DateTimePicker-->
+    <link href="~/assets/vendors/bootstrap-datetimepicker2/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="~/assets/vendors/bootstrap-datetimepicker2/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <!-- bootstrap-progressbar -->
     <link href="~/assets/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
     <!-- JQVMap -->
@@ -87,10 +90,11 @@
                                     <li class=""><a href="~/admin/candidate"><i class="fa fa-folder"></i> Master Candidate</a></li>
                                     <li>
                                         <a>
-                                            <i class="fa fa-building-o"></i> Customer Manajement <span class="fa fa-chevron-down"></span>
+                                            <i class="fa fa-building-o"></i> Interview Scheduling <span class="fa fa-chevron-down"></span>
                                         </a>
                                         <ul class="nav child_menu">
                                             <li><a href="~/admin/scheduleinterview">Interview Scheduling</a></li>
+                                            <li><a href="~/admin/scheduleinterview/create">Create Scheduling</a></li>
                                             <li><a href="~/admin/company">Company Data</a></li>
                                         </ul>
                                     </li>
@@ -181,6 +185,9 @@
     <script src="~/assets/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
     <!-- iCheck -->
     <script src="~/assets/vendors/iCheck/icheck.min.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="~/assets/vendors/moment/min/moment.min.js"></script>
+    <script src="~/assets/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
     <!-- Skycons -->
     <script src="~/assets/vendors/skycons/skycons.js"></script>
     <!-- Flot -->
@@ -199,9 +206,6 @@
     <script src="~/assets/vendors/jqvmap/dist/jquery.vmap.js"></script>
     <script src="~/assets/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
     <script src="~/assets/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
-    <!-- bootstrap-daterangepicker -->
-    <script src="~/assets/vendors/moment/min/moment.min.js"></script>
-    <script src="~/assets/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 
     <!-- Datatables -->
     <script src="~/assets/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
@@ -220,8 +224,30 @@
     <script src="~/assets/vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="~/assets/vendors/pdfmake/build/vfs_fonts.js"></script>
 
+
     <!-- Custom Theme Scripts -->
     <script src="~/assets/build/js/custom.min.js"></script>
+
+
+
+    @if (ViewData["Title"] == "Create Schedule Interview")
+    {
+        <!-- bootstrap-datetimepicker2 -->
+        <script src="~/assets/vendors/bootstrap-datetimepicker2/js/bootstrap-datetimepicker.min.js"></script>
+        <script src="~/assets/vendors/bootstrap-datetimepicker2/js/bootstrap-datetimepicker.js"></script>
+        <!-- jQuery Tags Input -->
+        <script src="~/assets/vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+
+        <!-- jQuery autocomplete -->
+        <script src="~/assets/vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
+
+        <script src="~/data/dataCreateScheduleInterview.js"></script>
+    }
+
+
+
+
+
     @if (ViewData["Title"] == "Account Role")
     {
         <script src="~/data/dataRole.js"></script>
@@ -253,6 +279,7 @@
     {
         <script src="~/data/dataScheduleInterview.js"></script>
     }
+
 
 </body>
 
