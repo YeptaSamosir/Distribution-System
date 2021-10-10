@@ -46,19 +46,30 @@
                         }
                     },
                     {
+                        render: function (data, type, row, meta) {
+                            scheduleDate = row['startInterview'];
+
+                            if (scheduleDate == null) {
+                                return ``;
+                            } else {
+                                return scheduleDate;
+                            }
+                        },
+                    },
+                    {
+                        data: "company.name",
+                    },
+                    {
                         data: "customerName",
+                    },
+                    {
+                        data: "candidate.name",
                     },
                     {
                         data: "jobTitle",
                     },
                     {
-                        data: "location",
-                    },
-                    {
-                        data: "startInterview",
-                    },
-                    {
-                        data: "endInterview",
+                        data: "status.name",
                     },
                     {
 

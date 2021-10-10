@@ -168,10 +168,13 @@ $("#form-create-shedule").submit(function (event) {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: `${obj.Message}`,
+                    title: `${obj.message}`,
                     showConfirmButton: false,
                     timer: 1500
                 })
+
+                //reset form
+                document.getElementById('form-create-shedule').reset();
             }
         },
         error: function (xhr, status, error) {

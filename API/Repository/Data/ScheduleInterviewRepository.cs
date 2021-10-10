@@ -40,11 +40,12 @@ namespace API.Repository.Data
                 else {
                     companyId = companyInDatabase.CompanyId;
                 }
-                //create scheduleInterviewID example "ITV_CP1CD1"
-                string ScheduleInterviewId = $"ITV_CP{companyId}CD{sceduleInterviewVM.CandidateId}";
+                //create scheduleInterviewID example "ITV-CP1CD1"
+                string ScheduleInterviewId = $"ITV-CP{companyId}CD{sceduleInterviewVM.CandidateId}";
                 //add to Entity ScheduleInterview
                 ScheduleInterview scheduleInterview = new ScheduleInterview(
                     ScheduleInterviewId,
+                    DateTime.MinValue,
                     sceduleInterviewVM.CandidateId,
                     companyId,
                     sceduleInterviewVM.CustomerName,
@@ -126,7 +127,7 @@ namespace API.Repository.Data
                     location = $"Place : {sceduleInterviewVM.Location} <br><br>";
                 }
 
-                string subjectMail = "Interview Schedule";
+                string subjectMail = "Interview Schedule Confirmation";
                 string bodyMail =
                    
                     $"Dear {recipientName}<br><br> " +
@@ -178,6 +179,7 @@ namespace API.Repository.Data
                 var scheduleInterviewData = myContext.ScheduleInterviews.Where(x => x.ScheduleInterviewId == interviewResponseVM.ScheduleInterviewId).FirstOrDefault();
                 scheduleInterviewData.StatusId = "ITV-OG";
                 scheduleInterviewData.StartInterview = dateSceduleFixData.DateInterview;
+                scheduleInterviewData.UpdatedAt = DateTime.Now;
                 Update(scheduleInterviewData);
                 myContext.SaveChanges();
 
@@ -223,9 +225,15 @@ namespace API.Repository.Data
                     myConfiguration.Port
                 );
 
+
                 //send email schedule to customer
-                string linkAccept = $"{myConfiguration.BaseUrlClient}/interview/{scheduleInterviewData.ScheduleInterviewId}/ACCEPTED";
-                string linkCancel = $"{myConfiguration.BaseUrlClient}/interview/{scheduleInterviewData.ScheduleInterviewId}/CANCEL";
+
+                //RSACryptoServiceProvider encrypt email custommer
+                var rsaHelper = new RsaHelper();
+                var Emailencrypted = rsaHelper.Encrypt(detailScheduleInterviewData.EmailCustomer);
+
+                string linkAccept = $"{myConfiguration.BaseUrlClient}/interview/{scheduleInterviewData.ScheduleInterviewId}/ACCEPTED?e={Emailencrypted}";
+                string linkCancel = $"{myConfiguration.BaseUrlClient}/interview/{scheduleInterviewData.ScheduleInterviewId}/CANCELED?e={Emailencrypted}";
 
                 string subjectMail2 = "Invitations to interview";
                 string bodyMail2 =
@@ -262,6 +270,120 @@ namespace API.Repository.Data
 
                 return e.Message;
             }
+        }
+
+        internal string ConfirmationDateAcceptedCandidate(InterviewResponseVM interviewResponseVM)
+        {
+            try
+            {
+                //get data scheduleinterview data
+                var scheduleInterviewData = myContext.ScheduleInterviews.Where(x => x.ScheduleInterviewId == interviewResponseVM.ScheduleInterviewId).FirstOrDefault();
+
+                //check data scheduleinterview
+                if (scheduleInterviewData == null)
+                {
+                    return "404";
+                }
+
+                var detailScheduleInterviewData = myContext.DetailScheduleInterviews.Where(x => x.ScheduleInterviewId == scheduleInterviewData.ScheduleInterviewId).FirstOrDefault();
+                
+                //credential email customer
+                if (detailScheduleInterviewData.EmailCustomer != interviewResponseVM.EmailCustomer) {
+
+                    return "401";
+                }
+
+                //if candidate accepted
+                if (interviewResponseVM.CandidateAccepted == "ACCEPTED")
+                {
+                    //update status schedule to ITV-DN(interview done) candidate accepted 
+                    scheduleInterviewData.StatusId = "ITV-DN";
+                    scheduleInterviewData.UpdatedAt = DateTime.Now;
+                    Update(scheduleInterviewData);
+                    myContext.SaveChanges();
+
+                    //update status candidate
+                    var candidateData = myContext.Candidates.Where(x => x.CandidateId == scheduleInterviewData.CandidateId).FirstOrDefault();
+                    candidateData.Status = status.Waiting;
+                    candidateData.UpdatedAt = DateTime.Now;
+                    myContext.Candidates.Update(candidateData);
+                    myContext.SaveChanges();
+
+                    //send feedback
+                    string subjectMail2 = "[INTERVIEW] Congratulations, you passed the job interview stage!";
+                    string bodyMail2 =
+                        $"Dear {scheduleInterviewData.Candidate.Name}<br><br> " +
+                        $"Thank you for your participation in the job interview process at {scheduleInterviewData.Company.Name}. <br>" +
+                        $"Congratulations, you got the job! <br>" +
+                        $"for the next, wait for information from us for scheduling your work.</b><br><br>" +
+                        $"[Distribution System]";
+
+
+                    MailHelper mailToCustromer = new MailHelper();
+                    mailToCustromer.SmtpClient(
+                        subjectMail2,
+                        bodyMail2,
+                        detailScheduleInterviewData.EmailCandidate,
+                        myConfiguration.From,
+                        myConfiguration.Email,
+                        myConfiguration.Password,
+                        myConfiguration.SmtpServer,
+                        myConfiguration.Port
+                    );
+
+                    return "Success! candidate accepted";
+                }
+
+                //if candidate canceled
+                if (interviewResponseVM.CandidateAccepted == "CANCELED")
+                {
+                    //update status schedule to ITV-CN(interview canceled) candidate canceled
+                    scheduleInterviewData.StatusId = "ITV-CN";
+                    scheduleInterviewData.UpdatedAt = DateTime.Now;
+                    Update(scheduleInterviewData);
+                    myContext.SaveChanges();
+
+                    //update status candidate
+                    var candidateData = myContext.Candidates.Where(x => x.CandidateId == scheduleInterviewData.CandidateId).FirstOrDefault();
+                    candidateData.Status = status.Idle;
+                    candidateData.UpdatedAt = DateTime.Now;
+                    myContext.Candidates.Update(candidateData);
+                    myContext.SaveChanges();
+
+                    //send feedback
+                    string subjectMail2 = "[INTERVIEW] Sorry, you haven't made it yet";
+                    string bodyMail2 =
+                        $"Dear {scheduleInterviewData.Candidate.Name}<br><br> " +
+                        $"Thank you for your participation in the job interview process at {scheduleInterviewData.Company.Name}. <br>" +
+                        $"We would like to inform you are not yet qualified to pass the interview . <br>" +
+                        $"wait for more information from us.</b><br><br>" +
+                        $"[Distribution System]";
+
+
+                    MailHelper mailToCustromer = new MailHelper();
+                    mailToCustromer.SmtpClient(
+                        subjectMail2,
+                        bodyMail2,
+                        detailScheduleInterviewData.EmailCandidate,
+                        myConfiguration.From,
+                        myConfiguration.Email,
+                        myConfiguration.Password,
+                        myConfiguration.SmtpServer,
+                        myConfiguration.Port
+                    );
+
+                    return "Success! candidate canceled";
+                }
+
+                return "404";
+
+            }
+            catch (Exception e)
+            {
+
+                return e.Message;
+            }
+
         }
 
         internal string GetStatusInterview(string scheduleInterviewId)

@@ -41,5 +41,12 @@ namespace Client.Repository.Data
             var response = httpClient.PutAsync(request + "confirmation-date", content).Result.Content.ReadAsStringAsync().Result;
             return response;
         }
+
+        internal object ConfirmationAcceptedCandidate(InterviewResponseVM interviewResponseVM)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(interviewResponseVM), Encoding.UTF8, "application/json");
+            var response = httpClient.PutAsync(request + "confirmation-accepted-candidate", content).Result.Content.ReadAsStringAsync().Result;
+            return response;
+        }
     }
 }

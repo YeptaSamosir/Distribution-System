@@ -1,10 +1,10 @@
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace API.Models
@@ -47,6 +47,8 @@ namespace API.Models
     {
         //[EnumMember(Value = "Idle")]
         Idle,
+        //[EnumMember(Value = "Waiting")]
+        Waiting,
         //[EnumMember(Value = "Onboard")]
         Onboard
     }

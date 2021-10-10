@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace API.Models
@@ -11,9 +11,10 @@ namespace API.Models
     [Table("tb_tr_schedule_interviews")]
     public class ScheduleInterview
     {
-        public ScheduleInterview(string scheduleInterviewId, int candidateId, int companyId, string customerName, string jobTitle, string location, string statusId, DateTime createdAt, DateTime updatedAt)
+        public ScheduleInterview(string scheduleInterviewId, DateTime startInterview, int candidateId, int companyId, string customerName, string jobTitle, string location, string statusId, DateTime createdAt, DateTime updatedAt)
         {
             ScheduleInterviewId = scheduleInterviewId;
+            StartInterview = startInterview;
             CandidateId = candidateId;
             CompanyId = companyId;
             CustomerName = customerName;
@@ -62,7 +63,7 @@ namespace API.Models
         [ForeignKey("Status")]
         [Required(ErrorMessage = "Status ID tidak boleh kosong")]
         public string StatusId { get; set; }
-        [JsonIgnore]
+       /* [JsonIgnore]*/
         public virtual Status Status { get; set; }
 
         public DateTime CreatedAt { get; set; }

@@ -41,9 +41,9 @@ namespace API.Context
             modelBuilder.Entity<Status>().HasMany(x => x.Onboards).WithOne(x => x.Status);
             modelBuilder.Entity<Status>().HasMany(x => x.ScheduleInterviews).WithOne(x => x.Status);
 
-            modelBuilder.Entity<ScheduleInterview>().HasMany(x => x.DetailScheduleInterviews).WithOne(x => x.ScheduleInterview);
+            modelBuilder.Entity<ScheduleInterview>().HasMany(x => x.DetailScheduleInterviews).WithOne(x => x.ScheduleInterview).OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<ScheduleInterview>().HasMany(x => x.ScheduleInterviewDateOptions).WithOne(x => x.ScheduleInterview);
+            modelBuilder.Entity<ScheduleInterview>().HasMany(x => x.ScheduleInterviewDateOptions).WithOne(x => x.ScheduleInterview).OnDelete(DeleteBehavior.Cascade);
 
             //seed data
             modelBuilder.Entity<Role>().HasData(

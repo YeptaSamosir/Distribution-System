@@ -34,7 +34,7 @@ namespace API.Base.Controllers
         }
 
         [HttpPut("confirmation-date")]
-        public ActionResult Update(InterviewResponseVM interviewResponseVM)
+        public ActionResult ConfirmationDate(InterviewResponseVM interviewResponseVM)
         {
             try
             {
@@ -45,6 +45,28 @@ namespace API.Base.Controllers
                 var updateStatusScheduleConfrimDate = scheduleInterviewRepository.ConfirmDateScheduleInterview(interviewResponseVM);
 
                 return Ok(updateStatusScheduleConfrimDate);
+            }
+            catch (System.Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+
+        [HttpPut("confirmation-accepted-candidate")]
+        public ActionResult ConfirmationDateAcceptedCandidate(InterviewResponseVM interviewResponseVM)
+        {
+            try
+            {
+                var checkStatusInterview = scheduleInterviewRepository.GetStatusInterview(interviewResponseVM.ScheduleInterviewId);
+                if (checkStatusInterview == "ITV-DN" || checkStatusInterview == "ITV-CN") {
+                    return Ok("Candidate has been confirmed");
+                }
+                if (checkStatusInterview == "ITV-OG")
+                {
+                    var updateStatusConfirmationDateAcceptedCandidate = scheduleInterviewRepository.ConfirmationDateAcceptedCandidate(interviewResponseVM);
+                    return Ok(updateStatusConfirmationDateAcceptedCandidate);
+                }
+                return NotFound("404");
             }
             catch (System.Exception e)
             {

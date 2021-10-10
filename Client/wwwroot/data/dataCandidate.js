@@ -61,6 +61,9 @@
                         data: "email",
                     },
                     {
+                        data: "status",
+                    },
+                    {
 
                         render: function (data, type, row, meta) {
 

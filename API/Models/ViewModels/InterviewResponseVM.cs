@@ -9,5 +9,7 @@ namespace API.Models.ViewModels
     {
         public string ScheduleInterviewId { get; set; }
         public int ScheduleDateConfirmId { get; set; }
+        public string CandidateAccepted { get; set; }
+        public string EmailCustomer { get; set; }
     }
 }
