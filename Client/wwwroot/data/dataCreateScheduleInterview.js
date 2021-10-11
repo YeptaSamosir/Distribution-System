@@ -101,10 +101,14 @@ $("#form-create-shedule").submit(function (event) {
     data_input.CustomerEmail = $("#inputCustomerEmail").val();
     data_input.CompanyName = $("#inputCompany").val();
     data_input.JobTitle = $("#inputJobTitle").val();
-    data_input.CandidateId = $("#inputCandidate").val();
+    data_input.CandidateId = ($("#inputCandidate").val() == "") ? -1 : $("#inputCandidate").val();
     data_input.CandidateEmail = $("#inputCandidateEmail").val();
     data_input.ScheduleFollowBy = $("#inputScheduleBy").val();
-    data_input.Type = $('input[name="inputType"]:checked').val();
+    if ($('input[name="inputType"]:checked').val() != undefined) {
+        data_input.Type = $('input[name="inputType"]:checked').val();
+    } else {
+        data_input.Type = 2;
+    }
     data_input.Location = $("#inputLocation").val();
     data_input.CreatedAt = dateTime;
     data_input.UpdatedAt = dateTime;
@@ -132,11 +136,12 @@ $("#form-create-shedule").submit(function (event) {
                 checkValidation(obj.errors.CandidateId, "inputCandidate", "messageCandidate");
                 checkValidation(obj.errors.CandidateEmail, "inputCandidateEmail", "messageCandidateEmail");
                 checkValidation(obj.errors.ScheduleFollowBy, "inputScheduleBy", "messageScheduleBy");
-                checkValidation(obj.errors.Type, "inputType", "messageType");
                 checkValidation(obj.errors.Location, "inputLocation", "messageLocation");
-               /* checkValidation(obj.errors.DateTimeOne, "inputDataTimeOne", "messageDataTimeOne");
-                checkValidation(obj.errors.DateTimeTwo, "inputDataTimeTwo", "messageDataTimeTwo");
-                checkValidation(obj.errors.DateTimeThree, "inputDataTimeThree", "messageDataTimeThree");*/
+                if (obj.errors.Type != undefined) {
+                    $('#messageType').html(obj.errors.Type);
+                } else {
+                    $('#messageType').html('');
+                }
             } else {
 
                 //sweet alert message success

@@ -28,6 +28,7 @@ namespace API.Models
         [JsonIgnore]
         public virtual ScheduleInterview ScheduleInterview { get; set; }
 
+        [Required]
         public DateTime DateInterview { get; set; }
 
         public DateTime CreatedAt { get; set; }

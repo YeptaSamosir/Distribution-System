@@ -10,12 +10,13 @@ namespace API.Models.ViewModels
     {
         [Required]
         public string ScheduleInterviewId { get; set; }
+
         [Required]
-        public DateTime DateTimeOne { get; set; }
+        public DateTime? DateTimeOne { get; set; }
         [Required]
-        public DateTime DateTimeTwo { get; set; }
+        public DateTime? DateTimeTwo { get; set; }
         [Required]
-        public DateTime DateTimeThree { get; set; }
+        public DateTime? DateTimeThree { get; set; }
         [Required]
         public string ScheduleFollowBy { get;  set; }
     }
