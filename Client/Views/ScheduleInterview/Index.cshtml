@@ -44,7 +44,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="card-box table-responsive">
-                                <a type="button" class="btn btn-success" href="~/admin/scheduleinterview/create" >Add New Interview Schedule</a>
+                                <a type="button" class="btn btn-success" href="~/admin/scheduleinterview/create">Add New Interview Schedule</a>
 
                                 <table id="datatable-interview-schedule" class="table table-striped table-bordered" style="width:100%">
                                     <thead>
@@ -70,62 +70,55 @@
         </div>
     </div>
 </div>
-<!-- /page content -->
-<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="editLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
+
+
+<div id="modalOnboard" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
+
             <div class="modal-header">
-                <h5 class="modal-title" id="editLabel">Edit Schedule Interview</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <h4 class="modal-title" id="myModalLabel">Create schedule onboard candidate</h4>
+
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <form id="form-edit-schedule-interview" method="post">
+            <form id="form-create-onbaord" method="post">
+                <input id="inputCandidateId" type="hidden" />
+                <input id="inputCompanyId" type="hidden" />
                 <div class="modal-body">
                     <div class="form-group">
-                        <input id="scheduleInterviewID" type="hidden" value="">
-                        <input id="candidateID" type="hidden" value="">
-                        <input id="companyID" type="hidden" value="">
-                        <input id="statusID" type="hidden" value="">
-
-                        <label for="customerName">Customer Name</label>
-                        <input id="customerName" type="text" class="form-control" value="">
-                        <div class="invalid-feedback">
-                            <span id="messageCustomerName"></span>
-                        </div>
-
-                        <label for="jobTitle">Job Title</label>
-                        <input id="jobTitle" type="text" class="form-control" value="">
-                        <div class="invalid-feedback">
-                            <span id="messageJobTitle"></span>
-                        </div>
-
-                        <label for="locationInterview">Location Interview</label>
-                        <input id="locationInterview" type="text" class="form-control" value="">
-                        <div class="invalid-feedback">
-                            <span id="messageLocationInterview"></span>
-                        </div>
-
-                        <label for="startDate">Start Date</label>
-                        <input id="startDate" class="date-picker form-control" placeholder="dd-mm-yyyy" type="text" required="required" type="text" onfocus="this.type='date'" onmouseover="this.type='date'" onclick="this.type='date'" onblur="this.type='text'" onmouseout="timeFunctionLong(this)">
-                        <div class="invalid-feedback">
-                            <span id="messageLocationInterview"></span>
-                        </div>
-
-                        <label for="endDate">End Date</label>
-                        <input id="endDate" class="date-picker form-control" placeholder="dd-mm-yyyy" type="text" required="required" type="text" onfocus="this.type='date'" onmouseover="this.type='date'" onclick="this.type='date'" onblur="this.type='text'" onmouseout="timeFunctionLong(this)">
-                        <div class="invalid-feedback">
-                            <span id="messageLocationInterview"></span>
-                        </div>
-
+                        <label for="candidateName">Candidate name</label>
+                        <span id="candidateName" type="text" class="form-control"></span>
                     </div>
+                    <div class="form-group">
+                        <label for="candidateEmail">Candidate email</label>
+                        <span id="candidateEmail" type="text" class="form-control"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="companyName">Company name</label>
+                        <span id="companyName" type="text" class="form-control"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="jobTitle">Job title</label>
+                        <span id="jobTitle" type="text" class="form-control"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputOnboardate">Onboard Date</label>
+                        <input id="inputOnboardate" type="text" name="daterange" class="form-control">
+                        <div class="invalid-feedback">
+                            <span id="messageDateStart"></span>
+                        </div>
+                    </div>
+                    <input id="dateStart" type="hidden" />
+                    <input id="dateEnd" type="hidden" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success">Update</button>
+                    <button type="submit" class="btn btn-success">Create</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+<!-- /page content -->

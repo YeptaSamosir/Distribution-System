@@ -22,7 +22,7 @@ namespace API.Repository.Data
             this.myConfiguration = myConfiguration.Value;
         }
 
-        internal int CreateInterview(CreateInterviewVM createInterviewVM)
+        internal string CreateInterview(CreateInterviewVM createInterviewVM)
         {
             try
             {
@@ -42,6 +42,13 @@ namespace API.Repository.Data
                 }
                 //create scheduleInterviewID example "ITV-CP1CD1"
                 string ScheduleInterviewId = $"ITV-CP{companyId}CD{createInterviewVM.CandidateId}";
+
+                //validation data
+                var resultData = myContext.ScheduleInterviews.Find(ScheduleInterviewId);
+                if (resultData != null) {
+                    return "Data already exists";
+                }
+
                 //add to Entity ScheduleInterview
                 ScheduleInterview scheduleInterview = new ScheduleInterview(
                     ScheduleInterviewId,
@@ -115,7 +122,7 @@ namespace API.Repository.Data
                     myConfiguration.SmtpServer,
                     myConfiguration.Port
                 );
-                return 1;
+                return "Success Create Schedule";
             }
             catch (Exception)
             {

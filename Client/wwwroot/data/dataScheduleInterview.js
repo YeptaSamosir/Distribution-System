@@ -74,17 +74,26 @@
                     {
 
                         render: function (data, type, row, meta) {
-
-                            return `
+                            if (row["statusId"] == "ITV-DN") {
+                                return `
                                 <div class="float-right">
-                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalEdit"  onclick="editModalScheduleInterview('${row["scheduleInterviewId"]}')">
-                                        Edit
+                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalOnboard"  onclick="modalOnboard('${row["scheduleInterviewId"]}')">
+                                        Create Schedule Onboard
                                     </button>
                                     <button type="button" class="btn btn-danger btn-sm"  onclick="deleteModalScheduleInterview('${row["scheduleInterviewId"]}')">
                                         Delete
                                     </button>
                                 </div>
                                 `;
+                            } else {
+                                return `
+                                <div class="float-right">
+                                    <button type="button" class="btn btn-danger btn-sm"  onclick="deleteModalScheduleInterview('${row["scheduleInterviewId"]}')">
+                                        Delete
+                                    </button>
+                                </div>
+                                `;
+                            }
                         },
                     },
                 ],
@@ -152,165 +161,53 @@ function checkValidation(errorMsg, elementById, elementMsg) {
     }
 }
 
-//create data
-$("#form-create-schedule-interview").submit(function (event) {
-
-    /* stop form from submitting normally */
-    event.preventDefault();
-    //get datetime
-    let current = new Date();
-    let cDate = current.getFullYear() + '-' + (current.getMonth() + 1) + '-' + current.getDate();
-    let cTime = current.getHours() + ":" + current.getMinutes() + ":" + current.getSeconds();
-    let dateTime = cDate + ' ' + cTime;
-
-    var data_input = new Object();
-    data_input.ScheduleInterviewId = $("#inputScheduleInterviewID").val();
-    data_input.CandidateId = $("#inputCandidateID").val();
-    data_input.CompanyId = $("#inputCompanyID").val();
-    data_input.StatusId = $("#statusID").val();
-    data_input.CustomerName = $("#inputCustomerName").val();
-    data_input.JobTitle = $("#inputJobTitle").val();
-    data_input.Location = $("#inputLocationInterview").val();
-    data_input.StartInterview = $("#inputStartDate").val();
-    data_input.EndInterview = $("#inputEndDate").val();
-    data_input.UpdatedAt = dateTime;
-    data_input.CreatedAt = dateTime;
-
-    console.log(data_input);
-
-    $.ajax({
-        url: '/admin/scheduleinterview/post',
-        method: 'POST',
-        dataType: 'json',
-        contentType: 'application/x-www-form-urlencoded',
-        data: data_input,
-        success: function (response) {
-            console.log(response);
-            var obj = JSON.parse(response);
-
-            console.log(obj);
-            if (obj.errors != undefined) {
-                checkValidation(obj.errors.ScheduleInterviewId, "inputScheduleInterviewID", "messageScheduleInterviewID");
-                checkValidation(obj.errors.CandidateId, "inputCandidateID", "messageScheduleInterviewID");
-                checkValidation(obj.errors.CompanyId, "inputCompanyID", "messageScheduleInterviewID");
-                checkValidation(obj.errors.StatusId, "inputStatusID", "messageStatusID");
-                checkValidation(obj.errors.CustomerName, "inputCustomerName", "messageCustomerName");
-                checkValidation(obj.errors.JobTitle, "inputJobTitle", "messageJobTitle");
-                checkValidation(obj.errors.Location, "inputLocationInterview", "messageLocationInterview");
-                checkValidation(obj.errors.StartInterview, "inputStartDate", "messageStartDate");
-                checkValidation(obj.errors.EndInterview, "inputEndDate", "messageEndDate");
-
-            } else {
-                $('#modalCandidate').modal('hide');
-
-
-
-                //sweet alert message success
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: `${response}`,
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-
-                //reload only datatable
-                $('#datatable-candidate').DataTable().ajax.reload();
-            }
-
-
-        },
-        error: function (xhr, status, error) {
-            var err = eval(xhr.responseJSON);
-
-        }
-    })
+$('#inputOnboardate').daterangepicker({
+    opens: 'left'
+}, function (start, end, label) {
+    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+    $('#dateStart').val(`${start.format('YYYY-MM-DD')}`);
+    $('#dateEnd').val(`${end.format('YYYY-MM-DD')}`);
 });
 
-//Edit
-editModalScheduleInterview = (id) => {
+//modal onboard
+modalOnboard = (id) => {
     $.ajax({
         url: `/admin/scheduleinterview/get/${id}`,
     }).done((result) => {
-        console.log(result);
+        //console.log(result);
+        document.getElementById('form-create-onbaord').reset();
 
         //set value
-        $('#scheduleInterviewID').val(`${result.scheduleInterviewId}`);
-        $('#candidateID').val(`${result.candidateId}`);
-        $('#companyID').val(`${result.companyId}`);
-        $('#statusID').val(`${result.statusId}`);
-        $('#customerName').val(`${result.customerName}`);
-        $('#jobTitle').val(`${result.jobTitle}`);
-        $('#locationInterview').val(`${result.location}`);
-        $('#startDate').val(`${result.startInterview}`);
-        $('#endDate').val(`${result.endInterview}`);
-        
+        $('#inputCandidateId').val(`${result.candidateId}`);
+        $('#inputCompanyId').val(`${result.companyId}`);
+        $('#candidateName').html(`${result.candidate.name}`);
+        $('#candidateEmail').html(`${result.candidate.email}`);
+        $('#companyName').html(`${result.company.name}`);
+        $('#jobTitle').html(`${result.jobTitle}`);
 
     }).fail((result) => {
         console.log(result);
     });
+
+
 }
 
-//update
-$("#form-edit-schedule-interview").submit(function (event) {
+//create onboard
+$("#form-create-onbaord").submit(function (event) {
 
 
     /* stop form from submitting normally */
     event.preventDefault();
-    //get datetime
-    let current = new Date();
-    let cDate = current.getFullYear() + '-' + (current.getMonth() + 1) + '-' + current.getDate();
-    let cTime = current.getHours() + ":" + current.getMinutes() + ":" + current.getSeconds();
-    let dateTime = cDate + ' ' + cTime;
 
-    var data_input = {
-        "ScheduleInterviewId": $("#scheduleInterviewID").val(),
-        "CandidateId": $("#candidateID").val(),
-        "CompanyId": $("#companyID").val(),
-        "StatusId": $("#statusID").val(),
-        "CustomerName": $("#customerName").val(),
-        "JobTitle": $("#jobTitle").val(),
-        "Location": $("#locationInterview").val(),
-        "StartInterview": $("#startDate").val(),
-        "EndInterview": $("#endDate").val(),
-        "UpdatedAt": dateTime
-    }
+    var dataInput = new Object();
+    dataInput.CandidateId = $("#inputCandidateId").val();
+    dataInput.CompanyId = $("#inputCompanyId").val();
+    dataInput.DateStart = $("#dateStart").val();
+    dataInput.DateEnd = $("#dateEnd").val();
 
-    console.log(JSON.stringify(data_input));
+   
+    console.log(dataInput);
 
-    $.ajax({
-        url: `/admin/scheduleinterview/update`,
-        method: 'PUT',
-        dataType: 'json',
-        contentType: 'application/x-www-form-urlencoded',
-        data: data_input,
-        success: function (response) {
-
-            console.log(response);
-
-            //idmodal di hide
-            $('#modalEdit').hide();
-            $('.modal-backdrop').remove();
-
-
-            //sweet alert message success
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: `${response}`,
-                showConfirmButton: false,
-                timer: 1500
-            })
-
-            //reload only datatable
-            $('#datatable-candidate').DataTable().ajax.reload();
-
-
-        },
-        error: function (xhr, status, error) {
-            var err = eval(xhr.responseJSON);
-        }
-    });
 });
 
 //delete 
@@ -319,8 +216,8 @@ deleteModalScheduleInterview = (id) => {
     console.log(id);
 
     Swal.fire({
-        title: 'Hapus Data',
-        text: `Anda akan menghapus data !`,
+        title: 'Are you sure?',
+        text: `You won't be able to revert this!`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -338,7 +235,7 @@ deleteModalScheduleInterview = (id) => {
 
                     Swal.fire(
                         'Deleted!',
-                        'Data berhasil dihapus.',
+                        'Your file has been deleted.',
                         'success'
                     )
 

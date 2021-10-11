@@ -147,10 +147,10 @@ $("#form-create-shedule").submit(function (event) {
                 //sweet alert message success
                 Swal.fire({
                     position: 'center',
-                    icon: 'success',
+                   /* icon: 'success',*/
                     title: `${obj.message}`,
-                    showConfirmButton: false,
-                    timer: 1500
+                    showConfirmButton: true,
+                   /* timer: 1500*/
                 })
 
                 //reset form

@@ -24,8 +24,8 @@ namespace API.Base.Controllers
         {
             try
             {
-                scheduleInterviewRepository.CreateInterview(createInterviewVM);
-                return Ok(new { Message = "Success Create Schedule" });
+               var response = scheduleInterviewRepository.CreateInterview(createInterviewVM);
+                return Ok(new { Message = response });
             }
             catch (Exception e)
             {
