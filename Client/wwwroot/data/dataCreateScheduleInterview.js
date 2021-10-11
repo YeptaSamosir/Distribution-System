@@ -1,26 +1,4 @@
-﻿$('#myDatepicker1').datetimepicker({
-    format: 'yyyy-mm-dd hh:ii:ss',
-    autoclose: true,
-    todayBtn: true,
-    minuteStep: 10
-});
-
-$('#myDatepicker2').datetimepicker({
-    format: 'yyyy-mm-dd hh:ii:ss',
-    autoclose: true,
-    todayBtn: true,
-    minuteStep: 10
-});
-
-$('#myDatepicker3').datetimepicker({
-    format: 'yyyy-mm-dd hh:ii:ss',
-    autoclose: true,
-    todayBtn: true,
-    minuteStep: 10
-});
-
-
-//form for candidate
+﻿//form for candidate
 $.ajax({
     url: "/admin/candidate/get",
     dataType: "json",
@@ -130,9 +108,6 @@ $("#form-create-shedule").submit(function (event) {
     data_input.Location = $("#inputLocation").val();
     data_input.CreatedAt = dateTime;
     data_input.UpdatedAt = dateTime;
-    data_input.DateTimeOne = $("#inputDataTimeOne").val();
-    data_input.DateTimeTwo = $("#inputDataTimeTwo").val();
-    data_input.DateTimeThree = $("#inputDataTimeThree").val();
 
   
 
@@ -159,9 +134,9 @@ $("#form-create-shedule").submit(function (event) {
                 checkValidation(obj.errors.ScheduleFollowBy, "inputScheduleBy", "messageScheduleBy");
                 checkValidation(obj.errors.Type, "inputType", "messageType");
                 checkValidation(obj.errors.Location, "inputLocation", "messageLocation");
-                checkValidation(obj.errors.DateTimeOne, "inputDataTimeOne", "messageDataTimeOne");
+               /* checkValidation(obj.errors.DateTimeOne, "inputDataTimeOne", "messageDataTimeOne");
                 checkValidation(obj.errors.DateTimeTwo, "inputDataTimeTwo", "messageDataTimeTwo");
-                checkValidation(obj.errors.DateTimeThree, "inputDataTimeThree", "messageDataTimeThree");
+                checkValidation(obj.errors.DateTimeThree, "inputDataTimeThree", "messageDataTimeThree");*/
             } else {
 
                 //sweet alert message success

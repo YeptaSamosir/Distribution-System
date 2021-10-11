@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace API.Models.ViewModels
 {
-    public class SceduleInterviewVM
+    public class CreateInterviewVM
     {
         [Required]
         public int CandidateId { get; set; }
@@ -26,12 +26,12 @@ namespace API.Models.ViewModels
         public int Type { get; set; }
         [Required]
         public string ScheduleFollowBy { get; set; }
-        [Required]
+      /*  [Required]
         public DateTime DateTimeOne { get; set; }
         [Required]
         public DateTime DateTimeTwo { get; set; }
         [Required]
-        public DateTime DateTimeThree { get; set; }
+        public DateTime DateTimeThree { get; set; }*/
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

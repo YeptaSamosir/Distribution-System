@@ -69,10 +69,10 @@ namespace API.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        [JsonIgnore]
+        /*[JsonIgnore]*/
         public virtual ICollection<DetailScheduleInterview> DetailScheduleInterviews { get; set; }
 
-        [JsonIgnore]
+        /*[JsonIgnore]*/
         public virtual ICollection<ScheduleInterviewDateOption> ScheduleInterviewDateOptions { get; set; }
 
     }
