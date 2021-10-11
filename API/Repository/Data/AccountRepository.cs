@@ -175,53 +175,36 @@ namespace API.Repository.Data
                 //RSACryptoServiceProvider encrypt 
                 var rsaHelper = new RsaHelper();
                 var encrypted = rsaHelper.Encrypt(emailCheck.Email);
-
                 var linkReset = myConfiguration.BaseUrlClient + "reset?p=" + encrypted;
 
-                //generate ResetPassword
-                /*string resetPassword = Helper.Helper.GetRandomAlphanumericString(5);*/
-
-                string stringHtmlMessageBody = 
+              
+                string subjectMail = "Reset your account password from Distribution System";
+                string bodyMail = 
                     $"Dear {emailCheck.Name} <br><br> " +
                     $"We have received your request to reset your password. " +
                     $"Please click the link below to complete the reset: <br>" +
                     $"<a href={linkReset}>Reset My Password </a> <br><br>" +
                     $"If you need additional assistance, or you did not make this change, please contact admin <br><br>" +
                     $"[Distribution System]";
-                                
-                /*// update database
-                var checkEmail = myContext.Accounts.SingleOrDefault(x => x.Email.Equals(emailCheck.Email));
-                checkEmail.Password = Hashing.HashPassword(resetPassword);
-                Update(checkEmail);*/
 
-                Email(stringHtmlMessageBody, forgetPassword.Email, myConfiguration.Email, myConfiguration.Password);
+
+                MailHelper mailHelper = new MailHelper();
+                mailHelper.SmtpClient(
+                    subjectMail, 
+                    bodyMail, 
+                    forgetPassword.Email, 
+                    myConfiguration.From,
+                    myConfiguration.Email,
+                    myConfiguration.Password,
+                    myConfiguration.SmtpServer,
+                    myConfiguration.Port
+                );
 
                 return true;
             }
             return false;
         }
 
-        internal void Email(string stringHtmlMessageBody, string destinationEmail, string fromMail, string fromPassword)
-        {
-
-            MailMessage message = new MailMessage();
-            message.From = new MailAddress(fromMail);
-            message.To.Add(new MailAddress(destinationEmail));
-            message.Subject = "Reset your account password from Distribution System";
-            message.IsBodyHtml = true;
-            message.Body = "<html><body> " + stringHtmlMessageBody + " </body></html>";
-
-
-            var smtpClient = new SmtpClient(myConfiguration.SmtpServer)
-            {
-                Port = myConfiguration.Port,
-                Credentials = new NetworkCredential(fromMail, fromPassword),
-                EnableSsl = true,
-            };
-
-            smtpClient.Send(message);
-
-        }
         internal int ResetPasswordAccount(ResetPasswordVM resetPasswordVM)
         {
             try

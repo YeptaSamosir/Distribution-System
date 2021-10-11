@@ -61,15 +61,7 @@
                         data: "email",
                     },
                     {
-                        render: function (data, type, row, meta) {
-                            var b = '';
-
-                            $.each(row['onboards'], function (key, val) {
-                                b += `<span class="m-1 p-2 badge badge-info">${val.statusId}</span>`;
-                            });
-
-                            return b;
-                        },
+                        data: "status",
                     },
                     {
 
@@ -167,6 +159,7 @@ $("#form-create-candidate").submit(function (event) {
     data_input.Name = $("#inputCandidateName").val();
     data_input.Grade = $("#inputGrade").val();
     data_input.Email = $("#inputEmail").val();
+    data_input.Status = 0;
     data_input.UpdatedAt = dateTime;
     data_input.CreatedAt = dateTime;
 

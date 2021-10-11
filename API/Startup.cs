@@ -45,6 +45,7 @@ namespace API
             services.AddScoped<OnboardRepository>();
             services.AddScoped<RoleRepository>();
             services.AddScoped<ScheduleInterviewRepository>();
+            services.AddScoped<ScheduleInterviewDateOptionRepository>();
             services.AddScoped<StatusRepository>();
             services.AddScoped<TypeStatusRepository>();
 

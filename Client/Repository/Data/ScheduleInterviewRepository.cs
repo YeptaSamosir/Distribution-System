@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using Client.Config;
 using API.Models;
 using Microsoft.Extensions.Options;
+using API.Models.ViewModels;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace Client.Repository.Data
 {
@@ -18,6 +21,32 @@ namespace Client.Repository.Data
         public ScheduleInterviewRepository(IOptions<MyConfiguration> myConfiguration, string request = "ScheduleInterview/") : base( request, myConfiguration )
         {
             this.request = request;
+            this.myConfiguration = myConfiguration.Value;
+            httpClient = new HttpClient
+            {
+                BaseAddress = new Uri(this.myConfiguration.BaseUrlApis)
+            };
+        }
+
+        public string InsertSceduleInterview(SceduleInterviewVM sceduleInterviewVM)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(sceduleInterviewVM), Encoding.UTF8, "application/json");
+            var response = httpClient.PostAsync(request + "create", content).Result.Content.ReadAsStringAsync().Result;
+            return response;
+        }
+
+        public string ConfirmationDate(InterviewResponseVM interviewResponseVM)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(interviewResponseVM), Encoding.UTF8, "application/json");
+            var response = httpClient.PutAsync(request + "confirmation-date", content).Result.Content.ReadAsStringAsync().Result;
+            return response;
+        }
+
+        internal object ConfirmationAcceptedCandidate(InterviewResponseVM interviewResponseVM)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(interviewResponseVM), Encoding.UTF8, "application/json");
+            var response = httpClient.PutAsync(request + "confirmation-accepted-candidate", content).Result.Content.ReadAsStringAsync().Result;
+            return response;
         }
     }
 }
