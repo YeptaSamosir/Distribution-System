@@ -61,6 +61,17 @@
                         data: "email",
                     },
                     {
+                        render: function (data, type, row, meta) {
+                            var b = '';
+
+                            $.each(row['onboards'], function (key, val) {
+                                b += `<span class="m-1 p-2 badge badge-info">${val.statusId}</span>`;
+                            });
+
+                            return b;
+                        },
+                    },
+                    {
 
                         render: function (data, type, row, meta) {
 

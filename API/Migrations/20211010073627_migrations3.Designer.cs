@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20211007161716_SeedInitialData")]
-    partial class SeedInitialData
+    [Migration("20211010073627_migrations3")]
+    partial class migrations3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -68,12 +68,12 @@ namespace API.Migrations
                         {
                             AccountId = 1,
                             AttemptCount = 0,
-                            CreatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 760, DateTimeKind.Local).AddTicks(4312),
+                            CreatedAt = new DateTime(2021, 10, 10, 14, 36, 26, 239, DateTimeKind.Local).AddTicks(8422),
                             Email = "admin@mail.com",
                             IsActive = true,
                             Name = "Super Administrator",
-                            Password = "$2b$12$clsbfSGoIQc9iGyClefiT.wC8taXQBZ4JqlS46vAHACLTbF6/rBd6",
-                            UpdatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 760, DateTimeKind.Local).AddTicks(4687),
+                            Password = "$2b$12$zSGRoszXExgF5O6Y652k2uHi1ZkgUBHWwnS.0RlzLzdaqPeQogTla",
+                            UpdatedAt = new DateTime(2021, 10, 10, 14, 36, 26, 239, DateTimeKind.Local).AddTicks(9226),
                             Username = "Admin"
                         });
                 });
@@ -103,15 +103,15 @@ namespace API.Migrations
                         {
                             AccountId = 1,
                             RoleId = "SP-ADM",
-                            CreatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 760, DateTimeKind.Local).AddTicks(6496),
-                            UpdatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 760, DateTimeKind.Local).AddTicks(6801)
+                            CreatedAt = new DateTime(2021, 10, 10, 14, 36, 26, 240, DateTimeKind.Local).AddTicks(2854),
+                            UpdatedAt = new DateTime(2021, 10, 10, 14, 36, 26, 240, DateTimeKind.Local).AddTicks(3563)
                         },
                         new
                         {
                             AccountId = 1,
                             RoleId = "ADM",
-                            CreatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 760, DateTimeKind.Local).AddTicks(7090),
-                            UpdatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 760, DateTimeKind.Local).AddTicks(7095)
+                            CreatedAt = new DateTime(2021, 10, 10, 14, 36, 26, 240, DateTimeKind.Local).AddTicks(4245),
+                            UpdatedAt = new DateTime(2021, 10, 10, 14, 36, 26, 240, DateTimeKind.Local).AddTicks(4255)
                         });
                 });
 
@@ -132,8 +132,8 @@ namespace API.Migrations
 
                     b.Property<string>("Grade")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -269,16 +269,16 @@ namespace API.Migrations
                         new
                         {
                             RoleId = "SP-ADM",
-                            CreatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 411, DateTimeKind.Local).AddTicks(1205),
+                            CreatedAt = new DateTime(2021, 10, 10, 14, 36, 25, 611, DateTimeKind.Local).AddTicks(5902),
                             Name = "Super Administrator",
-                            UpdatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 412, DateTimeKind.Local).AddTicks(357)
+                            UpdatedAt = new DateTime(2021, 10, 10, 14, 36, 25, 612, DateTimeKind.Local).AddTicks(6534)
                         },
                         new
                         {
                             RoleId = "ADM",
-                            CreatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 412, DateTimeKind.Local).AddTicks(739),
+                            CreatedAt = new DateTime(2021, 10, 10, 14, 36, 25, 612, DateTimeKind.Local).AddTicks(7139),
                             Name = "Administrator",
-                            UpdatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 412, DateTimeKind.Local).AddTicks(744)
+                            UpdatedAt = new DateTime(2021, 10, 10, 14, 36, 25, 612, DateTimeKind.Local).AddTicks(7146)
                         });
                 });
 
@@ -298,6 +298,7 @@ namespace API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CustomerName")
+                        .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
@@ -305,16 +306,19 @@ namespace API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("JobTitle")
+                        .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("Location")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartInterview")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("StatusId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(16)");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -360,37 +364,37 @@ namespace API.Migrations
                         new
                         {
                             StatusId = "ITV-WT",
-                            CreatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 760, DateTimeKind.Local).AddTicks(9760),
+                            CreatedAt = new DateTime(2021, 10, 10, 14, 36, 26, 241, DateTimeKind.Local).AddTicks(750),
                             Name = "Waiting",
-                            UpdatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 761, DateTimeKind.Local).AddTicks(50)
+                            UpdatedAt = new DateTime(2021, 10, 10, 14, 36, 26, 241, DateTimeKind.Local).AddTicks(1393)
                         },
                         new
                         {
                             StatusId = "ITV-DN",
-                            CreatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 761, DateTimeKind.Local).AddTicks(424),
+                            CreatedAt = new DateTime(2021, 10, 10, 14, 36, 26, 241, DateTimeKind.Local).AddTicks(2158),
                             Name = "Done",
-                            UpdatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 761, DateTimeKind.Local).AddTicks(429)
+                            UpdatedAt = new DateTime(2021, 10, 10, 14, 36, 26, 241, DateTimeKind.Local).AddTicks(2167)
                         },
                         new
                         {
                             StatusId = "ITV-CN",
-                            CreatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 761, DateTimeKind.Local).AddTicks(431),
+                            CreatedAt = new DateTime(2021, 10, 10, 14, 36, 26, 241, DateTimeKind.Local).AddTicks(2171),
                             Name = "Cancel",
-                            UpdatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 761, DateTimeKind.Local).AddTicks(432)
+                            UpdatedAt = new DateTime(2021, 10, 10, 14, 36, 26, 241, DateTimeKind.Local).AddTicks(2174)
                         },
                         new
                         {
                             StatusId = "ONB-OG",
-                            CreatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 761, DateTimeKind.Local).AddTicks(434),
+                            CreatedAt = new DateTime(2021, 10, 10, 14, 36, 26, 241, DateTimeKind.Local).AddTicks(2177),
                             Name = "Cancel",
-                            UpdatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 761, DateTimeKind.Local).AddTicks(435)
+                            UpdatedAt = new DateTime(2021, 10, 10, 14, 36, 26, 241, DateTimeKind.Local).AddTicks(2179)
                         },
                         new
                         {
                             StatusId = "ONB-DN",
-                            CreatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 761, DateTimeKind.Local).AddTicks(437),
+                            CreatedAt = new DateTime(2021, 10, 10, 14, 36, 26, 241, DateTimeKind.Local).AddTicks(2182),
                             Name = "Done",
-                            UpdatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 761, DateTimeKind.Local).AddTicks(438)
+                            UpdatedAt = new DateTime(2021, 10, 10, 14, 36, 26, 241, DateTimeKind.Local).AddTicks(2184)
                         });
                 });
 
@@ -418,16 +422,16 @@ namespace API.Migrations
                         new
                         {
                             TypeStatusId = "ITV",
-                            CreatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 760, DateTimeKind.Local).AddTicks(8145),
+                            CreatedAt = new DateTime(2021, 10, 10, 14, 36, 26, 240, DateTimeKind.Local).AddTicks(6844),
                             Name = "Schedule Interview",
-                            UpdatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 760, DateTimeKind.Local).AddTicks(8439)
+                            UpdatedAt = new DateTime(2021, 10, 10, 14, 36, 26, 240, DateTimeKind.Local).AddTicks(7512)
                         },
                         new
                         {
                             TypeStatusId = "ONB",
-                            CreatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 760, DateTimeKind.Local).AddTicks(8722),
+                            CreatedAt = new DateTime(2021, 10, 10, 14, 36, 26, 240, DateTimeKind.Local).AddTicks(8358),
                             Name = "Onboard Candidate",
-                            UpdatedAt = new DateTime(2021, 10, 7, 23, 17, 15, 760, DateTimeKind.Local).AddTicks(8726)
+                            UpdatedAt = new DateTime(2021, 10, 10, 14, 36, 26, 240, DateTimeKind.Local).AddTicks(8367)
                         });
                 });
 
@@ -500,7 +504,9 @@ namespace API.Migrations
 
                     b.HasOne("API.Models.Status", "Status")
                         .WithMany("ScheduleInterviews")
-                        .HasForeignKey("StatusId");
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Candidate");
 
