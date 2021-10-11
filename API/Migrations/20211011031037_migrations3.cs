@@ -7,6 +7,15 @@ namespace API.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_tb_m_detail_schedule_interviews_tb_tr_schedule_interviews_ScheduleInterviewId",
+                table: "tb_m_detail_schedule_interviews");
+
+            migrationBuilder.DeleteData(
+                table: "tb_m_statuses",
+                keyColumn: "StatusId",
+                keyValue: "ITV-WT");
+
             migrationBuilder.AlterColumn<string>(
                 name: "Grade",
                 table: "tb_m_candidates",
@@ -17,93 +26,158 @@ namespace API.Migrations
                 oldType: "nvarchar(64)",
                 oldMaxLength: 64);
 
+            migrationBuilder.AddColumn<int>(
+                name: "Status",
+                table: "tb_m_candidates",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.CreateTable(
+                name: "tb_tr_schedule_interview_date_options",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ScheduleInterviewId = table.Column<string>(type: "nvarchar(16)", nullable: true),
+                    DateInterview = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tb_tr_schedule_interview_date_options", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_tb_tr_schedule_interview_date_options_tb_tr_schedule_interviews_ScheduleInterviewId",
+                        column: x => x.ScheduleInterviewId,
+                        principalTable: "tb_tr_schedule_interviews",
+                        principalColumn: "ScheduleInterviewId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.UpdateData(
                 table: "tb_m_account_roles",
                 keyColumns: new[] { "AccountId", "RoleId" },
                 keyValues: new object[] { 1, "ADM" },
                 columns: new[] { "CreatedAt", "UpdatedAt" },
-                values: new object[] { new DateTime(2021, 10, 10, 14, 36, 26, 240, DateTimeKind.Local).AddTicks(4245), new DateTime(2021, 10, 10, 14, 36, 26, 240, DateTimeKind.Local).AddTicks(4255) });
+                values: new object[] { new DateTime(2021, 10, 11, 10, 10, 35, 398, DateTimeKind.Local).AddTicks(119), new DateTime(2021, 10, 11, 10, 10, 35, 398, DateTimeKind.Local).AddTicks(132) });
 
             migrationBuilder.UpdateData(
                 table: "tb_m_account_roles",
                 keyColumns: new[] { "AccountId", "RoleId" },
                 keyValues: new object[] { 1, "SP-ADM" },
                 columns: new[] { "CreatedAt", "UpdatedAt" },
-                values: new object[] { new DateTime(2021, 10, 10, 14, 36, 26, 240, DateTimeKind.Local).AddTicks(2854), new DateTime(2021, 10, 10, 14, 36, 26, 240, DateTimeKind.Local).AddTicks(3563) });
+                values: new object[] { new DateTime(2021, 10, 11, 10, 10, 35, 397, DateTimeKind.Local).AddTicks(8729), new DateTime(2021, 10, 11, 10, 10, 35, 397, DateTimeKind.Local).AddTicks(9397) });
 
             migrationBuilder.UpdateData(
                 table: "tb_m_accounts",
                 keyColumn: "AccountId",
                 keyValue: 1,
                 columns: new[] { "CreatedAt", "Password", "UpdatedAt" },
-                values: new object[] { new DateTime(2021, 10, 10, 14, 36, 26, 239, DateTimeKind.Local).AddTicks(8422), "$2b$12$zSGRoszXExgF5O6Y652k2uHi1ZkgUBHWwnS.0RlzLzdaqPeQogTla", new DateTime(2021, 10, 10, 14, 36, 26, 239, DateTimeKind.Local).AddTicks(9226) });
+                values: new object[] { new DateTime(2021, 10, 11, 10, 10, 35, 397, DateTimeKind.Local).AddTicks(4712), "$2b$12$D3dsiA8u2R82jsvuF.VSFemUN7446AvZZMOh5YqXVezo88Ms/cxFG", new DateTime(2021, 10, 11, 10, 10, 35, 397, DateTimeKind.Local).AddTicks(5363) });
 
             migrationBuilder.UpdateData(
                 table: "tb_m_roles",
                 keyColumn: "RoleId",
                 keyValue: "ADM",
                 columns: new[] { "CreatedAt", "UpdatedAt" },
-                values: new object[] { new DateTime(2021, 10, 10, 14, 36, 25, 612, DateTimeKind.Local).AddTicks(7139), new DateTime(2021, 10, 10, 14, 36, 25, 612, DateTimeKind.Local).AddTicks(7146) });
+                values: new object[] { new DateTime(2021, 10, 11, 10, 10, 34, 756, DateTimeKind.Local).AddTicks(9908), new DateTime(2021, 10, 11, 10, 10, 34, 756, DateTimeKind.Local).AddTicks(9915) });
 
             migrationBuilder.UpdateData(
                 table: "tb_m_roles",
                 keyColumn: "RoleId",
                 keyValue: "SP-ADM",
                 columns: new[] { "CreatedAt", "UpdatedAt" },
-                values: new object[] { new DateTime(2021, 10, 10, 14, 36, 25, 611, DateTimeKind.Local).AddTicks(5902), new DateTime(2021, 10, 10, 14, 36, 25, 612, DateTimeKind.Local).AddTicks(6534) });
+                values: new object[] { new DateTime(2021, 10, 11, 10, 10, 34, 755, DateTimeKind.Local).AddTicks(1740), new DateTime(2021, 10, 11, 10, 10, 34, 756, DateTimeKind.Local).AddTicks(9228) });
 
             migrationBuilder.UpdateData(
                 table: "tb_m_statuses",
                 keyColumn: "StatusId",
                 keyValue: "ITV-CN",
                 columns: new[] { "CreatedAt", "UpdatedAt" },
-                values: new object[] { new DateTime(2021, 10, 10, 14, 36, 26, 241, DateTimeKind.Local).AddTicks(2171), new DateTime(2021, 10, 10, 14, 36, 26, 241, DateTimeKind.Local).AddTicks(2174) });
+                values: new object[] { new DateTime(2021, 10, 11, 10, 10, 35, 398, DateTimeKind.Local).AddTicks(7088), new DateTime(2021, 10, 11, 10, 10, 35, 398, DateTimeKind.Local).AddTicks(7090) });
 
             migrationBuilder.UpdateData(
                 table: "tb_m_statuses",
                 keyColumn: "StatusId",
                 keyValue: "ITV-DN",
                 columns: new[] { "CreatedAt", "UpdatedAt" },
-                values: new object[] { new DateTime(2021, 10, 10, 14, 36, 26, 241, DateTimeKind.Local).AddTicks(2158), new DateTime(2021, 10, 10, 14, 36, 26, 241, DateTimeKind.Local).AddTicks(2167) });
-
-            migrationBuilder.UpdateData(
-                table: "tb_m_statuses",
-                keyColumn: "StatusId",
-                keyValue: "ITV-WT",
-                columns: new[] { "CreatedAt", "UpdatedAt" },
-                values: new object[] { new DateTime(2021, 10, 10, 14, 36, 26, 241, DateTimeKind.Local).AddTicks(750), new DateTime(2021, 10, 10, 14, 36, 26, 241, DateTimeKind.Local).AddTicks(1393) });
+                values: new object[] { new DateTime(2021, 10, 11, 10, 10, 35, 398, DateTimeKind.Local).AddTicks(7083), new DateTime(2021, 10, 11, 10, 10, 35, 398, DateTimeKind.Local).AddTicks(7086) });
 
             migrationBuilder.UpdateData(
                 table: "tb_m_statuses",
                 keyColumn: "StatusId",
                 keyValue: "ONB-DN",
                 columns: new[] { "CreatedAt", "UpdatedAt" },
-                values: new object[] { new DateTime(2021, 10, 10, 14, 36, 26, 241, DateTimeKind.Local).AddTicks(2182), new DateTime(2021, 10, 10, 14, 36, 26, 241, DateTimeKind.Local).AddTicks(2184) });
+                values: new object[] { new DateTime(2021, 10, 11, 10, 10, 35, 398, DateTimeKind.Local).AddTicks(7098), new DateTime(2021, 10, 11, 10, 10, 35, 398, DateTimeKind.Local).AddTicks(7100) });
 
             migrationBuilder.UpdateData(
                 table: "tb_m_statuses",
                 keyColumn: "StatusId",
                 keyValue: "ONB-OG",
-                columns: new[] { "CreatedAt", "UpdatedAt" },
-                values: new object[] { new DateTime(2021, 10, 10, 14, 36, 26, 241, DateTimeKind.Local).AddTicks(2177), new DateTime(2021, 10, 10, 14, 36, 26, 241, DateTimeKind.Local).AddTicks(2179) });
+                columns: new[] { "CreatedAt", "Name", "UpdatedAt" },
+                values: new object[] { new DateTime(2021, 10, 11, 10, 10, 35, 398, DateTimeKind.Local).AddTicks(7094), "On Going", new DateTime(2021, 10, 11, 10, 10, 35, 398, DateTimeKind.Local).AddTicks(7096) });
+
+            migrationBuilder.InsertData(
+                table: "tb_m_statuses",
+                columns: new[] { "StatusId", "CreatedAt", "Name", "TypeStatusId", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { "ITV-WD", new DateTime(2021, 10, 11, 10, 10, 35, 398, DateTimeKind.Local).AddTicks(5816), "Waiting Date", null, new DateTime(2021, 10, 11, 10, 10, 35, 398, DateTimeKind.Local).AddTicks(6429) },
+                    { "ITV-OG", new DateTime(2021, 10, 11, 10, 10, 35, 398, DateTimeKind.Local).AddTicks(7071), "On Going", null, new DateTime(2021, 10, 11, 10, 10, 35, 398, DateTimeKind.Local).AddTicks(7080) }
+                });
 
             migrationBuilder.UpdateData(
                 table: "tb_m_type_statuses",
                 keyColumn: "TypeStatusId",
                 keyValue: "ITV",
                 columns: new[] { "CreatedAt", "UpdatedAt" },
-                values: new object[] { new DateTime(2021, 10, 10, 14, 36, 26, 240, DateTimeKind.Local).AddTicks(6844), new DateTime(2021, 10, 10, 14, 36, 26, 240, DateTimeKind.Local).AddTicks(7512) });
+                values: new object[] { new DateTime(2021, 10, 11, 10, 10, 35, 398, DateTimeKind.Local).AddTicks(2358), new DateTime(2021, 10, 11, 10, 10, 35, 398, DateTimeKind.Local).AddTicks(2961) });
 
             migrationBuilder.UpdateData(
                 table: "tb_m_type_statuses",
                 keyColumn: "TypeStatusId",
                 keyValue: "ONB",
                 columns: new[] { "CreatedAt", "UpdatedAt" },
-                values: new object[] { new DateTime(2021, 10, 10, 14, 36, 26, 240, DateTimeKind.Local).AddTicks(8358), new DateTime(2021, 10, 10, 14, 36, 26, 240, DateTimeKind.Local).AddTicks(8367) });
+                values: new object[] { new DateTime(2021, 10, 11, 10, 10, 35, 398, DateTimeKind.Local).AddTicks(3540), new DateTime(2021, 10, 11, 10, 10, 35, 398, DateTimeKind.Local).AddTicks(3549) });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tb_tr_schedule_interview_date_options_ScheduleInterviewId",
+                table: "tb_tr_schedule_interview_date_options",
+                column: "ScheduleInterviewId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_tb_m_detail_schedule_interviews_tb_tr_schedule_interviews_ScheduleInterviewId",
+                table: "tb_m_detail_schedule_interviews",
+                column: "ScheduleInterviewId",
+                principalTable: "tb_tr_schedule_interviews",
+                principalColumn: "ScheduleInterviewId",
+                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_tb_m_detail_schedule_interviews_tb_tr_schedule_interviews_ScheduleInterviewId",
+                table: "tb_m_detail_schedule_interviews");
+
+            migrationBuilder.DropTable(
+                name: "tb_tr_schedule_interview_date_options");
+
+            migrationBuilder.DeleteData(
+                table: "tb_m_statuses",
+                keyColumn: "StatusId",
+                keyValue: "ITV-OG");
+
+            migrationBuilder.DeleteData(
+                table: "tb_m_statuses",
+                keyColumn: "StatusId",
+                keyValue: "ITV-WD");
+
+            migrationBuilder.DropColumn(
+                name: "Status",
+                table: "tb_m_candidates");
+
             migrationBuilder.AlterColumn<string>(
                 name: "Grade",
                 table: "tb_m_candidates",
@@ -166,13 +240,6 @@ namespace API.Migrations
             migrationBuilder.UpdateData(
                 table: "tb_m_statuses",
                 keyColumn: "StatusId",
-                keyValue: "ITV-WT",
-                columns: new[] { "CreatedAt", "UpdatedAt" },
-                values: new object[] { new DateTime(2021, 10, 10, 11, 34, 51, 350, DateTimeKind.Local).AddTicks(2181), new DateTime(2021, 10, 10, 11, 34, 51, 350, DateTimeKind.Local).AddTicks(2725) });
-
-            migrationBuilder.UpdateData(
-                table: "tb_m_statuses",
-                keyColumn: "StatusId",
                 keyValue: "ONB-DN",
                 columns: new[] { "CreatedAt", "UpdatedAt" },
                 values: new object[] { new DateTime(2021, 10, 10, 11, 34, 51, 350, DateTimeKind.Local).AddTicks(3554), new DateTime(2021, 10, 10, 11, 34, 51, 350, DateTimeKind.Local).AddTicks(3556) });
@@ -181,8 +248,13 @@ namespace API.Migrations
                 table: "tb_m_statuses",
                 keyColumn: "StatusId",
                 keyValue: "ONB-OG",
-                columns: new[] { "CreatedAt", "UpdatedAt" },
-                values: new object[] { new DateTime(2021, 10, 10, 11, 34, 51, 350, DateTimeKind.Local).AddTicks(3550), new DateTime(2021, 10, 10, 11, 34, 51, 350, DateTimeKind.Local).AddTicks(3552) });
+                columns: new[] { "CreatedAt", "Name", "UpdatedAt" },
+                values: new object[] { new DateTime(2021, 10, 10, 11, 34, 51, 350, DateTimeKind.Local).AddTicks(3550), "Cancel", new DateTime(2021, 10, 10, 11, 34, 51, 350, DateTimeKind.Local).AddTicks(3552) });
+
+            migrationBuilder.InsertData(
+                table: "tb_m_statuses",
+                columns: new[] { "StatusId", "CreatedAt", "Name", "TypeStatusId", "UpdatedAt" },
+                values: new object[] { "ITV-WT", new DateTime(2021, 10, 10, 11, 34, 51, 350, DateTimeKind.Local).AddTicks(2181), "Waiting", null, new DateTime(2021, 10, 10, 11, 34, 51, 350, DateTimeKind.Local).AddTicks(2725) });
 
             migrationBuilder.UpdateData(
                 table: "tb_m_type_statuses",
@@ -197,6 +269,14 @@ namespace API.Migrations
                 keyValue: "ONB",
                 columns: new[] { "CreatedAt", "UpdatedAt" },
                 values: new object[] { new DateTime(2021, 10, 10, 11, 34, 51, 350, DateTimeKind.Local).AddTicks(96), new DateTime(2021, 10, 10, 11, 34, 51, 350, DateTimeKind.Local).AddTicks(104) });
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_tb_m_detail_schedule_interviews_tb_tr_schedule_interviews_ScheduleInterviewId",
+                table: "tb_m_detail_schedule_interviews",
+                column: "ScheduleInterviewId",
+                principalTable: "tb_tr_schedule_interviews",
+                principalColumn: "ScheduleInterviewId",
+                onDelete: ReferentialAction.Restrict);
         }
     }
 }
