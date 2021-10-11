@@ -21,18 +21,58 @@ namespace Client.Base.Controllers
             this.repository = repository;
         }
 
-        [HttpGet("confirmation/{keyinterviev}/{keydate}")]
-        public IActionResult ConfirmationDate(string keyinterviev,int keydate)
+        [HttpGet("confirmation/{scheduleFollowBy}")]
+        public IActionResult ConfirmationDateView(string s, string scheduleFollowBy)
         {
-            InterviewResponseVM interviewResponseVM = new InterviewResponseVM();
-            interviewResponseVM.ScheduleInterviewId = keyinterviev;
-            interviewResponseVM.ScheduleDateConfirmId = keydate;
-            
-            var response = repository.ConfirmationDate(interviewResponseVM);
-            if (response == "404") {
+            if (s == null)
+            {
                 return Redirect("/error/404");
             }
 
+            string result = s.Replace(" ", "+");
+
+            RsaHelper rsaHelper = new RsaHelper();
+            var decrypt = rsaHelper.Decrypt(result);
+
+            var dataScheduleInterview = repository.Get(decrypt).Result;
+          
+            if (dataScheduleInterview.StatusId != "ITV-WD" || dataScheduleInterview == null) {
+                return Redirect("/error/404");
+            }
+
+            
+            ViewBag.ScheduleInterviewId = dataScheduleInterview.ScheduleInterviewId;
+            ViewBag.ScheduleFollowBy = scheduleFollowBy;
+            return View();
+        }
+
+        [HttpPost("confirmation/create-date-option")]
+        public JsonResult CreateDateOption(CreateDateOptionsVM confirmDateOptionsVM)
+        {
+            var response = repository.CreateDateOption(confirmDateOptionsVM);
+
+           return Json(response);
+        }
+
+        [HttpGet("confirmation/{scheduleInterviewId}/{scheduleDateConfirmId}")]
+        public IActionResult ResponseConfirmationDate(string scheduleInterviewId,int scheduleDateConfirmId)
+        {
+            if (scheduleDateConfirmId < 0) {
+                return Redirect("/error/404");
+            }
+            var dataScheduleInterview = repository.Get(scheduleInterviewId).Result;
+
+            if (dataScheduleInterview.StatusId != "ITV-WC" || dataScheduleInterview == null)
+            {
+                return Redirect("/error/404");
+            }
+
+            InterviewResponseVM interviewResponseVM = new InterviewResponseVM();
+            interviewResponseVM.ScheduleDateConfirmId = scheduleDateConfirmId;
+            interviewResponseVM.ScheduleInterviewId = scheduleInterviewId;
+
+            var response = repository.ResponseConfirmationDate(interviewResponseVM);
+         
             ViewBag.Response = response;
             return View();
         }

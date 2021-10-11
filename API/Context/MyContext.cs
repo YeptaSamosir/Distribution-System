@@ -111,45 +111,59 @@ namespace API.Context
 
             modelBuilder.Entity<Status>().HasData(
                 new Status {
-                    StatusId = "ITV-WD",
+                    StatusId = "ITV-WD", //interview waiting date
+                    TypeStatusId = "ITV",
                     Name = "Waiting Date",
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now
                 },
                 new Status
                 {
-                    StatusId = "ITV-OG",
+                    StatusId = "ITV-WC", //interview waiting confirmation
+                    TypeStatusId = "ITV",
+                    Name = "Waiting Confirm",
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
+                },
+                new Status
+                {
+                    StatusId = "ITV-OG", //interview ongoing
+                    TypeStatusId = "ITV",
                     Name = "On Going",
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now
                 },
                 new Status
                 {
-                    StatusId = "ITV-DN",
+                    StatusId = "ITV-DN", //interview done
+                    TypeStatusId = "ITV",
                     Name = "Done",
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now
                 },
                 new Status
                 {
-                    StatusId = "ITV-CN",
+                    StatusId = "ITV-CN", //interview cancel
+                    TypeStatusId = "ITV",
                     Name = "Cancel",
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now
                 },
                 new Status
                 {
-                    StatusId = "ONB-OG",
+                    StatusId = "ONB-OG", //Onboard Ongoing
                     Name = "On Going",
+                    TypeStatusId = "ONB",
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now
                 },
                 new Status
                 {
-                     StatusId = "ONB-DN",
-                     Name = "Done",
-                     CreatedAt = DateTime.Now,
-                     UpdatedAt = DateTime.Now
+                    StatusId = "ONB-DN", //Onboard done
+                    Name = "Done",
+                    TypeStatusId = "ONB",
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
                 }
             );
         }

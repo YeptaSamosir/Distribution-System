@@ -30,9 +30,9 @@ namespace Client.Base.Controllers
         }
 
         [HttpPost("create")]
-        public JsonResult InsertScedule(SceduleInterviewVM sceduleInterviewVM)
+        public JsonResult CreateInterview(CreateInterviewVM createInterviewVM)
         {
-            var result = repository.InsertSceduleInterview(sceduleInterviewVM);
+            var result = repository.CreateInterview(createInterviewVM);
             return Json(result);
         }
     }

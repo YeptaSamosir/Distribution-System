@@ -1,26 +1,4 @@
-﻿$('#myDatepicker1').datetimepicker({
-    format: 'yyyy-mm-dd hh:ii:ss',
-    autoclose: true,
-    todayBtn: true,
-    minuteStep: 10
-});
-
-$('#myDatepicker2').datetimepicker({
-    format: 'yyyy-mm-dd hh:ii:ss',
-    autoclose: true,
-    todayBtn: true,
-    minuteStep: 10
-});
-
-$('#myDatepicker3').datetimepicker({
-    format: 'yyyy-mm-dd hh:ii:ss',
-    autoclose: true,
-    todayBtn: true,
-    minuteStep: 10
-});
-
-
-//form for candidate
+﻿//form for candidate
 $.ajax({
     url: "/admin/candidate/get",
     dataType: "json",
@@ -123,16 +101,17 @@ $("#form-create-shedule").submit(function (event) {
     data_input.CustomerEmail = $("#inputCustomerEmail").val();
     data_input.CompanyName = $("#inputCompany").val();
     data_input.JobTitle = $("#inputJobTitle").val();
-    data_input.CandidateId = $("#inputCandidate").val();
+    data_input.CandidateId = ($("#inputCandidate").val() == "") ? -1 : $("#inputCandidate").val();
     data_input.CandidateEmail = $("#inputCandidateEmail").val();
     data_input.ScheduleFollowBy = $("#inputScheduleBy").val();
-    data_input.Type = $('input[name="inputType"]:checked').val();
+    if ($('input[name="inputType"]:checked').val() != undefined) {
+        data_input.Type = $('input[name="inputType"]:checked').val();
+    } else {
+        data_input.Type = 2;
+    }
     data_input.Location = $("#inputLocation").val();
     data_input.CreatedAt = dateTime;
     data_input.UpdatedAt = dateTime;
-    data_input.DateTimeOne = $("#inputDataTimeOne").val();
-    data_input.DateTimeTwo = $("#inputDataTimeTwo").val();
-    data_input.DateTimeThree = $("#inputDataTimeThree").val();
 
   
 
@@ -157,20 +136,21 @@ $("#form-create-shedule").submit(function (event) {
                 checkValidation(obj.errors.CandidateId, "inputCandidate", "messageCandidate");
                 checkValidation(obj.errors.CandidateEmail, "inputCandidateEmail", "messageCandidateEmail");
                 checkValidation(obj.errors.ScheduleFollowBy, "inputScheduleBy", "messageScheduleBy");
-                checkValidation(obj.errors.Type, "inputType", "messageType");
                 checkValidation(obj.errors.Location, "inputLocation", "messageLocation");
-                checkValidation(obj.errors.DateTimeOne, "inputDataTimeOne", "messageDataTimeOne");
-                checkValidation(obj.errors.DateTimeTwo, "inputDataTimeTwo", "messageDataTimeTwo");
-                checkValidation(obj.errors.DateTimeThree, "inputDataTimeThree", "messageDataTimeThree");
+                if (obj.errors.Type != undefined) {
+                    $('#messageType').html(obj.errors.Type);
+                } else {
+                    $('#messageType').html('');
+                }
             } else {
 
                 //sweet alert message success
                 Swal.fire({
                     position: 'center',
-                    icon: 'success',
+                   /* icon: 'success',*/
                     title: `${obj.message}`,
-                    showConfirmButton: false,
-                    timer: 1500
+                    showConfirmButton: true,
+                   /* timer: 1500*/
                 })
 
                 //reset form
