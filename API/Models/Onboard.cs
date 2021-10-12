@@ -20,16 +20,19 @@ namespace API.Models
 
         [ForeignKey("Company")]
         public int CompanyId { get; set; }
-        [JsonIgnore]
+
         public virtual Company Company { get; set; }
 
         [ForeignKey("Status")]
         public string StatusId { get; set; }
-        [JsonIgnore]
         public virtual Status Status { get; set; }
 
+        [Required]
         public DateTime DateStart { get; set; }
+
+        [Required]
         public DateTime DateEnd { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
