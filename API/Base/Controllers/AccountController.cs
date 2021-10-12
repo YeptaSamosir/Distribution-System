@@ -156,6 +156,24 @@ namespace API.Base.Controllers
             }
         }
 
+        [HttpPut("profile/update")]
+        public ActionResult ProfileUpdate(ProfileUpdateVM profileUpdate)
+        {
+            try
+            {
+                //insert user to database
+                if (accountRepository.UpdateAccountProfile(profileUpdate) == 1)
+                {
+                    return Ok(new { Message = "Update Successful" });
+                };
+                return BadRequest(new { Message = "Update failed" });
+            }
+            catch (System.Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = e.Message });
+            }
+        }
+
         [HttpPut("changepassword")]
         public ActionResult ChangePassword(ChangePassword changePassword)
         {

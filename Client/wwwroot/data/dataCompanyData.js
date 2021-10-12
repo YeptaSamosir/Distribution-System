@@ -135,6 +135,7 @@ function checkValidation(errorMsg, elementById, elementMsg) {
 }
 
 
+
 //create data
 $("#form-create-company").submit(function (event) {
 
@@ -183,15 +184,15 @@ $("#form-create-company").submit(function (event) {
 
                 //reload only datatable
                 $('#datatable-company').DataTable().ajax.reload();
-            }   
-
+            }
         },
         error: function (xhr, status, error) {
             var err = eval(xhr.responseJSON);
 
         }
-    })
+    });
 });
+
 
 //Edit
 editModalCompany = (id) => {

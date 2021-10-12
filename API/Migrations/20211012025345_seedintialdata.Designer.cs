@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20211007063702_migrations")]
-    partial class migrations
+    [Migration("20211012025345_seedintialdata")]
+    partial class seedintialdata
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -62,6 +62,20 @@ namespace API.Migrations
                     b.HasKey("AccountId");
 
                     b.ToTable("tb_m_accounts");
+
+                    b.HasData(
+                        new
+                        {
+                            AccountId = 1,
+                            AttemptCount = 0,
+                            CreatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(1264),
+                            Email = "admin@mail.com",
+                            IsActive = true,
+                            Name = "Super Administrator",
+                            Password = "$2b$12$6vDRKWR80AQR7EjBJ3IASeeP9QCD2CEi/CWYLFjcAQouLRbxOuVFW",
+                            UpdatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(1625),
+                            Username = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("API.Models.AccountRole", b =>
@@ -83,6 +97,22 @@ namespace API.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("tb_m_account_roles");
+
+                    b.HasData(
+                        new
+                        {
+                            AccountId = 1,
+                            RoleId = "SP-ADM",
+                            CreatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(3360),
+                            UpdatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(3639)
+                        },
+                        new
+                        {
+                            AccountId = 1,
+                            RoleId = "ADM",
+                            CreatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(3957),
+                            UpdatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(3963)
+                        });
                 });
 
             modelBuilder.Entity("API.Models.Candidate", b =>
@@ -102,13 +132,16 @@ namespace API.Migrations
 
                     b.Property<string>("Grade")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -234,6 +267,22 @@ namespace API.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("tb_m_roles");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = "SP-ADM",
+                            CreatedAt = new DateTime(2021, 10, 12, 9, 53, 44, 934, DateTimeKind.Local).AddTicks(3447),
+                            Name = "Super Administrator",
+                            UpdatedAt = new DateTime(2021, 10, 12, 9, 53, 44, 935, DateTimeKind.Local).AddTicks(3540)
+                        },
+                        new
+                        {
+                            RoleId = "ADM",
+                            CreatedAt = new DateTime(2021, 10, 12, 9, 53, 44, 935, DateTimeKind.Local).AddTicks(3914),
+                            Name = "Administrator",
+                            UpdatedAt = new DateTime(2021, 10, 12, 9, 53, 44, 935, DateTimeKind.Local).AddTicks(3919)
+                        });
                 });
 
             modelBuilder.Entity("API.Models.ScheduleInterview", b =>
@@ -252,6 +301,7 @@ namespace API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CustomerName")
+                        .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
@@ -259,16 +309,19 @@ namespace API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("JobTitle")
+                        .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("Location")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartInterview")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("StatusId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(16)");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -283,6 +336,32 @@ namespace API.Migrations
                     b.HasIndex("StatusId");
 
                     b.ToTable("tb_tr_schedule_interviews");
+                });
+
+            modelBuilder.Entity("API.Models.ScheduleInterviewDateOption", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateInterview")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ScheduleInterviewId")
+                        .HasColumnType("nvarchar(16)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ScheduleInterviewId");
+
+                    b.ToTable("tb_tr_schedule_interview_date_options");
                 });
 
             modelBuilder.Entity("API.Models.Status", b =>
@@ -309,6 +388,64 @@ namespace API.Migrations
                     b.HasIndex("TypeStatusId");
 
                     b.ToTable("tb_m_statuses");
+
+                    b.HasData(
+                        new
+                        {
+                            StatusId = "ITV-WD",
+                            CreatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(6891),
+                            Name = "Waiting Date",
+                            TypeStatusId = "ITV",
+                            UpdatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7165)
+                        },
+                        new
+                        {
+                            StatusId = "ITV-WC",
+                            CreatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7430),
+                            Name = "Waiting Confirm",
+                            TypeStatusId = "ITV",
+                            UpdatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7434)
+                        },
+                        new
+                        {
+                            StatusId = "ITV-OG",
+                            CreatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7436),
+                            Name = "On Going",
+                            TypeStatusId = "ITV",
+                            UpdatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7437)
+                        },
+                        new
+                        {
+                            StatusId = "ITV-DN",
+                            CreatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7439),
+                            Name = "Done",
+                            TypeStatusId = "ITV",
+                            UpdatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7440)
+                        },
+                        new
+                        {
+                            StatusId = "ITV-CN",
+                            CreatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7441),
+                            Name = "Cancel",
+                            TypeStatusId = "ITV",
+                            UpdatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7442)
+                        },
+                        new
+                        {
+                            StatusId = "ONB-OG",
+                            CreatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7444),
+                            Name = "On Going",
+                            TypeStatusId = "ONB",
+                            UpdatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7445)
+                        },
+                        new
+                        {
+                            StatusId = "ONB-DN",
+                            CreatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7447),
+                            Name = "Done",
+                            TypeStatusId = "ONB",
+                            UpdatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7448)
+                        });
                 });
 
             modelBuilder.Entity("API.Models.TypeStatus", b =>
@@ -330,6 +467,22 @@ namespace API.Migrations
                     b.HasKey("TypeStatusId");
 
                     b.ToTable("tb_m_type_statuses");
+
+                    b.HasData(
+                        new
+                        {
+                            TypeStatusId = "ITV",
+                            CreatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(5023),
+                            Name = "Schedule Interview",
+                            UpdatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(5301)
+                        },
+                        new
+                        {
+                            TypeStatusId = "ONB",
+                            CreatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(5571),
+                            Name = "Onboard Candidate",
+                            UpdatedAt = new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(5575)
+                        });
                 });
 
             modelBuilder.Entity("API.Models.AccountRole", b =>
@@ -355,7 +508,8 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Models.ScheduleInterview", "ScheduleInterview")
                         .WithMany("DetailScheduleInterviews")
-                        .HasForeignKey("ScheduleInterviewId");
+                        .HasForeignKey("ScheduleInterviewId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("ScheduleInterview");
                 });
@@ -401,13 +555,25 @@ namespace API.Migrations
 
                     b.HasOne("API.Models.Status", "Status")
                         .WithMany("ScheduleInterviews")
-                        .HasForeignKey("StatusId");
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Candidate");
 
                     b.Navigation("Company");
 
                     b.Navigation("Status");
+                });
+
+            modelBuilder.Entity("API.Models.ScheduleInterviewDateOption", b =>
+                {
+                    b.HasOne("API.Models.ScheduleInterview", "ScheduleInterview")
+                        .WithMany("ScheduleInterviewDateOptions")
+                        .HasForeignKey("ScheduleInterviewId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("ScheduleInterview");
                 });
 
             modelBuilder.Entity("API.Models.Status", b =>
@@ -446,6 +612,8 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.ScheduleInterview", b =>
                 {
                     b.Navigation("DetailScheduleInterviews");
+
+                    b.Navigation("ScheduleInterviewDateOptions");
                 });
 
             modelBuilder.Entity("API.Models.Status", b =>

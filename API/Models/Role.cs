@@ -14,12 +14,12 @@ namespace API.Models
     public class Role
     {
         [Key]
-        [Required(ErrorMessage = "Role ID tidak boleh kosong")]
-        [StringLength(64, MinimumLength = 3, ErrorMessage = "Role ID harus mengandung 3-64 karakter")]
+        [Required]
+        [StringLength(64, MinimumLength = 3, ErrorMessage = "Role Id field must contain 3-64 characters")]
         public string RoleId { get; set; }
 
-        [Required(ErrorMessage = "Nama role tidak boleh kosong")]
-        [StringLength(64, MinimumLength = 3, ErrorMessage = "Role harus mengandung 3-64 karakter")]
+        [Required]
+        [StringLength(64, MinimumLength = 3, ErrorMessage = "Role name field must contain 3-64 characters")]
         public string Name { get; set; }
 
         [Required]

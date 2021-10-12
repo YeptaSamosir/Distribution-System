@@ -43,6 +43,13 @@ namespace Client.Repository.Data
             return response;
         }
 
+        internal string UpdateProfile(ProfileUpdateVM profileUpdate)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(profileUpdate), Encoding.UTF8, "application/json");
+            var response = httpClient.PutAsync(request + "profile/update", content).Result.Content.ReadAsStringAsync().Result;
+            return response;
+        }
+
         internal string ChangePassword(ChangePassword changePassword)
         {
             StringContent content = new StringContent(JsonConvert.SerializeObject(changePassword), Encoding.UTF8, "application/json");

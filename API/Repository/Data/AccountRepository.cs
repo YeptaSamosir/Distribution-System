@@ -165,6 +165,28 @@ namespace API.Repository.Data
 
         }
 
+        internal int UpdateAccountProfile(ProfileUpdateVM profileUpdateVM)
+        {
+            try
+            {
+                //update entity account
+                var account = myContext.Accounts.Where(x => x.AccountId == profileUpdateVM.AccountId).FirstOrDefault();
+                account.Name = profileUpdateVM.Name;
+                account.Username = profileUpdateVM.Username;
+                account.Email = profileUpdateVM.Email;
+                account.UpdatedAt = DateTime.Now;
+                Update(account);
+                myContext.SaveChanges();
+
+                return 1;
+            }
+            catch
+            {
+                throw new Exception();
+            }
+
+        }
+
         internal bool ForgotPassword(ForgotPassword forgetPassword)
         {
             var emailCheck = myContext.Accounts.Where(x => x.Email.Equals(forgetPassword.Email)).FirstOrDefault();

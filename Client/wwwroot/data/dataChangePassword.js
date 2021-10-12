@@ -30,10 +30,10 @@ $("#form-update-change-password").submit(function (event) {
     data_input.UpdatedAt = dateTime;
 
 
-    console.log(JSON.stringify(data_input));
+    console.log(data_input);
 
     $.ajax({
-        url: `/admin/account/change-password`,
+        url: `/admin/setting/change-password`,
         method: 'PUT',
         dataType: 'json',
         contentType: 'application/x-www-form-urlencoded',
@@ -72,9 +72,9 @@ $("#form-update-change-password").submit(function (event) {
         },
         error: function (xhr, status, error) {
            // var err = eval(xhr.responseJSON);
-            console.log(xhr);
+          /*  console.log(xhr);
             console.log(status);
-            console.log(error);
+            console.log(error);*/
         }
     });
 });

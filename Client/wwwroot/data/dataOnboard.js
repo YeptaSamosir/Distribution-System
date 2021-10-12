@@ -14,21 +14,21 @@
                     {
                         extend: "csv",
                         exportOptions: {
-                            columns: [1, 2, 3]
+                            columns: [1,2,3,4,5]
                         },
                         className: "btn-sm",
                     },
                     {
                         extend: "excel",
                         exportOptions: {
-                            columns: [1, 2, 3]
+                            columns: [1,2,3,4,5]
                         },
                         className: "btn-sm",
                     },
                     {
                         extend: "pdfHtml5",
                         exportOptions: {
-                            columns: [1, 2, 3]
+                            columns: [1,2,3,4,5]
                         },
                         className: "btn-sm",
                     },
@@ -38,7 +38,7 @@
                 columnDefs: [{
                     searchable: false,
                     orderable: false,
-                    targets: [0, 4]
+                    targets: [0, 6]
                 }],
                 ajax: {
                     url: "/admin/onboard/get",
@@ -47,9 +47,7 @@
                 },
                 columns: [
                     {
-                        render: function (data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }
+                        data: null,
                     },
                     {
                         data: "candidate.name",

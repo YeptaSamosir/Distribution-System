@@ -36,6 +36,7 @@ namespace Client.Base
             return Json(result);
         }
 
+        [AllowAnonymous]
         [HttpPost("post")]
         public JsonResult Post(TEntity entity)
         {
@@ -44,6 +45,7 @@ namespace Client.Base
             return Json(result);
         }
 
+        [AllowAnonymous]
         [HttpPut("update")]
         public JsonResult Put(TEntity entity)
         {
