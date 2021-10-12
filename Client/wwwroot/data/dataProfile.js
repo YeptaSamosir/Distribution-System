@@ -35,7 +35,7 @@ $("#form-edit-account-profile").submit(function (event) {
     console.log(JSON.stringify(data_input));
 
     $.ajax({
-        url: `/admin/account/update`,
+        url: `/admin/setting/account/update`,
         method: 'PUT',
         dataType: 'json',
         contentType: 'application/x-www-form-urlencoded',

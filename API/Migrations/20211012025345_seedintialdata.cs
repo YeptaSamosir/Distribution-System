@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API.Migrations
 {
-    public partial class migrations : Migration
+    public partial class seedintialdata : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -34,8 +34,9 @@ namespace API.Migrations
                     CandidateId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Grade = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Grade = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -178,12 +179,12 @@ namespace API.Migrations
                     ScheduleInterviewId = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
                     CandidateId = table.Column<int>(type: "int", nullable: false),
                     CompanyId = table.Column<int>(type: "int", nullable: false),
-                    CustomerName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    JobTitle = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CustomerName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    JobTitle = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StartInterview = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndInterview = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StatusId = table.Column<string>(type: "nvarchar(16)", nullable: true),
+                    StatusId = table.Column<string>(type: "nvarchar(16)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -207,7 +208,7 @@ namespace API.Migrations
                         column: x => x.StatusId,
                         principalTable: "tb_m_statuses",
                         principalColumn: "StatusId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -231,7 +232,75 @@ namespace API.Migrations
                         column: x => x.ScheduleInterviewId,
                         principalTable: "tb_tr_schedule_interviews",
                         principalColumn: "ScheduleInterviewId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tb_tr_schedule_interview_date_options",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ScheduleInterviewId = table.Column<string>(type: "nvarchar(16)", nullable: true),
+                    DateInterview = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tb_tr_schedule_interview_date_options", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_tb_tr_schedule_interview_date_options_tb_tr_schedule_interviews_ScheduleInterviewId",
+                        column: x => x.ScheduleInterviewId,
+                        principalTable: "tb_tr_schedule_interviews",
+                        principalColumn: "ScheduleInterviewId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "tb_m_accounts",
+                columns: new[] { "AccountId", "AttemptCount", "CreatedAt", "Email", "IsActive", "Name", "Password", "UpdatedAt", "Username" },
+                values: new object[] { 1, 0, new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(1264), "admin@mail.com", true, "Super Administrator", "$2b$12$6vDRKWR80AQR7EjBJ3IASeeP9QCD2CEi/CWYLFjcAQouLRbxOuVFW", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(1625), "Admin" });
+
+            migrationBuilder.InsertData(
+                table: "tb_m_roles",
+                columns: new[] { "RoleId", "CreatedAt", "Name", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { "SP-ADM", new DateTime(2021, 10, 12, 9, 53, 44, 934, DateTimeKind.Local).AddTicks(3447), "Super Administrator", new DateTime(2021, 10, 12, 9, 53, 44, 935, DateTimeKind.Local).AddTicks(3540) },
+                    { "ADM", new DateTime(2021, 10, 12, 9, 53, 44, 935, DateTimeKind.Local).AddTicks(3914), "Administrator", new DateTime(2021, 10, 12, 9, 53, 44, 935, DateTimeKind.Local).AddTicks(3919) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "tb_m_type_statuses",
+                columns: new[] { "TypeStatusId", "CreatedAt", "Name", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { "ITV", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(5023), "Schedule Interview", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(5301) },
+                    { "ONB", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(5571), "Onboard Candidate", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(5575) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "tb_m_account_roles",
+                columns: new[] { "AccountId", "RoleId", "CreatedAt", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, "SP-ADM", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(3360), new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(3639) },
+                    { 1, "ADM", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(3957), new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(3963) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "tb_m_statuses",
+                columns: new[] { "StatusId", "CreatedAt", "Name", "TypeStatusId", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { "ITV-WD", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(6891), "Waiting Date", "ITV", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7165) },
+                    { "ITV-WC", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7430), "Waiting Confirm", "ITV", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7434) },
+                    { "ITV-OG", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7436), "On Going", "ITV", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7437) },
+                    { "ITV-DN", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7439), "Done", "ITV", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7440) },
+                    { "ITV-CN", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7441), "Cancel", "ITV", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7442) },
+                    { "ONB-OG", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7444), "On Going", "ONB", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7445) },
+                    { "ONB-DN", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7447), "Done", "ONB", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7448) }
                 });
 
             migrationBuilder.CreateIndex(
@@ -265,6 +334,11 @@ namespace API.Migrations
                 column: "StatusId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_tb_tr_schedule_interview_date_options_ScheduleInterviewId",
+                table: "tb_tr_schedule_interview_date_options",
+                column: "ScheduleInterviewId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_tb_tr_schedule_interviews_CandidateId",
                 table: "tb_tr_schedule_interviews",
                 column: "CandidateId");
@@ -290,6 +364,9 @@ namespace API.Migrations
 
             migrationBuilder.DropTable(
                 name: "tb_tr_onboards");
+
+            migrationBuilder.DropTable(
+                name: "tb_tr_schedule_interview_date_options");
 
             migrationBuilder.DropTable(
                 name: "tb_m_accounts");

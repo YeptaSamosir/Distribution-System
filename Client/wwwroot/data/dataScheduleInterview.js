@@ -14,26 +14,32 @@
                     {
                         extend: "csv",
                         exportOptions: {
-                            columns: [0, 1, 2]
+                            columns: [1, 2, 3, 4, 5, 6]
                         },
                         className: "btn-sm",
                     },
                     {
                         extend: "excel",
                         exportOptions: {
-                            columns: [0, 1, 2]
+                            columns: [1, 2, 3, 4, 5, 6]
                         },
                         className: "btn-sm",
                     },
                     {
                         extend: "pdfHtml5",
                         exportOptions: {
-                            columns: [0, 1, 2]
+                            columns: [1, 2, 3, 4, 5, 6]
                         },
                         className: "btn-sm",
                     },
                 ],
                 responsive: true,
+                order: [[1, 'asc']],
+                columnDefs: [{
+                    searchable: false,
+                    orderable: false,
+                    targets: [0, 7]
+                }],
                 ajax: {
                     url: "/admin/scheduleinterview/get",
                     datatype: "json",
@@ -41,9 +47,7 @@
                 },
                 columns: [
                     {
-                        render: function (data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }
+                        data: null,
                     },
                     {
                         render: function (data, type, row, meta) {

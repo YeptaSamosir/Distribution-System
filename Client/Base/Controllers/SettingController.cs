@@ -1,4 +1,5 @@
 ﻿using API.Models;
+using API.Models.ViewModels;
 using Client.Models;
 using Client.Repository.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +13,6 @@ using System.Threading.Tasks;
 
 namespace Client.Base.Controllers
 {
-    [Authorize]
     public class SettingController : BaseController<Account,AccountRepository , int>
     {
         private readonly AccountRepository repository;
@@ -48,6 +48,21 @@ namespace Client.Base.Controllers
             ViewBag.AccountEmail = HttpContext.Session.GetString("LogEmail");
 
             return View();
+        }
+
+        [HttpPut("change-password")]
+        public JsonResult ChangePassword(ChangePassword changePassword)
+        {
+            var result = repository.ChangePassword(changePassword);
+
+            return Json(result);
+        }
+
+        [HttpPut("account/update")]
+        public JsonResult UpdateAccount(ProfileUpdateVM profileUpdateVM)
+        {
+            var result = repository.UpdateProfile(profileUpdateVM);
+            return Json(result);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

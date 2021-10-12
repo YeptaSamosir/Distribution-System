@@ -14,21 +14,21 @@
                     {
                         extend: "csv",
                         exportOptions: {
-                            columns: [1, 2, 3]
+                            columns: [1, 2, 3, 4]
                         },
                         className: "btn-sm",
                     },
                     {
                         extend: "excel",
                         exportOptions: {
-                            columns: [1, 2, 3]
+                            columns: [1, 2, 3, 4]
                         },
                         className: "btn-sm",
                     },
                     {
                         extend: "pdfHtml5",
                         exportOptions: {
-                            columns: [1, 2, 3]
+                            columns: [1, 2, 3, 4]
                         },
                         className: "btn-sm",
                     },
@@ -38,7 +38,7 @@
                 columnDefs: [{
                     searchable: false,
                     orderable: false,
-                    targets: [0, 4]
+                    targets: [0, 5]
                 }],
                 ajax: {
                     url: "/admin/candidate/get",

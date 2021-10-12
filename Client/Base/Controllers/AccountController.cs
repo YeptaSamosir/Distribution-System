@@ -39,12 +39,5 @@ namespace Client.Base.Controllers
             return Json(result);
         }
 
-        [HttpPut("change-password")]
-        public JsonResult ChangePassword(ChangePassword changePassword)
-        {
-            var result = repository.ChangePassword(changePassword);
-
-            return Json(result);
-        }
     }
 }

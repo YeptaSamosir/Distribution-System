@@ -16,21 +16,21 @@
                         exportOptions: {
                             columns: [1,2,3,4]
                         },
-                        className: "btn-sm",
+                        className: "btn btn-sm btn-outline-success",
                     },
                     {
                         extend: "excel",
                         exportOptions: {
                             columns: [1, 2, 3, 4]
                         },
-                        className: "btn-sm",
+                        className: "btn btn-sm btn-outline-success",
                     },
                     {
                         extend: "pdfHtml5",
                         exportOptions: {
                             columns: [1, 2, 3, 4]
                         },
-                        className: "btn-sm",
+                        className: "btn btn-sm btn-outline-success",
                     },
                 ],
                 responsive: true,
