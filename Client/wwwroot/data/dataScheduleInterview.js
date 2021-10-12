@@ -204,10 +204,60 @@ $("#form-create-onbaord").submit(function (event) {
     dataInput.CompanyId = $("#inputCompanyId").val();
     dataInput.DateStart = $("#dateStart").val();
     dataInput.DateEnd = $("#dateEnd").val();
-
+    dataInput.StatusId = "ONB-OG";
    
     console.log(dataInput);
 
+    if (dataInput.DateStart == "" || dataInput.DateStart == "") {
+        document.getElementById(`inputOnboardate`).className = "form-control is-invalid";
+        $(`#messageOnboardate`).html(`Onboard date cannot null`);
+    } else {
+        document.getElementById(`inputOnboardate`).className = "form-control";
+
+        $.ajax({
+            url: '/admin/Onboard/create',
+            method: 'POST',
+            dataType: 'json',
+            contentType: 'application/x-www-form-urlencoded',
+            data: dataInput,
+            success: function (response) {
+
+                console.log(response);
+
+                var obj = JSON.parse(response);
+
+                console.log(obj);
+
+                if (obj.errors != undefined) {
+                    checkValidation(obj.errors.DateStart, "inputOnboardate", "messageOnboardate");
+                    checkValidation(obj.errors.DateEnd, "inputOnboardate", "messageOnboardate");
+
+                } else {
+
+                    //idmodal di hide
+                    document.getElementById("modalOnboard").className = "modal fade";
+                    $('.modal-backdrop').remove();
+
+
+                    //sweet alert message success
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: `${obj.message}`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+
+                    
+                }
+
+            },
+            error: function (xhr, status, error) {
+                var err = eval(xhr.responseJSON);
+                console.log(err);
+            }
+        })
+    }
 });
 
 //delete 

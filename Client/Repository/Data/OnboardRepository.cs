@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Client.Config;
 using API.Models;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace Client.Repository.Data
 {
@@ -18,6 +20,18 @@ namespace Client.Repository.Data
         public OnboardRepository(IOptions<MyConfiguration> myConfiguration, string request = "onboard/") : base(request, myConfiguration)
         {
             this.request = request;
+            this.myConfiguration = myConfiguration.Value;
+            httpClient = new HttpClient
+            {
+                BaseAddress = new Uri(this.myConfiguration.BaseUrlApis)
+            };
+        }
+
+        internal string CreateOnBoard(Onboard onboard)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(onboard), Encoding.UTF8, "application/json");
+            var response = httpClient.PostAsync(request + "create", content).Result.Content.ReadAsStringAsync().Result;
+            return response;
         }
     }
 }
