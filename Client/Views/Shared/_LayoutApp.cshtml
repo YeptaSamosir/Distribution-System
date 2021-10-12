@@ -86,7 +86,7 @@
                             <div class="menu_section">
                                 <h3>Admin</h3>
                                 <ul class="nav side-menu">
-                                    <li class=""><a><i class="fa fa-briefcase"></i>Onboard Manajement</a></li>
+                                    <li class=""><a href="~/admin/onboard"><i class="fa fa-briefcase"></i>Onboard Manajement</a></li>
                                     <li class=""><a href="~/admin/candidate"><i class="fa fa-folder"></i> Master Candidate</a></li>
                                     <li>
                                         <a>
@@ -278,6 +278,10 @@
     @if (ViewData["Title"] == "Schedule Interview")
     {
         <script src="~/data/dataScheduleInterview.js"></script>
+    }
+    @if (ViewData["Title"] == "Onboard Management")
+    {
+        <script src="~/data/dataOnboard.js"></script>
     }
 
 

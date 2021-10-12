@@ -1,0 +1,101 @@
+﻿@{
+    ViewData["Title"] = "Onboard Management";
+    Layout = "_LayoutApp";
+}
+@{
+    var data = ViewData["id"];
+}
+<div class="right_col" role="main">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="~/admin">Admin</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="col-12">
+            <h3>@ViewData["Title"]</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 ">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Onboard Management Detail</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="#">Settings 1</a>
+                                </li>
+                                <li>
+                                    <a href="#">Settings 2</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                    <form id="detail-onboard">
+                        <div class="clearfix"></div>
+                        <div class="form-group row ">
+                            <input type="hidden" name="name" id="id_batch" value="@data" />
+
+                            <label class="control-label col-md-3 col-sm-12 ">Candidate Name</label>
+                            <div class="col-md-8 col-sm-12 ">
+                                <input disabled type="text" class="form-control" id="nameCandidate" value="@data" >
+                            </div>
+                        </div>
+
+                        <div class="form-group row ">
+                            <label class="control-label col-md-3 col-sm-12 ">Email Candidate</label>
+                            <div class="col-md-8 col-sm-12 ">
+                                <input disabled type="text" class="form-control" id="emailCandidate" value="@data">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="control-label col-md-3 col-sm-12 ">Start Date</label>
+                            <div class="col-md-8 col-sm-12 ">
+                                <input disabled type="text" class="form-control" id="startDate" value="@data">
+                            </div>
+                        </div>
+
+                        <div class="form-group row ">
+                            <label class="control-label col-md-3 col-sm-12 ">End Date</label>
+                            <div class="col-md-8 col-sm-12 ">
+                                <input disabled type="text" class="form-control" id="endDate" value="@data">
+                            </div>
+                        </div>
+
+                        <div class="form-group row ">
+                            <label class="control-label col-md-3 col-sm-12 ">Status Candidate</label>
+                            <div class="col-md-8 col-sm-12 ">
+                                <input disabled type="text" class="form-control" id="statusCandidate" value="@data">
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                        <div class="form-group">
+                                <div class="col-md-9 col-sm-9  offset-md-5">
+                                    <button type="submit" class="btn btn-success fa fa-send"> Send Email to Candidate</button>
+                                </div>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
