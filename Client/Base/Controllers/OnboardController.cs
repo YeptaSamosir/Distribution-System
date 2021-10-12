@@ -4,6 +4,7 @@ using System.Linq;
 using API.Models;
 using Client.Repository.Data;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Base.Controllers
@@ -22,6 +23,19 @@ namespace Client.Base.Controllers
         {
             var result = repository.CreateOnBoard(onboard);
             return Json(result);
+        }   
+        
+        [HttpGet("")]
+        public IActionResult Index()
+        {
+            return View();
+        }
+        
+        [HttpGet("detail/{id}")]
+        public IActionResult DetailOnboard(string id)
+        {
+            ViewData["id"] = id;
+            return View();
         }
     }
 }

@@ -39,7 +39,7 @@ namespace API.Models
 
         [JsonIgnore]
         public virtual ICollection<ScheduleInterview> ScheduleInterviews { get; set; }
-        [JsonIgnore]
+        
         public virtual ICollection<Onboard> Onboards { get; set; }
     }
 
