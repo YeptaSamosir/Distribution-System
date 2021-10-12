@@ -12,6 +12,9 @@
 
     <!-- Bootstrap -->
     <link href="~/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--DateTimePicker-->
+    <link href="~/assets/vendors/bootstrap-datetimepicker2/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="~/assets/vendors/bootstrap-datetimepicker2/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="~/assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
@@ -21,6 +24,9 @@
 
     <!-- Custom Theme Style -->
     <link href="~/assets/build/css/custom.min.css" rel="stylesheet">
+
+    <!-- Sweet Alert 2-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="login">
@@ -39,6 +45,14 @@
         <script src="~/data/dataResetPassword.js"></script>
     }
 
+    @if (ViewData["Title"] == "Confirm schedule Interview")
+    {
+        <!-- bootstrap-datetimepicker2 -->
+        <script src="~/assets/vendors/bootstrap-datetimepicker2/js/bootstrap-datetimepicker.min.js"></script>
+        <script src="~/assets/vendors/bootstrap-datetimepicker2/js/bootstrap-datetimepicker.js"></script>
+
+        <script src="~/data/dataConfirmScheduleInterview.js"></script>
+    }
 </body>
 
 </html>

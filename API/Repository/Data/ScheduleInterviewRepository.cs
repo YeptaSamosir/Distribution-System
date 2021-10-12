@@ -22,16 +22,16 @@ namespace API.Repository.Data
             this.myConfiguration = myConfiguration.Value;
         }
 
-        internal int CreateScheduleInterview(SceduleInterviewVM sceduleInterviewVM)
+        internal string CreateInterview(CreateInterviewVM createInterviewVM)
         {
             try
             {
                 //check company id database if null create new company
                 int companyId;
-                var companyInDatabase = myContext.Companies.Where(x => x.Name.Equals(sceduleInterviewVM.CompanyName)).FirstOrDefault();
+                var companyInDatabase = myContext.Companies.Where(x => x.Name.Equals(createInterviewVM.CompanyName)).FirstOrDefault();
                 if (companyInDatabase == null)
                 {
-                    Company company = new Company(sceduleInterviewVM.CompanyName, DateTime.Now, DateTime.Now);
+                    Company company = new Company(createInterviewVM.CompanyName, DateTime.Now, DateTime.Now);
                     myContext.Companies.Add(company);
                     myContext.SaveChanges();
 
@@ -41,16 +41,23 @@ namespace API.Repository.Data
                     companyId = companyInDatabase.CompanyId;
                 }
                 //create scheduleInterviewID example "ITV-CP1CD1"
-                string ScheduleInterviewId = $"ITV-CP{companyId}CD{sceduleInterviewVM.CandidateId}";
+                string ScheduleInterviewId = $"ITV-CP{companyId}CD{createInterviewVM.CandidateId}";
+
+                //validation data
+                var resultData = myContext.ScheduleInterviews.Find(ScheduleInterviewId);
+                if (resultData != null) {
+                    return "Data already exists";
+                }
+
                 //add to Entity ScheduleInterview
                 ScheduleInterview scheduleInterview = new ScheduleInterview(
                     ScheduleInterviewId,
                     DateTime.MinValue,
-                    sceduleInterviewVM.CandidateId,
+                    createInterviewVM.CandidateId,
                     companyId,
-                    sceduleInterviewVM.CustomerName,
-                    sceduleInterviewVM.JobTitle,
-                    sceduleInterviewVM.Location, 
+                    createInterviewVM.CustomerName,
+                    createInterviewVM.JobTitle,
+                    createInterviewVM.Location, 
                     "ITV-WD",
                     DateTime.Now,
                     DateTime.Now
@@ -61,87 +68,45 @@ namespace API.Repository.Data
                 //add to Entity DetailScheduleInterview
                 DetailScheduleInterview detailScheduleInterview = new DetailScheduleInterview();
                 detailScheduleInterview.ScheduleInterviewId = scheduleInterview.ScheduleInterviewId;
-                detailScheduleInterview.EmailCandidate = sceduleInterviewVM.CandidateEmail;
-                detailScheduleInterview.EmailCustomer = sceduleInterviewVM.CustomerEmail;
-                detailScheduleInterview.TypeLocation = (DetailScheduleInterview.typeLocation)sceduleInterviewVM.Type;
+                detailScheduleInterview.EmailCandidate = createInterviewVM.CandidateEmail;
+                detailScheduleInterview.EmailCustomer = createInterviewVM.CustomerEmail;
+                detailScheduleInterview.TypeLocation = (DetailScheduleInterview.typeLocation)createInterviewVM.Type;
                 detailScheduleInterview.CreatedAt = DateTime.Now;
                 detailScheduleInterview.UpdatedAt = DateTime.Now;
                 myContext.DetailScheduleInterviews.Add(detailScheduleInterview);
                 myContext.SaveChanges();
 
-                //add to Entity scheduleInterviewDateOptions
-                ScheduleInterviewDateOption scheduleInterviewDateOptionOne = new ScheduleInterviewDateOption(
-                    scheduleInterview.ScheduleInterviewId,
-                    sceduleInterviewVM.DateTimeOne,
-                    DateTime.Now,
-                    DateTime.Now
-                );
-                myContext.ScheduleInterviewDateOptions.Add(scheduleInterviewDateOptionOne);
-                myContext.SaveChanges();
-
-                ScheduleInterviewDateOption scheduleInterviewDateOptionTwo = new ScheduleInterviewDateOption(
-                    scheduleInterview.ScheduleInterviewId,
-                    sceduleInterviewVM.DateTimeTwo,
-                    DateTime.Now,
-                    DateTime.Now
-                );
-                myContext.ScheduleInterviewDateOptions.Add(scheduleInterviewDateOptionTwo);
-                myContext.SaveChanges();
-
-                ScheduleInterviewDateOption scheduleInterviewDateOptionThree = new ScheduleInterviewDateOption(
-                   scheduleInterview.ScheduleInterviewId,
-                   sceduleInterviewVM.DateTimeThree,
-                   DateTime.Now,
-                   DateTime.Now
-                );
-                myContext.ScheduleInterviewDateOptions.Add(scheduleInterviewDateOptionThree);
-                myContext.SaveChanges();
-
-
-
-
                 //getdataCandidate
-                var candidateData = myContext.Candidates.Where(x => x.CandidateId.Equals(sceduleInterviewVM.CandidateId)).FirstOrDefault();
+                var candidateData = myContext.Candidates.Where(x => x.CandidateId.Equals(createInterviewVM.CandidateId)).FirstOrDefault();
 
-                //set sceduledate option
-                string mailTo = (sceduleInterviewVM.ScheduleFollowBy == "candidate") ? sceduleInterviewVM.CandidateEmail : sceduleInterviewVM.CustomerEmail;
-                string recipientName = (sceduleInterviewVM.ScheduleFollowBy == "candidate") ? candidateData.Name : sceduleInterviewVM.CustomerName;
-                string userFollow = (sceduleInterviewVM.ScheduleFollowBy == "candidate") ? "Interviewer" : "Candidate";
-               
-                string ScheduleDate1 = sceduleInterviewVM.DateTimeOne.ToString("dddd, dd MMMM hh:mm tt");
-                string ScheduleDate2 = sceduleInterviewVM.DateTimeTwo.ToString("dddd, dd MMMM hh:mm tt");
-                string ScheduleDate3 = sceduleInterviewVM.DateTimeThree.ToString("dddd, dd MMMM hh:mm tt");
-
-                string linkSchedule1 = $"{myConfiguration.BaseUrlClient}/interview/confirmation/{scheduleInterview.ScheduleInterviewId}/{scheduleInterviewDateOptionOne.Id}";
-                string linkSchedule2 = $"{myConfiguration.BaseUrlClient}/interview/confirmation/{scheduleInterview.ScheduleInterviewId}/{scheduleInterviewDateOptionTwo.Id}";
-                string linkSchedule3 = $"{myConfiguration.BaseUrlClient}/interview/confirmation/{scheduleInterview.ScheduleInterviewId}/{scheduleInterviewDateOptionThree.Id}";
-
-                //checktype
                 string location;
                 if (detailScheduleInterview.TypeLocation == 0)//Online
                 {
-                    location = $"Location : <a href={sceduleInterviewVM.Location}> Join </a><br><br>";
+                    location = $"Location : <a href={createInterviewVM.Location}> Join </a><br><br>";
                 }
                 else
                 {
-                    location = $"Place : {sceduleInterviewVM.Location} <br><br>";
+                    location = $"Place : {createInterviewVM.Location} <br><br>";
                 }
 
+                //RSACryptoServiceProvider encrypt email custommer
+                var rsaHelper = new RsaHelper();
+                var ScheduleId = rsaHelper.Encrypt(scheduleInterview.ScheduleInterviewId);
+
+                string mailTo = (createInterviewVM.ScheduleFollowBy == "candidate") ? createInterviewVM.CandidateEmail : createInterviewVM.CustomerEmail;
+                string recipientName = (createInterviewVM.ScheduleFollowBy == "candidate") ? scheduleInterview.Candidate.Name : createInterviewVM.CustomerName;
+                string userFollow = (createInterviewVM.ScheduleFollowBy == "candidate") ? "Interviewer" : "Candidate";
+                string formConfirmSchedule = $"{myConfiguration.BaseUrlClient}interview/confirmation/{createInterviewVM.ScheduleFollowBy}?s={ScheduleId}";
                 string subjectMail = "Interview Schedule Confirmation";
-                string bodyMail =
-                   
-                    $"Dear {recipientName}<br><br> " +
+                string bodyMail = $"Dear {recipientName}<br><br> " +
                     $"You will conduct an interview with the following details: <br>" +
-                    $"Company : <b>{sceduleInterviewVM.CompanyName}</b><br>" +
-                    $"Position : <b>{sceduleInterviewVM.JobTitle}</b><br>" +
+                    $"Company : <b>{createInterviewVM.CompanyName}</b><br>" +
+                    $"Position : <b>{createInterviewVM.JobTitle}</b><br>" +
                     $"Candidate : <b>{candidateData.Name}</b><br>" +
-                    $"User : <b>{sceduleInterviewVM.CustomerName}</b><br>" +
+                    $"Customer : <b>{createInterviewVM.CustomerName}</b><br>" +
                     $"{location}" +
-               
-                    $"Please choose a schedule you can, We will contact {userFollow} for follow your schedule : <br>" +
-                    $"<a href={linkSchedule1}> {ScheduleDate1}</a><br><br>" +
-                    $"<a href={linkSchedule2}> {ScheduleDate2}</a><br><br>" +
-                    $"<a href={linkSchedule3}> {ScheduleDate3}</a><br><br>" +
+                    $"Please choose three schedule you can, We will contact {userFollow} for follow your schedule : <br>" +
+                    $"<a href='{formConfirmSchedule}'> Select schedule</a><br><br>" +
                     $"<br><br>" +
                     $"[Distribution System]";
 
@@ -157,7 +122,7 @@ namespace API.Repository.Data
                     myConfiguration.SmtpServer,
                     myConfiguration.Port
                 );
-                return 1;
+                return "Success Create Schedule";
             }
             catch (Exception)
             {
@@ -167,7 +132,136 @@ namespace API.Repository.Data
 
         }
 
-        internal string ConfirmDateScheduleInterview(InterviewResponseVM interviewResponseVM)
+      
+
+        internal int CreateDateOption(CreateDateOptionsVM createDateOptionsVM)
+        {
+            //update status schedule to ITV-WC (WAITING CONFIRM)
+            var scheduleInterviewData = myContext.ScheduleInterviews.Where(x => x.ScheduleInterviewId == createDateOptionsVM.ScheduleInterviewId).FirstOrDefault();
+            scheduleInterviewData.StatusId = "ITV-WC";
+            scheduleInterviewData.UpdatedAt = DateTime.Now;
+            Update(scheduleInterviewData);
+            myContext.SaveChanges();
+
+            //add to Entity scheduleInterviewDateOptions
+            ScheduleInterviewDateOption scheduleInterviewDateOptionOne = new ScheduleInterviewDateOption(
+                createDateOptionsVM.ScheduleInterviewId,
+                (DateTime)createDateOptionsVM.DateTimeOne,
+                DateTime.Now,
+                DateTime.Now
+            );
+            myContext.ScheduleInterviewDateOptions.Add(scheduleInterviewDateOptionOne);
+            myContext.SaveChanges();
+
+            ScheduleInterviewDateOption scheduleInterviewDateOptionTwo = new ScheduleInterviewDateOption(
+                createDateOptionsVM.ScheduleInterviewId,
+                (DateTime)createDateOptionsVM.DateTimeTwo,
+                DateTime.Now,
+                DateTime.Now
+            );
+            myContext.ScheduleInterviewDateOptions.Add(scheduleInterviewDateOptionTwo);
+            myContext.SaveChanges();
+
+            ScheduleInterviewDateOption scheduleInterviewDateOptionThree = new ScheduleInterviewDateOption(
+               createDateOptionsVM.ScheduleInterviewId,
+               (DateTime)createDateOptionsVM.DateTimeThree,
+               DateTime.Now,
+               DateTime.Now
+            );
+            myContext.ScheduleInterviewDateOptions.Add(scheduleInterviewDateOptionThree);
+            myContext.SaveChanges();
+
+            //get detail data scheduleInterview
+            var detaildataScheduleInterview = myContext.DetailScheduleInterviews.Where(x => x.ScheduleInterviewId.Equals(createDateOptionsVM.ScheduleInterviewId)).FirstOrDefault();
+
+            //send result to email
+            string mailTo = (createDateOptionsVM.ScheduleFollowBy == "candidate") ? detaildataScheduleInterview.EmailCandidate : detaildataScheduleInterview.EmailCustomer;
+            string recipientName = (createDateOptionsVM.ScheduleFollowBy == "candidate") ? detaildataScheduleInterview.ScheduleInterview.Candidate.Name : detaildataScheduleInterview.ScheduleInterview.CustomerName;
+            string withName = (createDateOptionsVM.ScheduleFollowBy != "candidate") ? detaildataScheduleInterview.ScheduleInterview.Candidate.Name : detaildataScheduleInterview.ScheduleInterview.CustomerName;
+            string userFollow = (createDateOptionsVM.ScheduleFollowBy == "candidate") ? "Interviewer" : "Candidate";
+
+            string ScheduleDate1 = scheduleInterviewDateOptionOne.DateInterview.ToString("dddd, dd MMMM hh:mm tt");
+            string ScheduleDate2 = scheduleInterviewDateOptionTwo.DateInterview.ToString("dddd, dd MMMM hh:mm tt");
+            string ScheduleDate3 = scheduleInterviewDateOptionThree.DateInterview.ToString("dddd, dd MMMM hh:mm tt");
+
+            string linkSchedule1 = $"{myConfiguration.BaseUrlClient}interview/confirmation/{createDateOptionsVM.ScheduleInterviewId}/{scheduleInterviewDateOptionOne.Id}";
+            string linkSchedule2 = $"{myConfiguration.BaseUrlClient}interview/confirmation/{createDateOptionsVM.ScheduleInterviewId}/{scheduleInterviewDateOptionTwo.Id}";
+            string linkSchedule3 = $"{myConfiguration.BaseUrlClient}interview/confirmation/{createDateOptionsVM.ScheduleInterviewId}/{scheduleInterviewDateOptionThree.Id}";
+
+
+            string subjectMail = "Interview Schedule Confirmation";
+            string bodyMail =
+
+                $"The date you chose to schedule the interview with {withName}: <br>" +
+                $"1. <b>{ScheduleDate1}</b><br>" +
+                $"2. <b>{ScheduleDate2}</b><br>" +
+                $"3. <b>{ScheduleDate3}</b><br>" +
+                $"Please wait for a response from the {userFollow} for interview scheduling. <br>" +
+                $"<br><br>" +
+                $"[Distribution System]";
+
+
+            MailHelper mailHelper = new MailHelper();
+            mailHelper.SmtpClient(
+                subjectMail,
+                bodyMail,
+                mailTo,
+                myConfiguration.From,
+                myConfiguration.Email,
+                myConfiguration.Password,
+                myConfiguration.SmtpServer,
+                myConfiguration.Port
+            );
+
+            //checktype
+                string location;
+                if (detaildataScheduleInterview.TypeLocation == 0)//Online
+                {
+                    location = $"Location : <a href={detaildataScheduleInterview.ScheduleInterview.Location}> Join </a><br><br>";
+                }
+                else
+                {
+                    location = $"Location : {detaildataScheduleInterview.ScheduleInterview.Location} <br><br>";
+                }
+
+            //send response Confirmation Date
+            string userFollow2 = (createDateOptionsVM.ScheduleFollowBy != "candidate") ? "interviewer" : "candidate";
+            string mailTo2 = (createDateOptionsVM.ScheduleFollowBy == "candidate") ? detaildataScheduleInterview.EmailCustomer : detaildataScheduleInterview.EmailCandidate;
+            string subjectMail2 = "Interview Schedule Confirmation";
+            string bodyMail2 =
+
+                $"Dear {withName}<br><br> " +
+                $"You will conduct an interview with the following details: <br>" +
+                $"Company : <b>{detaildataScheduleInterview.ScheduleInterview.Company.Name}</b><br>" +
+                $"Position : <b>{detaildataScheduleInterview.ScheduleInterview.JobTitle}</b><br>" +
+                $"Candidate : <b>{detaildataScheduleInterview.ScheduleInterview.Candidate.Name}</b><br>" +
+                $"Customer : <b>{detaildataScheduleInterview.ScheduleInterview.CustomerName}</b><br>" +
+                $"{location}" +
+
+                $"Please choose a schedule you can, We will contact {userFollow2} : <br>" +
+                $"<a href={linkSchedule1}> {ScheduleDate1}</a><br><br>" +
+                $"<a href={linkSchedule2}> {ScheduleDate2}</a><br><br>" +
+                $"<a href={linkSchedule3}> {ScheduleDate3}</a><br><br>" +
+                $"<br><br>" +
+                $"[Distribution System]";
+
+
+            MailHelper mailHelper2 = new MailHelper();
+            mailHelper2.SmtpClient(
+                subjectMail2,
+                bodyMail2,
+                mailTo2,
+                myConfiguration.From,
+                myConfiguration.Email,
+                myConfiguration.Password,
+                myConfiguration.SmtpServer,
+                myConfiguration.Port
+            );
+
+            return 1;
+        }
+
+        internal string ResponseConfirmationDate(InterviewResponseVM interviewResponseVM)
         {
             try
             {
@@ -272,7 +366,7 @@ namespace API.Repository.Data
             }
         }
 
-        internal string ConfirmationDateAcceptedCandidate(InterviewResponseVM interviewResponseVM)
+        internal string ConfirmationAcceptedCandidate(InterviewResponseVM interviewResponseVM)
         {
             try
             {

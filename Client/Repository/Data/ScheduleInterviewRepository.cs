@@ -28,25 +28,33 @@ namespace Client.Repository.Data
             };
         }
 
-        public string InsertSceduleInterview(SceduleInterviewVM sceduleInterviewVM)
+        public string CreateInterview(CreateInterviewVM sceduleInterviewVM)
         {
             StringContent content = new StringContent(JsonConvert.SerializeObject(sceduleInterviewVM), Encoding.UTF8, "application/json");
             var response = httpClient.PostAsync(request + "create", content).Result.Content.ReadAsStringAsync().Result;
             return response;
         }
 
-        public string ConfirmationDate(InterviewResponseVM interviewResponseVM)
+        public string CreateDateOption(CreateDateOptionsVM createDateOptionsVM)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(createDateOptionsVM), Encoding.UTF8, "application/json");
+            return httpClient.PostAsync(request + "create-date-option", content).Result.Content.ReadAsStringAsync().Result;
+        }
+
+        internal string ResponseConfirmationDate(InterviewResponseVM interviewResponseVM)
         {
             StringContent content = new StringContent(JsonConvert.SerializeObject(interviewResponseVM), Encoding.UTF8, "application/json");
-            var response = httpClient.PutAsync(request + "confirmation-date", content).Result.Content.ReadAsStringAsync().Result;
+            var response = httpClient.PutAsync(request + "response-confirmation-date", content).Result.Content.ReadAsStringAsync().Result;
             return response;
         }
 
-        internal object ConfirmationAcceptedCandidate(InterviewResponseVM interviewResponseVM)
+        internal string ConfirmationAcceptedCandidate(InterviewResponseVM interviewResponseVM)
         {
             StringContent content = new StringContent(JsonConvert.SerializeObject(interviewResponseVM), Encoding.UTF8, "application/json");
             var response = httpClient.PutAsync(request + "confirmation-accepted-candidate", content).Result.Content.ReadAsStringAsync().Result;
             return response;
         }
+
+       
     }
 }

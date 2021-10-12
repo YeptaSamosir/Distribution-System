@@ -4,14 +4,16 @@ using API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20211011144811_SeedIntialData")]
+    partial class SeedIntialData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,7 +68,6 @@ namespace API.Migrations
                         {
                             AccountId = 1,
                             AttemptCount = 0,
-                            
                             CreatedAt = new DateTime(2021, 10, 11, 21, 48, 11, 177, DateTimeKind.Local).AddTicks(8828),
                             Email = "admin@mail.com",
                             IsActive = true,
@@ -104,16 +105,13 @@ namespace API.Migrations
                             RoleId = "SP-ADM",
                             CreatedAt = new DateTime(2021, 10, 11, 21, 48, 11, 178, DateTimeKind.Local).AddTicks(3200),
                             UpdatedAt = new DateTime(2021, 10, 11, 21, 48, 11, 178, DateTimeKind.Local).AddTicks(3661)
-
                         },
                         new
                         {
                             AccountId = 1,
                             RoleId = "ADM",
-
                             CreatedAt = new DateTime(2021, 10, 11, 21, 48, 11, 178, DateTimeKind.Local).AddTicks(4102),
                             UpdatedAt = new DateTime(2021, 10, 11, 21, 48, 11, 178, DateTimeKind.Local).AddTicks(4108)
-
                         });
                 });
 
@@ -274,20 +272,16 @@ namespace API.Migrations
                         new
                         {
                             RoleId = "SP-ADM",
-
                             CreatedAt = new DateTime(2021, 10, 11, 21, 48, 10, 765, DateTimeKind.Local).AddTicks(3626),
                             Name = "Super Administrator",
                             UpdatedAt = new DateTime(2021, 10, 11, 21, 48, 10, 766, DateTimeKind.Local).AddTicks(8855)
-
                         },
                         new
                         {
                             RoleId = "ADM",
-
                             CreatedAt = new DateTime(2021, 10, 11, 21, 48, 10, 766, DateTimeKind.Local).AddTicks(9367),
                             Name = "Administrator",
                             UpdatedAt = new DateTime(2021, 10, 11, 21, 48, 10, 766, DateTimeKind.Local).AddTicks(9374)
-
                         });
                 });
 
@@ -399,7 +393,6 @@ namespace API.Migrations
                         new
                         {
                             StatusId = "ITV-WD",
-
                             CreatedAt = new DateTime(2021, 10, 11, 21, 48, 11, 178, DateTimeKind.Local).AddTicks(8863),
                             Name = "Waiting Date",
                             TypeStatusId = "ITV",
@@ -412,7 +405,6 @@ namespace API.Migrations
                             Name = "Waiting Confirm",
                             TypeStatusId = "ITV",
                             UpdatedAt = new DateTime(2021, 10, 11, 21, 48, 11, 178, DateTimeKind.Local).AddTicks(9741)
-
                         },
                         new
                         {
@@ -429,7 +421,6 @@ namespace API.Migrations
                             Name = "Done",
                             TypeStatusId = "ITV",
                             UpdatedAt = new DateTime(2021, 10, 11, 21, 48, 11, 178, DateTimeKind.Local).AddTicks(9749)
-
                         },
                         new
                         {
@@ -438,7 +429,6 @@ namespace API.Migrations
                             Name = "Cancel",
                             TypeStatusId = "ITV",
                             UpdatedAt = new DateTime(2021, 10, 11, 21, 48, 11, 178, DateTimeKind.Local).AddTicks(9753)
-
                         },
                         new
                         {
@@ -447,7 +437,6 @@ namespace API.Migrations
                             Name = "On Going",
                             TypeStatusId = "ONB",
                             UpdatedAt = new DateTime(2021, 10, 11, 21, 48, 11, 178, DateTimeKind.Local).AddTicks(9757)
-
                         },
                         new
                         {
