@@ -7,9 +7,9 @@ $.ajax({
     console.log(response);
     text = '<option value=""></option>';
     $.each(response, function (key, val) {
-
-        text += `<option value="${val.candidateId}"> ${val.name}</option> `;
-
+        if (val.status == "Idle") {
+            text += `<option value="${val.candidateId}"> ${val.name}</option> `;
+        }
     });
 
     $('#inputCandidate').html(text);

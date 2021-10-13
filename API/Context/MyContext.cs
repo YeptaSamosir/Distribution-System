@@ -113,7 +113,7 @@ namespace API.Context
                 new Status {
                     StatusId = "ITV-WD", //interview waiting date
                     TypeStatusId = "ITV",
-                    Name = "Waiting Date",
+                    Name = "Waiting Schedule",
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now
                 },
@@ -121,7 +121,7 @@ namespace API.Context
                 {
                     StatusId = "ITV-WC", //interview waiting confirmation
                     TypeStatusId = "ITV",
-                    Name = "Waiting Confirm",
+                    Name = "Waiting Confirmation",
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now
                 },
@@ -129,9 +129,17 @@ namespace API.Context
                 {
                     StatusId = "ITV-OG", //interview ongoing
                     TypeStatusId = "ITV",
-                    Name = "On Going",
+                    Name = "Interview in progress",
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now
+                },
+                new Status
+                {
+                     StatusId = "ITV-AC", //interview accepted
+                     TypeStatusId = "ITV",
+                     Name = "Candidate Accepted",
+                     CreatedAt = DateTime.Now,
+                     UpdatedAt = DateTime.Now
                 },
                 new Status
                 {
@@ -145,14 +153,14 @@ namespace API.Context
                 {
                     StatusId = "ITV-CN", //interview cancel
                     TypeStatusId = "ITV",
-                    Name = "Cancel",
+                    Name = "Candidate canceled",
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now
                 },
                 new Status
                 {
                     StatusId = "ONB-OG", //Onboard Ongoing
-                    Name = "On Going",
+                    Name = "Onboard in progress",
                     TypeStatusId = "ONB",
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API.Migrations
 {
-    public partial class seedintialdata : Migration
+    public partial class SeedIntialData : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -143,6 +143,7 @@ namespace API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CandidateId = table.Column<int>(type: "int", nullable: false),
                     CompanyId = table.Column<int>(type: "int", nullable: false),
+                    JobTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StatusId = table.Column<string>(type: "nvarchar(16)", nullable: true),
                     DateStart = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -184,6 +185,7 @@ namespace API.Migrations
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StartInterview = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndInterview = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FollowingBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StatusId = table.Column<string>(type: "nvarchar(16)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -260,15 +262,15 @@ namespace API.Migrations
             migrationBuilder.InsertData(
                 table: "tb_m_accounts",
                 columns: new[] { "AccountId", "AttemptCount", "CreatedAt", "Email", "IsActive", "Name", "Password", "UpdatedAt", "Username" },
-                values: new object[] { 1, 0, new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(1264), "admin@mail.com", true, "Super Administrator", "$2b$12$6vDRKWR80AQR7EjBJ3IASeeP9QCD2CEi/CWYLFjcAQouLRbxOuVFW", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(1625), "Admin" });
+                values: new object[] { 1, 0, new DateTime(2021, 10, 13, 5, 11, 23, 835, DateTimeKind.Local).AddTicks(8001), "admin@mail.com", true, "Super Administrator", "$2b$12$Ray2VSHraU9HmxUxAB4yBuehMwbySP05lHE5914jtCRIDl/qoZV1O", new DateTime(2021, 10, 13, 5, 11, 23, 835, DateTimeKind.Local).AddTicks(8364), "Admin" });
 
             migrationBuilder.InsertData(
                 table: "tb_m_roles",
                 columns: new[] { "RoleId", "CreatedAt", "Name", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { "SP-ADM", new DateTime(2021, 10, 12, 9, 53, 44, 934, DateTimeKind.Local).AddTicks(3447), "Super Administrator", new DateTime(2021, 10, 12, 9, 53, 44, 935, DateTimeKind.Local).AddTicks(3540) },
-                    { "ADM", new DateTime(2021, 10, 12, 9, 53, 44, 935, DateTimeKind.Local).AddTicks(3914), "Administrator", new DateTime(2021, 10, 12, 9, 53, 44, 935, DateTimeKind.Local).AddTicks(3919) }
+                    { "SP-ADM", new DateTime(2021, 10, 13, 5, 11, 23, 462, DateTimeKind.Local).AddTicks(2993), "Super Administrator", new DateTime(2021, 10, 13, 5, 11, 23, 464, DateTimeKind.Local).AddTicks(793) },
+                    { "ADM", new DateTime(2021, 10, 13, 5, 11, 23, 464, DateTimeKind.Local).AddTicks(1207), "Administrator", new DateTime(2021, 10, 13, 5, 11, 23, 464, DateTimeKind.Local).AddTicks(1213) }
                 });
 
             migrationBuilder.InsertData(
@@ -276,8 +278,8 @@ namespace API.Migrations
                 columns: new[] { "TypeStatusId", "CreatedAt", "Name", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { "ITV", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(5023), "Schedule Interview", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(5301) },
-                    { "ONB", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(5571), "Onboard Candidate", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(5575) }
+                    { "ITV", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(1839), "Schedule Interview", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(2111) },
+                    { "ONB", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(2376), "Onboard Candidate", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(2381) }
                 });
 
             migrationBuilder.InsertData(
@@ -285,8 +287,8 @@ namespace API.Migrations
                 columns: new[] { "AccountId", "RoleId", "CreatedAt", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, "SP-ADM", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(3360), new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(3639) },
-                    { 1, "ADM", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(3957), new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(3963) }
+                    { 1, "SP-ADM", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(214), new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(547) },
+                    { 1, "ADM", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(820), new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(824) }
                 });
 
             migrationBuilder.InsertData(
@@ -294,13 +296,14 @@ namespace API.Migrations
                 columns: new[] { "StatusId", "CreatedAt", "Name", "TypeStatusId", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { "ITV-WD", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(6891), "Waiting Date", "ITV", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7165) },
-                    { "ITV-WC", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7430), "Waiting Confirm", "ITV", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7434) },
-                    { "ITV-OG", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7436), "On Going", "ITV", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7437) },
-                    { "ITV-DN", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7439), "Done", "ITV", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7440) },
-                    { "ITV-CN", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7441), "Cancel", "ITV", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7442) },
-                    { "ONB-OG", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7444), "On Going", "ONB", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7445) },
-                    { "ONB-DN", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7447), "Done", "ONB", new DateTime(2021, 10, 12, 9, 53, 45, 286, DateTimeKind.Local).AddTicks(7448) }
+                    { "ITV-WD", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(3603), "Waiting Schedule", "ITV", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(3930) },
+                    { "ITV-WC", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(4202), "Waiting Confirmation", "ITV", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(4206) },
+                    { "ITV-OG", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(4208), "Interview in progress", "ITV", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(4209) },
+                    { "ITV-AC", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(4211), "Candidate Accepted", "ITV", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(4212) },
+                    { "ITV-DN", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(4213), "Done", "ITV", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(4214) },
+                    { "ITV-CN", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(4216), "Candidate canceled", "ITV", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(4217) },
+                    { "ONB-OG", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(4219), "Onboard in progress", "ONB", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(4220) },
+                    { "ONB-DN", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(4221), "Done", "ONB", new DateTime(2021, 10, 13, 5, 11, 23, 836, DateTimeKind.Local).AddTicks(4222) }
                 });
 
             migrationBuilder.CreateIndex(

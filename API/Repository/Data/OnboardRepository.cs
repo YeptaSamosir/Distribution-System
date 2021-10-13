@@ -30,6 +30,7 @@ namespace API.Repository.Data
             onboard.StatusId = "ONB-OG";
             onboard.CreatedAt = DateTime.Now;
             onboard.UpdatedAt = DateTime.Now;
+            onboard.DateEnd = DateTime.MinValue;
             myContext.Onboards.Add(onboard);
             myContext.SaveChanges();
 
@@ -41,13 +42,20 @@ namespace API.Repository.Data
             myContext.Candidates.Update(candidateData);
             myContext.SaveChanges();
 
+            //update statud at schedulinterview
+            var scheduleInterviewsData = myContext.ScheduleInterviews.Where(x => x.CandidateId == onboard.CandidateId || x.CompanyId == onboard.CompanyId).FirstOrDefault();
+            scheduleInterviewsData.StatusId = "ITV-DN"; //interview done
+            scheduleInterviewsData.UpdatedAt = DateTime.Now;
+            myContext.ScheduleInterviews.Update(scheduleInterviewsData);
+            myContext.SaveChanges();
+
             //get data company 
             var companyData = myContext.Companies.Where(x => x.CompanyId == onboard.CompanyId).FirstOrDefault();
-            
+
+           
 
             //send email notification to candidate and link calendar
-            string dateStart = onboard.DateStart.ToString("dddd, dd MMMM hh:mm tt");
-            string dateEnd = onboard.DateEnd.ToString("dddd, dd MMMM hh:mm tt");
+            string dateStart = onboard.DateStart.ToString("dddd, dd MMMM yyyy");
           
             string subjectMail = "[INFO] Schedule Onboard";
             string bodyMail =
@@ -55,8 +63,8 @@ namespace API.Repository.Data
                 $"Your onboard information: <br>" +
                 $"Candidate : <b>{candidateData.Name}</b><br>" +
                 $"Company : <b>{companyData.Name}</b><br>" +
-                $"Date Start : <b>{dateStart}</b><br>" +
-                $"Date End : <b>{dateEnd}</b><br>" +
+                $"Postion :  <b>{onboard.JobTitle}</b><br>" +
+                $"Date Start : <b>{dateStart}</b><br><br>" +
               
                 $"[Distribution System]";
 

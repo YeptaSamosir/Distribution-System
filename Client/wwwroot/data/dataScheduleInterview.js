@@ -50,46 +50,58 @@
                         data: null,
                     },
                     {
-                        render: function (data, type, row, meta) {
-                            scheduleDate = row['startInterview'];
-
-                            if (scheduleDate == null) {
-                                return ``;
-                            } else {
-                                return scheduleDate;
-                            }
-                        },
-                    },
-                    {
-                        data: "company.name",
-                    },
-                    {
                         data: "customerName",
                     },
                     {
                         data: "candidate.name",
                     },
                     {
+                        data: "company.name",
+                    },
+                    {
                         data: "jobTitle",
                     },
                     {
+                        render: function (data, type, row, meta) {
+                            scheduleDate = row['startInterview'];
+
+                            if (scheduleDate == "0001-01-01T00:00:00") {
+                                return `-`;
+                            } else {
+                                return scheduleDate;
+                            }
+                        },
+                    },
+                    {
                         data: "status.name",
+                        render: function (data, type, row, meta) {
+                            var user = (row['followingBy'] == 'candidate')? 'customer' : 'candidate';
+
+                            if (row['statusId'] == "ITV-WD") {
+                                return data + " from " + row['followingBy'];
+                            }
+                            if (row['statusId'] == "ITV-WC") {
+                                return data + " from " + user;
+                            }
+
+                            return data;
+                          
+                        },
                     },
                     {
 
                         render: function (data, type, row, meta) {
-                            if (row["statusId"] == "ITV-DN") {
+                            if (row["statusId"] == "ITV-AC") {
                                 return `
                                 <div class="float-right">
-                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalOnboard"  onclick="modalOnboard('${row["scheduleInterviewId"]}')">
-                                        Create Schedule Onboard
-                                    </button>
-                                    <button type="button" class="btn btn-danger btn-sm"  onclick="deleteModalScheduleInterview('${row["scheduleInterviewId"]}')">
-                                        Delete
+                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalOnboard"  onclick="modalOnboard('${row["scheduleInterviewId"]}')">
+                                        Create Onboard
                                     </button>
                                 </div>
                                 `;
-                            } else {
+                            }
+
+                            if (row["statusId"] == "ITV-DN" || row["statusId"] == "ITV-CN"){
                                 return `
                                 <div class="float-right">
                                     <button type="button" class="btn btn-danger btn-sm"  onclick="deleteModalScheduleInterview('${row["scheduleInterviewId"]}')">
@@ -98,6 +110,15 @@
                                 </div>
                                 `;
                             }
+                            
+                            return `
+                            <div class="float-right">
+                                <button type="button" class="btn btn-danger btn-sm" disabled>
+                                    Delete
+                                </button>
+                            </div>
+                            `;
+                            
                         },
                     },
                 ],
@@ -166,11 +187,11 @@ function checkValidation(errorMsg, elementById, elementMsg) {
 }
 
 $('#inputOnboardate').daterangepicker({
-    opens: 'left'
+    singleDatePicker: true,
+    showDropdowns: true,
 }, function (start, end, label) {
-    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+    console.log("A new date selection was made: " + start.format('YYYY-MM-DD'));
     $('#dateStart').val(`${start.format('YYYY-MM-DD')}`);
-    $('#dateEnd').val(`${end.format('YYYY-MM-DD')}`);
 });
 
 //modal onboard
@@ -184,6 +205,7 @@ modalOnboard = (id) => {
         //set value
         $('#inputCandidateId').val(`${result.candidateId}`);
         $('#inputCompanyId').val(`${result.companyId}`);
+        $('#inputJobTitle').val(`${result.jobTitle}`);
         $('#candidateName').html(`${result.candidate.name}`);
         $('#candidateEmail').html(`${result.candidate.email}`);
         $('#companyName').html(`${result.company.name}`);
@@ -192,8 +214,6 @@ modalOnboard = (id) => {
     }).fail((result) => {
         console.log(result);
     });
-
-
 }
 
 //create onboard
@@ -206,8 +226,8 @@ $("#form-create-onbaord").submit(function (event) {
     var dataInput = new Object();
     dataInput.CandidateId = $("#inputCandidateId").val();
     dataInput.CompanyId = $("#inputCompanyId").val();
+    dataInput.JobTitle = $("#inputJobTitle").val();
     dataInput.DateStart = $("#dateStart").val();
-    dataInput.DateEnd = $("#dateEnd").val();
     dataInput.StatusId = "ONB-OG";
    
     console.log(dataInput);
@@ -234,8 +254,6 @@ $("#form-create-onbaord").submit(function (event) {
 
                 if (obj.errors != undefined) {
                     checkValidation(obj.errors.DateStart, "inputOnboardate", "messageOnboardate");
-                    checkValidation(obj.errors.DateEnd, "inputOnboardate", "messageOnboardate");
-
                 } else {
 
                     //idmodal di hide
