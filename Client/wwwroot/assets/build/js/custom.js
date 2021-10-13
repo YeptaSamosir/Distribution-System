@@ -2373,7 +2373,7 @@ function init_compose() {
 };
 
 /* CALENDAR */
-
+/* 
 function init_calendar() {
 
     if (typeof ($.fn.fullCalendar) === 'undefined') { return; }
@@ -2474,6 +2474,7 @@ function init_calendar() {
     });
 
 };
+*/
 
 /* DATA TABLES */
 /*

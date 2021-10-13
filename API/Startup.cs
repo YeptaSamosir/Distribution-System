@@ -48,6 +48,7 @@ namespace API
             services.AddScoped<ScheduleInterviewDateOptionRepository>();
             services.AddScoped<StatusRepository>();
             services.AddScoped<TypeStatusRepository>();
+            services.AddScoped<DashboardRepository>();
 
             services.Configure<MyConfiguration>(Configuration.GetSection("MyConfiguration"));
 

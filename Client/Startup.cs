@@ -59,6 +59,7 @@ namespace Client
             services.AddScoped<ScheduleInterviewRepository>();
             services.AddScoped<StatusRepository>();
             services.AddScoped<SettingRepository>();
+            services.AddScoped<DashboardRepository>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
