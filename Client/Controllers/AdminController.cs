@@ -7,16 +7,18 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
+using Client.Repository.Data;
 
 namespace Client.Controllers
 {
     [Route("[controller]")]
     public class AdminController : Controller
     {
+        private readonly DashboardRepository dashboardRepository;
         private readonly ILogger<AdminController> _logger;
-
-        public AdminController(ILogger<AdminController> logger)
+        public AdminController(ILogger<AdminController> logger, DashboardRepository dashboardRepository)
         {
+            this.dashboardRepository = dashboardRepository;
             _logger = logger;
         }
 
@@ -27,10 +29,20 @@ namespace Client.Controllers
             {
                 return RedirectToAction("login", "Auth");
             }
-
+           
             ViewBag.Token = HttpContext.Session.GetString("JWToken");
             ViewBag.EmailLogin = HttpContext.Session.GetString("LogEmail");
+            
             return View();
+        }
+
+        [HttpGet("dashboard/data-count")]
+        public async Task<JsonResult> GetData()
+        {
+            //getdatacount
+            var data = await dashboardRepository.GetDataCount();
+
+            return Json(data);
         }
 
         [HttpGet("error")]
