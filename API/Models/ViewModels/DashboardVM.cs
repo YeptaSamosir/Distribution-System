@@ -16,4 +16,12 @@ namespace API.Models.ViewModels
         public int TotalInterviewCanceled { get; set; }
         public int TotalOnboard { get; set; }
     }
+
+    public class FullCalender
+    {
+        public string Title { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
+        public ScheduleInterview Data { get; set; }
+    }
 }

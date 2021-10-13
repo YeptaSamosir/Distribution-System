@@ -39,5 +39,17 @@ namespace Client.Repository.Data
             }
             return entity;
         }
+
+        internal async Task<List<FullCalender>> GetDataForCalender()
+        {
+            List<FullCalender> entities = new List<FullCalender>();
+
+            using (var response = await httpClient.GetAsync(request + "data-for-calender"))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entities = JsonConvert.DeserializeObject<List<FullCalender>>(apiResponse);
+            }
+            return entities;
+        }
     }
 }

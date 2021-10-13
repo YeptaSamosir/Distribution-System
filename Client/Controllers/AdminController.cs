@@ -32,7 +32,7 @@ namespace Client.Controllers
            
             ViewBag.Token = HttpContext.Session.GetString("JWToken");
             ViewBag.EmailLogin = HttpContext.Session.GetString("LogEmail");
-            
+            ViewBag.Name = HttpContext.Session.GetString("LogName");
             return View();
         }
 
@@ -41,6 +41,15 @@ namespace Client.Controllers
         {
             //getdatacount
             var data = await dashboardRepository.GetDataCount();
+
+            return Json(data);
+        }
+
+        [HttpGet("dashboard/data-for-calender")]
+        public async Task<JsonResult> GetDataForCalender()
+        {
+            //getdatacount
+            var data = await dashboardRepository.GetDataForCalender();
 
             return Json(data);
         }

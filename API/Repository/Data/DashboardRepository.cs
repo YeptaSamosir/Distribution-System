@@ -3,6 +3,7 @@ using API.Context;
 using API.Models.ViewModels;
 using API.Repository.Interface;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,5 +66,23 @@ namespace API.Repository.Data
             }
         }
 
+        internal IEnumerable<FullCalender> FullCalender()
+        {
+            var scheduleInterviews = myContext.ScheduleInterviews.Where(x => x.StatusId == "ITV-OG").ToList();
+            
+            List<FullCalender> fullCalenders = new List<FullCalender>();
+
+            for (int i = 0; i < scheduleInterviews.Count(); i++)
+            {
+                fullCalenders.Add(new FullCalender() {
+                    Title = $"{scheduleInterviews[i].Company.Name} - {scheduleInterviews[i].JobTitle} - {scheduleInterviews[i].Candidate.Name}",
+                    Start = scheduleInterviews[i].StartInterview,
+                    End = scheduleInterviews[i].StartInterview.AddHours(2),
+                    Data = scheduleInterviews[i]
+                });
+            }
+
+            return fullCalenders;
+        }
     }
 }

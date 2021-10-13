@@ -31,5 +31,12 @@ namespace API.Base.Controllers
 
             return Ok(dashboardData);
         }
+        
+        [HttpGet("data-for-calender")]
+        public ActionResult FullCalender()
+        {
+            var Entity = dashboardRepository.FullCalender();
+            return Ok(Entity);
+        }
     }
 }
