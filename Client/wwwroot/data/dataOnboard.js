@@ -56,24 +56,36 @@
                         data: "candidate.email",
                     },
                     {
+                        data: "company.name",
+                    },
+                    {
+                        data: "jobTitle",
+                    },
+                    {
                         data: "dateStart",
                     },
                     {
-                        data: "dateEnd",
+                        render: function (data, type, row, meta) {
+                            dateEnd = row['dateEnd'];
+
+                            if (dateEnd == "0001-01-01T00:00:00") {
+                                return `-`;
+                            } else {
+                                return dateEnd;
+                            }
+                        },
                     },
                     {
-                        data: "candidate.status",
+                        data: "status.name",
                     },
                     {
 
                         render: function (data, type, row, meta) {
-
                             return `
                                 <div class="float-right">
                                     <a href="onboard/detail/${row["onboardId"]}"><button type="button" class="btn btn-success btn-sm" data-target="#detail-onboard" onclick="detailOnboard('${row["onboardId"]}')">
                                         Detail
                                     </button></a>
-
                                 </div>
                                 `;
                         },

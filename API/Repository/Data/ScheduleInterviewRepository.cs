@@ -57,7 +57,8 @@ namespace API.Repository.Data
                     companyId,
                     createInterviewVM.CustomerName,
                     createInterviewVM.JobTitle,
-                    createInterviewVM.Location, 
+                    createInterviewVM.Location,
+                    createInterviewVM.ScheduleFollowBy,
                     "ITV-WD",
                     DateTime.Now,
                     DateTime.Now
@@ -97,17 +98,20 @@ namespace API.Repository.Data
                 string recipientName = (createInterviewVM.ScheduleFollowBy == "candidate") ? scheduleInterview.Candidate.Name : createInterviewVM.CustomerName;
                 string userFollow = (createInterviewVM.ScheduleFollowBy == "candidate") ? "Interviewer" : "Candidate";
                 string formConfirmSchedule = $"{myConfiguration.BaseUrlClient}interview/confirmation/{createInterviewVM.ScheduleFollowBy}?s={ScheduleId}";
-                string subjectMail = "Interview Schedule Confirmation";
+                string subjectMail = "[INTERVIEW SCHEDULE CONFIRMATION] Confirm date selection for interview";
                 string bodyMail = $"Dear {recipientName}<br><br> " +
                     $"You will conduct an interview with the following details: <br>" +
                     $"Company : <b>{createInterviewVM.CompanyName}</b><br>" +
                     $"Position : <b>{createInterviewVM.JobTitle}</b><br>" +
                     $"Candidate : <b>{candidateData.Name}</b><br>" +
-                    $"Customer : <b>{createInterviewVM.CustomerName}</b><br>" +
+                    $"User : <b>{createInterviewVM.CustomerName}</b><br>" +
                     $"{location}" +
                     $"Please choose three schedule you can, We will contact {userFollow} for follow your schedule : <br>" +
                     $"<a href='{formConfirmSchedule}'> Select schedule</a><br><br>" +
-                    $"<br><br>" +
+                    $"Please tell us immediately, to be processed immediately.<br>" +
+                    $"<br>" +
+                    $"Thank you<br>" +
+                    $"<br>" +
                     $"[Distribution System]";
 
 
@@ -189,15 +193,17 @@ namespace API.Repository.Data
             string linkSchedule3 = $"{myConfiguration.BaseUrlClient}interview/confirmation/{createDateOptionsVM.ScheduleInterviewId}/{scheduleInterviewDateOptionThree.Id}";
 
 
-            string subjectMail = "Interview Schedule Confirmation";
+            string subjectMail = "[INTERVIEW SCHEDULE CONFIRMATION] Confirm date selection for interview";
             string bodyMail =
 
                 $"The date you chose to schedule the interview with {withName}: <br>" +
                 $"1. <b>{ScheduleDate1}</b><br>" +
                 $"2. <b>{ScheduleDate2}</b><br>" +
                 $"3. <b>{ScheduleDate3}</b><br>" +
-                $"Please wait for a response from the {userFollow} for interview scheduling. <br>" +
+                $"Please wait for a response from the {userFollow} for interview. <br>" +
                 $"<br><br>" +
+                $"Thank you<br>" +
+                $"<br>" +
                 $"[Distribution System]";
 
 
@@ -227,7 +233,7 @@ namespace API.Repository.Data
             //send response Confirmation Date
             string userFollow2 = (createDateOptionsVM.ScheduleFollowBy != "candidate") ? "interviewer" : "candidate";
             string mailTo2 = (createDateOptionsVM.ScheduleFollowBy == "candidate") ? detaildataScheduleInterview.EmailCustomer : detaildataScheduleInterview.EmailCandidate;
-            string subjectMail2 = "Interview Schedule Confirmation";
+            string subjectMail2 = "[INTERVIEW SCHEDULE CONFIRMATION] Confirm date selection for interview";
             string bodyMail2 =
 
                 $"Dear {withName}<br><br> " +
@@ -293,7 +299,7 @@ namespace API.Repository.Data
 
 
                 //send email schedule to candidate
-                string subjectMail1 = "Invitations to interview";
+                string subjectMail1 = "[INTERVIEW] Invitations to interview";
                 string bodyMail1 =
                     $"Dear {scheduleInterviewData.Candidate.Name}<br><br> " +
                     $"You will conduct an interview with the following details: <br>" +
@@ -329,7 +335,7 @@ namespace API.Repository.Data
                 string linkAccept = $"{myConfiguration.BaseUrlClient}/interview/{scheduleInterviewData.ScheduleInterviewId}/ACCEPTED?e={Emailencrypted}";
                 string linkCancel = $"{myConfiguration.BaseUrlClient}/interview/{scheduleInterviewData.ScheduleInterviewId}/CANCELED?e={Emailencrypted}";
 
-                string subjectMail2 = "Invitations to interview";
+                string subjectMail2 = "[INTERVIEW] Invitations to interview";
                 string bodyMail2 =
                     $"Dear {scheduleInterviewData.CustomerName}<br><br> " +
                     $"You will conduct an interview with the following details: <br>" +
@@ -390,8 +396,8 @@ namespace API.Repository.Data
                 //if candidate accepted
                 if (interviewResponseVM.CandidateAccepted == "ACCEPTED")
                 {
-                    //update status schedule to ITV-DN(interview done) candidate accepted 
-                    scheduleInterviewData.StatusId = "ITV-DN";
+                    //update status schedule to ITV-AC (candidate accepted)
+                    scheduleInterviewData.StatusId = "ITV-AC";
                     scheduleInterviewData.UpdatedAt = DateTime.Now;
                     Update(scheduleInterviewData);
                     myContext.SaveChanges();

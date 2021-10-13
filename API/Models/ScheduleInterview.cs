@@ -11,7 +11,7 @@ namespace API.Models
     [Table("tb_tr_schedule_interviews")]
     public class ScheduleInterview
     {
-        public ScheduleInterview(string scheduleInterviewId, DateTime startInterview, int candidateId, int companyId, string customerName, string jobTitle, string location, string statusId, DateTime createdAt, DateTime updatedAt)
+        public ScheduleInterview(string scheduleInterviewId, DateTime startInterview, int candidateId, int companyId, string customerName, string jobTitle, string location,string followingBy, string statusId, DateTime createdAt, DateTime updatedAt)
         {
             ScheduleInterviewId = scheduleInterviewId;
             StartInterview = startInterview;
@@ -20,48 +20,51 @@ namespace API.Models
             CustomerName = customerName;
             JobTitle = jobTitle;
             Location = location;
+            FollowingBy = followingBy;
             StatusId = statusId;
             CreatedAt = createdAt;
             UpdatedAt = updatedAt;
         }
 
         [Key]
-        [Required(ErrorMessage = "ID tidak boleh kosong")]
-        [StringLength(16, MinimumLength = 1, ErrorMessage = "Role ID harus mengandung 3-64 karakter")]
+        [Required]
+        [StringLength(16, MinimumLength = 1)]
         public string ScheduleInterviewId { get; set; }
 
         [ForeignKey("Candidate")]
-        [Required(ErrorMessage = "Candidate Id tidak boleh kosong")]
+        [Required]
         public int CandidateId { get; set; }
 
         public virtual Candidate Candidate { get; set; }
 
         [ForeignKey("Company")]
-        [Required(ErrorMessage = "Company ID tidak boleh kosong")]
+        [Required]
         public int CompanyId { get; set; }
 
         public virtual Company Company { get; set; }
 
-        [Required(ErrorMessage = "Customer Name tidak boleh kosong")]
+        [Required]
         [StringLength(64)]
         public string CustomerName { get; set; }
 
-        [Required(ErrorMessage = "Job Title tidak boleh kosong")]
+        [Required]
         [StringLength(64)]
         public string JobTitle { get; set; }
 
-        [Required(ErrorMessage = "Location tidak boleh kosong")]
+        [Required]
         public string Location { get; set; }
 
-        [Required(ErrorMessage = "Start Date tidak boleh kosong")]
+        [Required]
         public DateTime StartInterview { get; set; }
 
-        [Required(ErrorMessage = "End Date tidak boleh kosong")]
+        [Required]
         public DateTime EndInterview { get; set; }
+
+        public string FollowingBy { get; set; }
 
 
         [ForeignKey("Status")]
-        [Required(ErrorMessage = "Status ID tidak boleh kosong")]
+        [Required]
         public string StatusId { get; set; }
        /* [JsonIgnore]*/
         public virtual Status Status { get; set; }
