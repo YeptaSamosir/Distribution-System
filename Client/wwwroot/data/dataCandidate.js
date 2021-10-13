@@ -14,23 +14,23 @@
                     {
                         extend: "csv",
                         exportOptions: {
-                            columns: [1, 2, 3, 4]
+                            columns: [0, 1, 2, 3, 4]
                         },
-                        className: "btn-sm",
+                        className: "btn-sm btn-outline-success",
                     },
                     {
                         extend: "excel",
                         exportOptions: {
-                            columns: [1, 2, 3, 4]
+                            columns: [0, 1, 2, 3, 4]
                         },
-                        className: "btn-sm",
+                        className: "btn-sm btn-outline-success",
                     },
                     {
                         extend: "pdfHtml5",
                         exportOptions: {
-                            columns: [1, 2, 3, 4]
+                            columns: [0, 1, 2, 3, 4]
                         },
-                        className: "btn-sm",
+                        className: "btn-sm btn-outline-success",
                     },
                 ],
                 responsive: true,
@@ -176,6 +176,7 @@ $("#form-create-candidate").submit(function (event) {
             var obj = JSON.parse(response);
 
             console.log(obj);
+
             if (obj.errors != undefined) {
                 checkValidation(obj.errors.Name, "inputCandidateName", "messageCandidateName");
                 checkValidation(obj.errors.Grade, "inputGrade", "messageGrade");
