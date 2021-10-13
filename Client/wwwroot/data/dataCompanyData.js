@@ -14,23 +14,23 @@
                     {
                         extend: "csv",
                         exportOptions: {
-                            columns: [1]
+                            columns: [0, 1]
                         },
-                        className: "btn-sm",
+                        className: "btn-sm btn-outline-success",
                     },
                     {
                         extend: "excel",
                         exportOptions: {
-                            columns: [1]
+                            columns: [0, 1]
                         },
-                        className: "btn-sm",
+                        className: "btn-sm btn-outline-success",
                     },
                     {
                         extend: "pdfHtml5",
                         exportOptions: {
-                            columns: [1]
+                            columns: [0, 1]
                         },
-                        className: "btn-sm",
+                        className: "btn-sm btn-outline-success",
                     },
                 ],
                 responsive: true,
@@ -155,7 +155,7 @@ $("#form-create-company").submit(function (event) {
     console.log(data_input);
 
     $.ajax({
-        url: '/admin/company/post',
+        url: '/admin/Company/post',
         method: 'POST',
         dataType: 'json',
         contentType: 'application/x-www-form-urlencoded',
@@ -171,6 +171,7 @@ $("#form-create-company").submit(function (event) {
 
             } else {
                 $('#modalCompany').modal('hide');
+
 
 
                 //sweet alert message success
@@ -190,7 +191,7 @@ $("#form-create-company").submit(function (event) {
             var err = eval(xhr.responseJSON);
 
         }
-    });
+    })
 });
 
 
@@ -203,7 +204,7 @@ editModalCompany = (id) => {
 
         //set value
         $('#companyId').val(`${result.companyId}`);
-        $('#companyNameEdit').val(`${result.name}`);
+        $('#inputCompanyNameEdit').val(`${result.name}`);
 
     }).fail((result) => {
         console.log(result);
@@ -224,7 +225,7 @@ $("#form-edit-company").submit(function (event) {
 
     var data_input = {
         "CompanyId": $("#companyId").val(),
-        "Name": $("#companyNameEdit").val(),
+        "Name": $("#inputCompanyNameEdit").val(),
         "UpdatedAt": dateTime
     }
 

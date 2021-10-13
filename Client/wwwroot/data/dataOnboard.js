@@ -14,23 +14,23 @@
                     {
                         extend: "csv",
                         exportOptions: {
-                            columns: [1,2,3,4,5]
+                            columns: [0,1,2,3,4,5,6,7]
                         },
-                        className: "btn-sm",
+                        className: "btn-sm btn-outline-success",
                     },
                     {
                         extend: "excel",
                         exportOptions: {
-                            columns: [1,2,3,4,5]
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7]
                         },
-                        className: "btn-sm",
+                        className: "btn-sm btn-outline-success",
                     },
                     {
                         extend: "pdfHtml5",
                         exportOptions: {
-                            columns: [1,2,3,4,5]
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7]
                         },
-                        className: "btn-sm",
+                        className: "btn-sm btn-outline-success",
                     },
                 ],
                 responsive: true,
@@ -47,7 +47,9 @@
                 },
                 columns: [
                     {
-                        data: null,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
                     },
                     {
                         data: "candidate.name",
@@ -71,7 +73,8 @@
                             if (dateEnd == "0001-01-01T00:00:00") {
                                 return `-`;
                             } else {
-                                return dateEnd;
+                                return moment(dateEnd).format('ddd, DD MMMM YYYY HH:mm');
+                                //return dateEnd;
                             }
                         },
                     },

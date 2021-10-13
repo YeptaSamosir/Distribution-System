@@ -14,23 +14,23 @@
                     {
                         extend: "csv",
                         exportOptions: {
-                            columns: [1, 2, 3, 4, 5, 6]
+                            columns: [0, 1, 2, 3, 4, 5, 6]
                         },
-                        className: "btn-sm",
+                        className: "btn-sm btn-outline-success",
                     },
                     {
                         extend: "excel",
                         exportOptions: {
-                            columns: [1, 2, 3, 4, 5, 6]
+                            columns: [0, 1, 2, 3, 4, 5, 6]
                         },
-                        className: "btn-sm",
+                        className: "btn-sm btn-outline-success",
                     },
                     {
                         extend: "pdfHtml5",
                         exportOptions: {
-                            columns: [1, 2, 3, 4, 5, 6]
+                            columns: [0, 1, 2, 3, 4, 5, 6]
                         },
-                        className: "btn-sm",
+                        className: "btn-sm btn-outline-success",
                     },
                 ],
                 responsive: true,
@@ -47,7 +47,9 @@
                 },
                 columns: [
                     {
-                        data: null,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
                     },
                     {
                         data: "customerName",
@@ -68,7 +70,8 @@
                             if (scheduleDate == "0001-01-01T00:00:00") {
                                 return `-`;
                             } else {
-                                return scheduleDate;
+                                return moment(scheduleDate).format('ddd, DD MMMM YYYY HH:mm');
+                                //return scheduleDate;
                             }
                         },
                     },

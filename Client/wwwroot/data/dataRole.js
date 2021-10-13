@@ -14,23 +14,23 @@
                     {
                         extend: "csv",
                         exportOptions: {
-                            columns: [1]
+                            columns: [0, 1]
                         },
-                        className: "btn-sm",
+                        className: "btn-sm btn-outline-success",
                     },
                     {
                         extend: "excel",
                         exportOptions: {
-                            columns: [1]
+                            columns: [0, 1]
                         },
-                        className: "btn-sm",
+                        className: "btn-sm btn-outline-success",
                     },
                     {
                         extend: "pdfHtml5",
                         exportOptions: {
-                            columns: [1]
+                            columns: [0, 1]
                         },
-                        className: "btn-sm",
+                        className: "btn-sm btn-outline-success",
                     },
                 ],
                 responsive: true,
@@ -47,7 +47,9 @@
                 },
                 columns: [
                     {
-                        data: null,
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
                     },
                     {
                         data: "name",
