@@ -155,7 +155,7 @@ $("#form-create-company").submit(function (event) {
     console.log(data_input);
 
     $.ajax({
-        url: '/admin/Company/post',
+        url: '/admin/company/post',
         method: 'POST',
         dataType: 'json',
         contentType: 'application/x-www-form-urlencoded',
@@ -204,7 +204,7 @@ editModalCompany = (id) => {
 
         //set value
         $('#companyId').val(`${result.companyId}`);
-        $('#inputCompanyNameEdit').val(`${result.name}`);
+        $('#companyNameEdit').val(`${result.name}`);
 
     }).fail((result) => {
         console.log(result);
@@ -225,7 +225,7 @@ $("#form-edit-company").submit(function (event) {
 
     var data_input = {
         "CompanyId": $("#companyId").val(),
-        "Name": $("#inputCompanyNameEdit").val(),
+        "Name": $("#companyNameEdit").val(),
         "UpdatedAt": dateTime
     }
 

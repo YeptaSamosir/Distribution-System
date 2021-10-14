@@ -16,7 +16,7 @@
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4]
                         },
-                        className: "btn-sm btn-outline-success",
+                        className: "btn-sm btn-outline-success ",
                     },
                     {
                         extend: "excel",
@@ -32,6 +32,7 @@
                         },
                         className: "btn-sm btn-outline-success",
                     },
+
                 ],
                 responsive: true,
                 order: [[1, 'asc']],
