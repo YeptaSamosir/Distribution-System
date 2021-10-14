@@ -78,20 +78,30 @@
                 <input id="inputStatusId" type="hidden" />
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Candidate name</label>
+                        <label>Candidate Name</label>
                         <span id="candidateName" type="text" class="form-control"></span>
                     </div>
                     <div class="form-group">
-                        <label>Candidate email</label>
+                        <label>Email Candidate</label>
                         <span id="candidateEmail" type="text" class="form-control"></span>
                     </div>
                     <div class="form-group">
-                        <label>Company name</label>
+                        <label>Company</label>
                         <span id="companyName" type="text" class="form-control"></span>
                     </div>
                     <div class="form-group">
-                        <label>Job title</label>
+                        <label>Position</label>
                         <span id="jobTitle" type="text" class="form-control"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputStatus">Status</label>
+                        <select id="inputStatusEdit" class="form-control">
+                            <option value="ITV-WT">Waiting</option>
+                            <option value="ITV-DN">Done</option>
+                            <option value="ITV-CN">Cancel</option>
+                            <option value="ONB-OG">Ongoing</option>
+                            <option value="ONB-DN">Done</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="inputOnboardate">Onboard Date End</label>
