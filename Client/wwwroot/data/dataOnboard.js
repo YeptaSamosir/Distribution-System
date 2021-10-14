@@ -193,7 +193,8 @@ editModalOnboard = (id) => {
     $.ajax({
         url: `/admin/onboard/get/${id}`,
     }).done((result) => {
-        console.log(result);
+        //console.log(result);
+        console.log(result.status.name);
 
         //set value
         $('#inputOnboardId').val(`${result.onboardId}`);
@@ -202,9 +203,9 @@ editModalOnboard = (id) => {
         $('#candidateEmail').text(`${result.candidate.email}`);
         $('#companyName').text(`${result.company.name}`);
         $('#jobTitle').text(`${result.jobTitle}`);
-        //$('#inputStatusEdit').text(`${result.status.name}`);
+        $('#inputStatusEdit').html(`<option value="${result.statusId}">${result.status.name}
+                        </option>`);
         
-
 
 
     }).fail((result) => {
