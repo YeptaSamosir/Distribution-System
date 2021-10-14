@@ -4,214 +4,173 @@
 }
 <!-- page content -->
 <div class="right_col" role="main">
-    @*<span>@(ViewBag.EmailLogin)</span>*@
-    <div class="x_content card" style="padding:20px">
-        <div class="row">
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
-                <div class="tile-stats">
-                    <div class="icon">
-                        <i class="fa fa-users" style="margin-bottom:5px"></i>
-                    </div>
-                    <div class="count">179</div>                   
-                    <h3>Total of Candidate</h3>
-                </div>
-            </div>
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
-                <div class="tile-stats">
-                    <div class="icon">
-                        <i class="fa fa-building-o" style="margin-bottom:5px"></i>
-                    </div>
-                    <div class="count">150</div>
-                    <h3>Total of Company</h3>
-                </div>
-            </div>
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
-                <div class="tile-stats">
-                    <div class="icon">
-                        <i class="fa fa fa-clock-o" style="margin-bottom:5px"></i>
-                    </div>
-                    <div class="count">20</div>
-                    <h3>Candidate Idle</h3>
-                </div>
-            </div>
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 ">
-                <div class="tile-stats">
-                    <div class="icon">
-                        <i class="fa fa-check-circle" style="margin-bottom:5px"></i>
-                    </div>
-                    <div class="count">25</div>
-                    <h3>Candidate Online</h3>
-                </div>
-            </div>
-
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
-                <div class="tile-stats">
-                    <div class="icon">
-                        <i class="fa fa-calendar" style="margin-bottom:5px"></i>
-                    </div>
-                    <div class="count">5</div>
-                    <h3>Upcoming Interview</h3>
-                </div>
-            </div>
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
-                <div class="tile-stats">
-                    <div class="icon">
-                        <i class="fa fa-check-square" style="margin-bottom:5px"></i>
-                    </div>
-                    <div class="count">40</div>
-                    <h3>Successfull Interview</h3>
-                </div>
-            </div>
-
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
-                <div class="tile-stats">
-                    <div class="icon">
-                        <i class="fa fa-close" style="margin-bottom:5px"></i>
-                    </div>
-                    <div class="count">0</div>
-                    <h3>Canceled Interview</h3>
-                </div>
-            </div>
-            <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
-                <div class="tile-stats">
-                    <div class="icon">
-                        <i class="fa fa-rocket" style="margin-bottom:5px"></i>
-                    </div>
-                    <div class="count">0</div>
-                    <h3>Total Onboard</h3>
-                </div>
-            </div>
-
+    <div class="page-title">
+        <div class="title_left w-100">
+            <h4>Hi @ViewBag.Name,</h4>
+            <h3>Welcome to Distribution System! </h3>
+            <p id="dateToday">-</p>
         </div>
     </div>
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Info</h2>
+                    <ul class="nav navbar-right panel_toolbox flex-row-reverse">
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
 
-    <div><br /></div>
+                <div class="x_content card" style="padding:20px">
+                    <div class="row">
+                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+                            <div class="tile-stats">
+                                <div class="icon">
+                                    <i class="fa fa-users" style="margin-bottom:5px"></i>
+                                </div>
+                                <div class="count" id="totalCandidate">-</div>
+                                <h3>Total of Candidate</h3>
+                            </div>
+                        </div>
+                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+                            <div class="tile-stats">
+                                <div class="icon">
+                                    <i class="fa fa-building-o" style="margin-bottom:5px"></i>
+                                </div>
+                                <div class="count" id="totalCompany">-</div>
+                                <h3>Total of Company</h3>
+                            </div>
+                        </div>
+                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+                            <div class="tile-stats">
+                                <div class="icon">
+                                    <i class="fa fa fa-clock-o" style="margin-bottom:5px"></i>
+                                </div>
+                                <div class="count" id="totalCandidateIdle">-</div>
+                                <h3>Candidate Idle</h3>
+                            </div>
+                        </div>
+                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 ">
+                            <div class="tile-stats">
+                                <div class="icon">
+                                    <i class="fa fa-check-circle" style="margin-bottom:5px"></i>
+                                </div>
+                                <div class="count" id="totalCandidateOnboard">-</div>
+                                <h3>Candidate Online</h3>
+                            </div>
+                        </div>
+
+                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+                            <div class="tile-stats">
+                                <div class="icon">
+                                    <i class="fa fa-calendar" style="margin-bottom:5px"></i>
+                                </div>
+                                <div class="count" id="totalInterviewOngoing">-</div>
+                                <h3>Upcoming Interview</h3>
+                            </div>
+                        </div>
+
+                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+                            <div class="tile-stats">
+                                <div class="icon">
+                                    <i class="fa fa-check-square" style="margin-bottom:5px"></i>
+                                </div>
+                                <div class="count" id="totalInterviewSuccess">-</div>
+                                <h3>Successfull Interview</h3>
+                            </div>
+                        </div>
+
+                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+                            <div class="tile-stats">
+                                <div class="icon">
+                                    <i class="fa fa-close" style="margin-bottom:5px"></i>
+                                </div>
+                                <div class="count" id="totalInterviewCanceled">-</div>
+                                <h3>Canceled Interview</h3>
+                            </div>
+                        </div>
+                        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6  ">
+                            <div class="tile-stats">
+                                <div class="icon">
+                                    <i class="fa fa-rocket" style="margin-bottom:5px"></i>
+                                </div>
+                                <div class="count" id="totalOnboard">-</div>
+                                <h3>Total Onboard</h3>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* <div><br /></div>*@
 
     <!--Calendar Schedule-->
-    <div class="">
-        <div class="page-title">
-            <div class="title_left">
-                <h3>Calendar Schedule Interview<small><br />Click to add/edit events</small></h3>
-            </div>
-
-            <div class="title_right">
-                <div class="col-md-5 col-sm-5   form-group pull-right top_search">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for...">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">Go!</button>
-                        </span>
-                    </div>
+    
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Schedule Interview</h2>
+                    <ul class="nav navbar-right panel_toolbox flex-row-reverse">
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
                 </div>
-            </div>
-        </div>
-
-        <div class="clearfix"></div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <h2>Calendar Events <small>Schedule Interview</small></h2>
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li>
-                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="#">Settings 1</a>
-                                    <a class="dropdown-item" href="#">Settings 2</a>
-                                </div>
-                            </li>
-                            <li>
-                                <a class="close-link"><i class="fa fa-close"></i></a>
-                            </li>
-                        </ul>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-
-                        <div id='calendar'></div>
-
-                    </div>
+                <div class="x_content">
+                    <div id='calendar'></div>
                 </div>
             </div>
         </div>
     </div>
+    
     <!-- calendar modal schedule interview-->
     <!-- calendar modal -->
-    <div id="CalenderModalNew" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade" id="detailInterview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
-
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title" id="myModalLabel">New Calendar Entry</h4>
+                    <h5 class="modal-title" id="exampleModalLabel">Detail Interview</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
-                    <div id="testmodal" style="padding: 5px 20px;">
-                        <form id="antoform" class="form-horizontal calender" role="form">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Title</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="title" name="title">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Description</label>
-                                <div class="col-sm-9">
-                                    <textarea class="form-control" style="height:55px;" id="descr" name="descr"></textarea>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">ID : <span id="interviewId">-</span></li>
+                        <li class="list-group-item">Candidate name :<span id="candidateName"> - </span></li>
+                        <li class="list-group-item">Candidate email :<span id="candidateEmail"> - </span></li>
+                        <li class="list-group-item">Customer name: <span id="customerName"> - </span></li>
+                        <li class="list-group-item">Customer email: <span id="customerEmail"> - </span></li>
+                        <li class="list-group-item">Company: <span id="companyName"> - </span></li>
+                        <li class="list-group-item">Apply: <span id="jobTitle"> - </span></li>
+                        <li class="list-group-item">Type : <span id="type"> - </span></li>
+                        <li class="list-group-item">Start Interview : <span id="startDate"> - </span></li>
+
+                    </ul>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default antoclose" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary antosubmit">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="CalenderModalEdit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title" id="myModalLabel2">Edit Calendar Entry</h4>
-                </div>
-                <div class="modal-body">
-
-                    <div id="testmodal2" style="padding: 5px 20px;">
-                        <form id="antoform2" class="form-horizontal calender" role="form">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Title</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="title2" name="title2">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Description</label>
-                                <div class="col-sm-9">
-                                    <textarea class="form-control" style="height:55px;" id="descr2" name="descr"></textarea>
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary antosubmit2">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="fc_create" data-toggle="modal" data-target="#CalenderModalNew"></div>
-    <div id="fc_edit" data-toggle="modal" data-target="#CalenderModalEdit"></div>
+    <div id="fc_detail" data-toggle="modal" data-target="#detailInterview"></div>
 </div>
 
     <!-- /page content -->

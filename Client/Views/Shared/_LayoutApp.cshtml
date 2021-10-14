@@ -74,7 +74,7 @@
                         <div class="menu_section">
                             <h3>Home</h3>
                             <ul class="nav side-menu">
-                                <li class=""><a href="~/admin"><i class="fa fa-home"></i> Dashboard</a></li>
+                                <li class=""><a href="~/Admin"><i class="fa fa-home"></i> Dashboard</a></li>
                             </ul>
                         </div>
                         @if (User.IsInRole("Super Administrator") == true)
@@ -82,8 +82,8 @@
                             <div class="menu_section">
                                 <h3>Super Admin</h3>
                                 <ul class="nav side-menu">
-                                    <li class=""><a href="~/admin/account"><i class="fa fa-users"></i> Account Manajement</a></li>
-                                    <li class=""><a href="~/admin/role"><i class="fa fa-eye"></i> Access Role</a></li>
+                                    <li class=""><a href="~/Admin/account"><i class="fa fa-users"></i> Account Manajement</a></li>
+                                    <li class=""><a href="~/Admin/role"><i class="fa fa-eye"></i> Access Role</a></li>
                                 </ul>
                             </div>
                         }
@@ -93,16 +93,16 @@
                             <div class="menu_section">
                                 <h3>Admin</h3>
                                 <ul class="nav side-menu">
-                                    <li class=""><a href="~/admin/onboard"><i class="fa fa-briefcase"></i>Onboard Manajement</a></li>
-                                    <li class=""><a href="~/admin/candidate"><i class="fa fa-folder"></i> Master Candidate</a></li>
+                                    <li class=""><a href="~/Admin/onboard"><i class="fa fa-briefcase"></i>Onboard Manajement</a></li>
+                                    <li class=""><a href="~/Admin/candidate"><i class="fa fa-folder"></i> Master Candidate</a></li>
                                     <li>
                                         <a>
                                             <i class="fa fa-building-o"></i> Interview Scheduling <span class="fa fa-chevron-down"></span>
                                         </a>
                                         <ul class="nav child_menu">
-                                            <li><a href="~/admin/scheduleinterview">Interview Scheduling</a></li>
-                                            <li><a href="~/admin/scheduleinterview/create">Create Scheduling</a></li>
-                                            <li><a href="~/admin/company">Company Data</a></li>
+                                            <li><a href="~/Admin/scheduleinterview">Interview Scheduling</a></li>
+                                            <li><a href="~/Admin/scheduleinterview/create">Create Scheduling</a></li>
+                                            <li><a href="~/Admin/company">Company Data</a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -115,8 +115,8 @@
                                 <li>
                                     <a><i class="fa fa-cog"></i> Account <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="~/admin/setting/profile">Profile</a></li>
-                                        <li><a href="~/admin/setting/change-password">Change Password</a></li>
+                                        <li><a href="~/Admin/setting/profile">Profile</a></li>
+                                        <li><a href="~/Admin/setting/change-password">Change Password</a></li>
                                     </ul>
                                 </li>
 
@@ -295,6 +295,10 @@
     @if (ViewData["Title"] == "Onboard Management")
     {
         <script src="~/data/dataOnboard.js"></script>
+    }
+    @if (ViewData["Title"] == "Dashboard")
+    {
+        <script src="~/data/dataDashboard.js"></script>
     }
 
 
