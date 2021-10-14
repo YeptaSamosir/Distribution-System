@@ -86,9 +86,9 @@
                         render: function (data, type, row, meta) {
                             return `
                                 <div class="float-right">
-                                    <a href="onboard/detail/${row["onboardId"]}"><button type="button" class="btn btn-success btn-sm" data-target="#detail-onboard" onclick="detailOnboard('${row["onboardId"]}')">
-                                        Detail
-                                    </button></a>
+                                    <button type="button" class="btn btn-success btn-sm" data-target="#modalEdit" onclick="modalOnboard('${row["onboardId"]}')">
+                                        Update
+                                    </button>
                                 </div>
                                 `;
                         },
@@ -159,30 +159,90 @@ function checkValidation(errorMsg, elementById, elementMsg) {
 }
 
 
-//Edit
-$(document).ready(function () {
-    $('#id_batch').val();
-    var id = $('#id_batch').val();
+//modal onboard
+modalOnboard = (id) => {
     $.ajax({
-        url: `/admin/onboard/get/` + id,
+        url: `/admin/onboard/get/${id}`,
     }).done((result) => {
         console.log(result);
+        document.getElementById('form-edit-onbaord').reset();
 
         //set value
-        $('#id_batch').val(`${result.onboardId}`);
-        $('#nameCandidate').val(`${result.candidate.name}`);
-        $('#emailCandidate').val(`${result.candidate.email}`);
-        $('#startDate').val(`${result.dateStart}`);
-        $('#endDate').val(`${result.dateEnd}`);
-        $('#statusCandidate').val(`${result.candidate.status}`);
-
+        $('#inputOnboardId').val(`${result.onboardId}`);
+        $('#inputStatusId').val(`${result.statusId}`);
+        $('#candidateName').text(`${result.candidate.name}`);
+        $('#candidateEmail').text(`${result.candidate.email}`);
+        $('#companyName').text(`${result.company.name}`);
+        $('#jobTitle').text(`${result.JobTitle}`);
 
     }).fail((result) => {
         console.log(result);
     });
+}
+
+//create onboard
+$("#form-edit-onbaord").submit(function (event) {
+
+
+    /* stop form from submitting normally */
+    event.preventDefault();
+
+    var dataInput = new Object();
+    dataInput.OnboardId = $("#inputOnboardId").val();
+    dataInput.DateEnd = $("#inputDateEnd").val();
+    dataInput.StatusId = $("#inputStatusId").val();
+
+    console.log(dataInput);
+
+    if (dataInput.OnboardId == "") {
+        document.getElementById(`inputDateEnd`).className = "form-control is-invalid";
+        $(`#messageOnboardate`).html(`Onboard date cannot null`);
+    } else {
+        document.getElementById(`inputDateEnd`).className = "form-control";
+
+       /* $.ajax({
+            url: '/admin/Onboard/update',
+            method: 'PUT',
+            dataType: 'json',
+            contentType: 'application/x-www-form-urlencoded',
+            data: dataInput,
+            success: function (response) {
+
+                console.log(response);
+
+                var obj = JSON.parse(response);
+
+                console.log(obj);
+
+                if (obj.errors != undefined) {
+                    checkValidation(obj.errors.DateStart, "inputDateEnd", "messageOnboardate");
+                } else {
+
+                    //idmodal di hide
+                    document.getElementById("modalOnboard").className = "modal fade";
+                    $('.modal-backdrop').remove();
+
+
+                    //sweet alert message success
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: `${obj.message}`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+
+
+                }
+
+            },
+            error: function (xhr, status, error) {
+                var err = eval(xhr.responseJSON);
+                console.log(err);
+            }
+        })*/
+    }
 });
-
-
 
 //delete 
 deleteModalCandidate = (id) => {
