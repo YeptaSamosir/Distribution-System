@@ -95,8 +95,8 @@
                         render: function (data, type, row, meta) {
                             return `
                                 <div class="float-right">
-                                    <button type="button" class="btn btn-success btn-sm" data-target="#modalEdit" onclick="modalOnboard('${row["onboardId"]}')">
-                                        Update
+                                  <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalEdit"  onclick="editModalOnboard('${row["onboardId"]}')">
+                                        Edit
                                     </button>
                                 </div>
                                 `;
@@ -169,12 +169,31 @@ function checkValidation(errorMsg, elementById, elementMsg) {
 
 
 //modal onboard
-modalOnboard = (id) => {
+//modalOnboard = (id) => {
+//    $.ajax({
+//        url: `/admin/onboard/get/${id}`,
+//    }).done((result) => {
+//        console.log(result);
+//        document.getElementById('form-edit-onbaord').reset();
+
+//        //set value
+//        $('#inputOnboardId').val(`${result.onboardId}`);
+//        $('#inputStatusId').val(`${result.statusId}`);
+//        $('#candidateName').text(`${result.candidate.name}`);
+//        $('#candidateEmail').text(`${result.candidate.email}`);
+//        $('#companyName').text(`${result.company.name}`);
+//        $('#jobTitle').text(`${result.JobTitle}`);
+
+//    }).fail((result) => {
+//        console.log(result);
+//    });
+//}
+//Edit
+editModalOnboard = (id) => {
     $.ajax({
         url: `/admin/onboard/get/${id}`,
     }).done((result) => {
         console.log(result);
-        document.getElementById('form-edit-onbaord').reset();
 
         //set value
         $('#inputOnboardId').val(`${result.onboardId}`);
@@ -182,12 +201,78 @@ modalOnboard = (id) => {
         $('#candidateName').text(`${result.candidate.name}`);
         $('#candidateEmail').text(`${result.candidate.email}`);
         $('#companyName').text(`${result.company.name}`);
-        $('#jobTitle').text(`${result.JobTitle}`);
+        $('#jobTitle').text(`${result.jobTitle}`);
+        //$('#inputStatusEdit').text(`${result.status.name}`);
+        
+
+
 
     }).fail((result) => {
         console.log(result);
     });
 }
+
+//update
+$("#form-edit-onbaord").submit(function (event) {
+
+
+    /* stop form from submitting normally */
+    event.preventDefault();
+    //get datetime
+    let current = new Date();
+    let cDate = current.getFullYear() + '-' + (current.getMonth() + 1) + '-' + current.getDate();
+    let cTime = current.getHours() + ":" + current.getMinutes() + ":" + current.getSeconds();
+    let dateTime = cDate + ' ' + cTime;
+
+    var data_input = {
+        "CandidateId": $("#candidateId").val(),
+        "Name": $("#inputCandidateNameEdit").val(),
+        "Grade": $("#inputGradeEdit").val(),
+        "Email": $("#inputEmailEdit").val(),
+        "UpdatedAt": dateTime
+    }
+
+    console.log(JSON.stringify(data_input));
+
+    $.ajax({
+        url: `/admin/onboard/update`,
+        method: 'PUT',
+        dataType: 'json',
+        contentType: 'application/x-www-form-urlencoded',
+        data: data_input,
+        success: function (response) {
+            console.log(response);
+            var obj = JSON.parse(response);
+
+            console.log(obj);
+            if (obj.errors != undefined) {
+                checkValidation(obj.errors.Name, "inputCandidateNameEdit", "messageCandidateNameEdit");
+                checkValidation(obj.errors.Grade, "inputGradeEdit", "messageGradeEdit");
+                checkValidation(obj.errors.Email, "inputEmailEdit", "messageEmailEdit");
+
+            } else {
+                $('#modalEdit').modal('hide');
+
+                //sweet alert message success
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: `${obj.message}`,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+
+                //reload only datatable
+                $('#datatable-candidate').DataTable().ajax.reload();
+            }
+        },
+        error: function (xhr, status, error) {
+            var err = eval(xhr.responseJSON);
+        }
+    });
+});
+
+
 
 //create onboard
 $("#form-edit-onbaord").submit(function (event) {
