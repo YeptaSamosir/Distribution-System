@@ -64,7 +64,16 @@
                         data: "jobTitle",
                     },
                     {
-                        data: "dateStart",
+                        render: function (data, type, row, meta) {
+                            dateStart = row['dateStart'];
+
+                            if (dateStart == "0001-01-01T00:00:00") {
+                                return `-`;
+                            } else {
+                                return moment(dateStart).format('ddd, DD MMMM YYYY HH:mm');
+                                //return scheduleDate;
+                            }
+                        },
                     },
                     {
                         render: function (data, type, row, meta) {
