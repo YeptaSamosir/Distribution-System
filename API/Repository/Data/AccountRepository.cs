@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using API.Config;
 using Microsoft.Extensions.Options;
 using API.Helper;
+using System.IO;
 
 namespace API.Repository.Data
 {
@@ -200,20 +201,25 @@ namespace API.Repository.Data
                 var linkReset = myConfiguration.BaseUrlClient + "reset?p=" + encrypted;
 
               
-                string subjectMail = "Reset your account password from Distribution System";
-                string bodyMail = 
-                    $"Dear {emailCheck.Name} <br><br> " +
-                    $"We have received your request to reset your password. " +
-                    $"Please click the link below to complete the reset: <br>" +
-                    $"<a href={linkReset}>Reset My Password </a> <br><br>" +
-                    $"If you need additional assistance, or you did not make this change, please contact admin <br><br>" +
-                    $"[Distribution System]";
+                string subjectMail = "[RESET PASSWORD] Reset your account password from Distribution System";
 
+                //Fetching Email Body Text from EmailTemplate File.  
+                string FilePath = @"..\Client\\wwwroot\\assets\\email_template\\forgotpassword.html";
+                StreamReader str = new StreamReader(FilePath);
+                string MailText = str.ReadToEnd();
+                str.Close();
 
+                string title = "Reset your account password";
+                //Repalce dinamic text  
+                MailText = MailText.Replace("[title]", title)
+                    .Replace("[recipientName]", emailCheck.Name)
+                    .Replace("[linkResetPassword]", linkReset);
+
+                //send email
                 MailHelper mailHelper = new MailHelper();
                 mailHelper.SmtpClient(
-                    subjectMail, 
-                    bodyMail, 
+                    subjectMail,
+                    MailText, 
                     forgetPassword.Email, 
                     myConfiguration.From,
                     myConfiguration.Email,

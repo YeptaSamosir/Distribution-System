@@ -27,6 +27,13 @@ namespace Client.Repository.Data
             };
         }
 
+        internal string UpdateOnBoard(Onboard onboard)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(onboard), Encoding.UTF8, "application/json");
+
+            return httpClient.PutAsync(request + "update", content).Result.Content.ReadAsStringAsync().Result;
+        }
+
         internal string CreateOnBoard(Onboard onboard)
         {
             StringContent content = new StringContent(JsonConvert.SerializeObject(onboard), Encoding.UTF8, "application/json");

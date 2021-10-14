@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Config;
@@ -68,10 +69,26 @@ namespace API.Repository.Data
               
                 $"[Distribution System]";
 
+            //Fetching Email Body Text from EmailTemplate File.  
+            string FilePath = @"..\Client\wwwroot\assets\email_template\infoscheduleonboard.html";
+            StreamReader str = new StreamReader(FilePath);
+            string MailText = str.ReadToEnd();
+            str.Close();
+
+            string title = "Info Schedule Onboard";
+            //Repalce dinamic text  
+            MailText = MailText.Replace("[title]", title)
+                .Replace("[recipientName]", candidateData.Name)
+                .Replace("[companyName]", companyData.Name)
+                .Replace("[jobTitle]", onboard.JobTitle)
+                .Replace("[candidateName]", candidateData.Name)
+                .Replace("[dateStart]", dateStart)
+                ;
+
             MailHelper mailHelper = new MailHelper();
             mailHelper.SmtpClient(
                 subjectMail,
-                bodyMail,
+                MailText,
                 candidateData.Email,
                 myConfiguration.From,
                 myConfiguration.Email,
@@ -83,6 +100,34 @@ namespace API.Repository.Data
 
 
             return 1;
+
+        }
+
+        internal int UpdateOnBoard(Onboard onboard)
+        {
+            //get onboard data
+            var onboardata = myContext.Onboards.Where(x => x.OnboardId == onboard.OnboardId).FirstOrDefault();
+            onboard.CandidateId = onboardata.CompanyId;
+            onboard.CompanyId = onboardata.CompanyId;
+            onboard.JobTitle = onboard.JobTitle;
+            onboard.DateStart = onboardata.DateStart;
+            onboard.UpdatedAt = DateTime.Now;
+            myContext.Onboards.Add(onboard);
+            myContext.SaveChanges();
+
+            //UPDATE status candidate if onboard done
+            if (onboard.StatusId == "ONB-DN")
+            {
+                var candidateData = myContext.Candidates.Where(x => x.CandidateId == onboard.CandidateId).FirstOrDefault();
+                candidateData.Status = status.Idle;
+                candidateData.UpdatedAt = DateTime.Now;
+                myContext.Candidates.Update(candidateData);
+                myContext.SaveChanges();
+            }
+
+
+            return 1;
+
 
         }
     }

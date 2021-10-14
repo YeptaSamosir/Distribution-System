@@ -105,7 +105,7 @@ namespace API.Helper
             try
             {
                 MailMessage message = new MailMessage();
-                message.From = new MailAddress(MailFrom);
+                message.From = new MailAddress(MailFromEmail, MailFrom);
                 message.To.Add(new MailAddress(MailTo));
                 message.Subject = MailSubject;
                 message.IsBodyHtml = true;
