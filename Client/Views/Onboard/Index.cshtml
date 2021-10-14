@@ -68,31 +68,36 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editLabel">Edit Candidate</h5>
+                <h5 class="modal-title" id="editLabel">Update Onboard</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="form-edit-candidate" method="post">
+            <form id="form-edit-onbaord" method="post">
+                <input id="inputOnboardId" type="hidden" />
+                <input id="inputStatusId" type="hidden" />
                 <div class="modal-body">
                     <div class="form-group">
-                        <input id="candidateId" type="hidden" />
-                        <label for="inputCandidateNameEdit">Candidate Name</label>
-                        <input id="inputCandidateNameEdit" type="text" class="form-control" value="">
+                        <label>Candidate name</label>
+                        <span id="candidateName" type="text" class="form-control"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Candidate email</label>
+                        <span id="candidateEmail" type="text" class="form-control"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Company name</label>
+                        <span id="companyName" type="text" class="form-control"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Job title</label>
+                        <span id="jobTitle" type="text" class="form-control"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputOnboardate">Onboard Date End</label>
+                        <input id="inputDateEnd" type="text" name="daterange" class="form-control">
                         <div class="invalid-feedback">
-                            <span id="messageCandidateNameEdit"></span>
-                        </div>
-
-                        <label for="inputGradeEdit">Grade</label>
-                        <input id="inputGradeEdit" type="text" class="form-control" value="">
-                        <div class="invalid-feedback">
-                            <span id="messageGradeEdit"></span>
-                        </div>
-
-                        <label for="inputEmailEdit">Email</label>
-                        <input id="inputEmailEdit" type="text" class="form-control" value="">
-                        <div class="invalid-feedback">
-                            <span id="messageEmailEdit"></span>
+                            <span id="messageOnboardate"></span>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Config;
@@ -80,15 +81,7 @@ namespace API.Repository.Data
                 //getdataCandidate
                 var candidateData = myContext.Candidates.Where(x => x.CandidateId.Equals(createInterviewVM.CandidateId)).FirstOrDefault();
 
-                string location;
-                if (detailScheduleInterview.TypeLocation == 0)//Online
-                {
-                    location = $"Location : <a href={createInterviewVM.Location}> Join </a><br><br>";
-                }
-                else
-                {
-                    location = $"Place : {createInterviewVM.Location} <br><br>";
-                }
+                string typeLocation = (detailScheduleInterview.TypeLocation == 0) ? "Online" : "Offline" ;
 
                 //RSACryptoServiceProvider encrypt email custommer
                 var rsaHelper = new RsaHelper();
@@ -99,26 +92,30 @@ namespace API.Repository.Data
                 string userFollow = (createInterviewVM.ScheduleFollowBy == "candidate") ? "Interviewer" : "Candidate";
                 string formConfirmSchedule = $"{myConfiguration.BaseUrlClient}interview/confirmation/{createInterviewVM.ScheduleFollowBy}?s={ScheduleId}";
                 string subjectMail = "[INTERVIEW SCHEDULE CONFIRMATION] Confirm date selection for interview";
-                string bodyMail = $"Dear {recipientName}<br><br> " +
-                    $"You will conduct an interview with the following details: <br>" +
-                    $"Company : <b>{createInterviewVM.CompanyName}</b><br>" +
-                    $"Position : <b>{createInterviewVM.JobTitle}</b><br>" +
-                    $"Candidate : <b>{candidateData.Name}</b><br>" +
-                    $"User : <b>{createInterviewVM.CustomerName}</b><br>" +
-                    $"{location}" +
-                    $"Please choose three schedule you can, We will contact {userFollow} for follow your schedule : <br>" +
-                    $"<a href='{formConfirmSchedule}'> Select schedule</a><br><br>" +
-                    $"Please tell us immediately, to be processed immediately.<br>" +
-                    $"<br>" +
-                    $"Thank you<br>" +
-                    $"<br>" +
-                    $"[Distribution System]";
 
+                //Fetching Email Body Text from EmailTemplate File.  
+                string FilePath = @"..\Client\\wwwroot\\assets\\email_template\\confirmdate.html";
+                StreamReader str = new StreamReader(FilePath);
+                string MailText = str.ReadToEnd();
+                str.Close();
+
+                string title = "Confirm date selection for interview";
+                //Repalce dinamic text  
+                MailText = MailText.Replace("[title]", title)
+                    .Replace("[recipientName]", recipientName)
+                    .Replace("[companyName]", createInterviewVM.CompanyName)
+                    .Replace("[jobTitle]", createInterviewVM.JobTitle)
+                    .Replace("[candidateName]", candidateData.Name)
+                    .Replace("[customerName]", createInterviewVM.CustomerName)
+                    .Replace("[typeLocation]", typeLocation)
+                    .Replace("[linkLocation]", createInterviewVM.Location)
+                    .Replace("[userFollow]", userFollow)
+                    .Replace("[linkDates]", formConfirmSchedule);
 
                 MailHelper mailHelper = new MailHelper();
                 mailHelper.SmtpClient(
                     subjectMail,
-                    bodyMail,
+                    MailText,
                     mailTo,
                     myConfiguration.From,
                     myConfiguration.Email,
@@ -194,23 +191,27 @@ namespace API.Repository.Data
 
 
             string subjectMail = "[INTERVIEW SCHEDULE CONFIRMATION] Confirm date selection for interview";
-            string bodyMail =
+        
 
-                $"The date you chose to schedule the interview with {withName}: <br>" +
-                $"1. <b>{ScheduleDate1}</b><br>" +
-                $"2. <b>{ScheduleDate2}</b><br>" +
-                $"3. <b>{ScheduleDate3}</b><br>" +
-                $"Please wait for a response from the {userFollow} for interview. <br>" +
-                $"<br><br>" +
-                $"Thank you<br>" +
-                $"<br>" +
-                $"[Distribution System]";
+            //Fetching Email Body Text from EmailTemplate File.  
+            string FilePath = @"..\Client\\wwwroot\\assets\\email_template\\confirmdateresult.html";
+            StreamReader str = new StreamReader(FilePath);
+            string MailText = str.ReadToEnd();
+            str.Close();
 
+            string title = "Confirm date selection for interview result";
+            //Repalce dinamic text  
+            MailText = MailText.Replace("[title]", title)
+                .Replace("[withName]", withName)
+                .Replace("[ScheduleDate1]", ScheduleDate1)
+                .Replace("[ScheduleDate2]", ScheduleDate2)
+                .Replace("[ScheduleDate3]", ScheduleDate3)
+                .Replace("[userFollow]", userFollow);
 
             MailHelper mailHelper = new MailHelper();
             mailHelper.SmtpClient(
                 subjectMail,
-                bodyMail,
+                MailText,
                 mailTo,
                 myConfiguration.From,
                 myConfiguration.Email,
@@ -230,32 +231,43 @@ namespace API.Repository.Data
                     location = $"Location : {detaildataScheduleInterview.ScheduleInterview.Location} <br><br>";
                 }
 
+            string typeLocation = (detaildataScheduleInterview.TypeLocation == 0) ? "Online" : "Offline";
+
             //send response Confirmation Date
             string userFollow2 = (createDateOptionsVM.ScheduleFollowBy != "candidate") ? "interviewer" : "candidate";
             string mailTo2 = (createDateOptionsVM.ScheduleFollowBy == "candidate") ? detaildataScheduleInterview.EmailCustomer : detaildataScheduleInterview.EmailCandidate;
             string subjectMail2 = "[INTERVIEW SCHEDULE CONFIRMATION] Confirm date selection for interview";
-            string bodyMail2 =
 
-                $"Dear {withName}<br><br> " +
-                $"You will conduct an interview with the following details: <br>" +
-                $"Company : <b>{detaildataScheduleInterview.ScheduleInterview.Company.Name}</b><br>" +
-                $"Position : <b>{detaildataScheduleInterview.ScheduleInterview.JobTitle}</b><br>" +
-                $"Candidate : <b>{detaildataScheduleInterview.ScheduleInterview.Candidate.Name}</b><br>" +
-                $"Customer : <b>{detaildataScheduleInterview.ScheduleInterview.CustomerName}</b><br>" +
-                $"{location}" +
+            //Fetching Email Body Text from EmailTemplate File.  
+            string FilePath2 = @"..\Client\\wwwroot\\assets\\email_template\\confirmdatecandidate.html";
+            StreamReader str2 = new StreamReader(FilePath2);
+            string MailText2 = str2.ReadToEnd();
+            str2.Close();
 
-                $"Please choose a schedule you can, We will contact {userFollow2} : <br>" +
-                $"<a href={linkSchedule1}> {ScheduleDate1}</a><br><br>" +
-                $"<a href={linkSchedule2}> {ScheduleDate2}</a><br><br>" +
-                $"<a href={linkSchedule3}> {ScheduleDate3}</a><br><br>" +
-                $"<br><br>" +
-                $"[Distribution System]";
-
+            string title2 = "Confirm date selection for interview";
+         
+            //Repalce dinamic text  
+            MailText2 = MailText2.Replace("[title]", title2)
+                .Replace("[recipientName]", withName)
+                .Replace("[companyName]", detaildataScheduleInterview.ScheduleInterview.Company.Name)
+                .Replace("[jobTitle]", detaildataScheduleInterview.ScheduleInterview.JobTitle)
+                .Replace("[candidateName]", detaildataScheduleInterview.ScheduleInterview.Candidate.Name)
+                .Replace("[customerName]", detaildataScheduleInterview.ScheduleInterview.CustomerName)
+                .Replace("[typeLocation]", typeLocation)
+                .Replace("[linkLocation]", detaildataScheduleInterview.ScheduleInterview.Location)
+                .Replace("[userFollow]", userFollow2)
+                .Replace("[linkSchedule1]", linkSchedule1)
+                .Replace("[linkSchedule2]", linkSchedule2)
+                .Replace("[linkSchedule3]", linkSchedule3)
+                .Replace("[ScheduleDate1]", ScheduleDate1)
+                .Replace("[ScheduleDate2]", ScheduleDate2)
+                .Replace("[ScheduleDate3]", ScheduleDate3)
+                ;
 
             MailHelper mailHelper2 = new MailHelper();
             mailHelper2.SmtpClient(
                 subjectMail2,
-                bodyMail2,
+                MailText2,
                 mailTo2,
                 myConfiguration.From,
                 myConfiguration.Email,
@@ -287,36 +299,32 @@ namespace API.Repository.Data
                 var detailScheduleInterviewData = myContext.DetailScheduleInterviews.Where(x => x.ScheduleInterviewId == scheduleInterviewData.ScheduleInterviewId).FirstOrDefault();
 
 
-                //checktype
-                string location;
-                if (detailScheduleInterviewData.TypeLocation == 0)//Online
-                {
-                    location = $"Location : <a href={scheduleInterviewData.Location}> Join </a><br><br>";
-                }
-                else {
-                    location = $"Place : {scheduleInterviewData.Location} <br><br>";
-                }
-
-
+                string typeLocation = (detailScheduleInterviewData.TypeLocation == 0) ? "Online" : "Offline";
                 //send email schedule to candidate
                 string subjectMail1 = "[INTERVIEW] Invitations to interview";
-                string bodyMail1 =
-                    $"Dear {scheduleInterviewData.Candidate.Name}<br><br> " +
-                    $"You will conduct an interview with the following details: <br>" +
-                    $"Company : <b>{scheduleInterviewData.Company.Name}</b><br>" +
-                    $"Position : <b>{scheduleInterviewData.JobTitle}</b><br>" +
-                    $"User : <b>{scheduleInterviewData.CustomerName}</b><br>" +
-                    $"Date : <b>{scheduleInterviewData.StartInterview.ToString("dddd, dd MMMM hh:mm tt")}</b><br>" +
-                    $"{location}"+
-              
-                    $"<br><br>" +
-                    $"[Distribution System]";
+                
+                //Fetching Email Body Text from EmailTemplate File.  
+                string FilePath = @"..\Client\\wwwroot\\assets\\email_template\\interviewcandidate.html";
+                StreamReader str = new StreamReader(FilePath);
+                string MailText = str.ReadToEnd();
+                str.Close();
 
+                string title = "Invitations to interview";
+                //Repalce dinamic text  
+                MailText = MailText.Replace("[title]", title)
+                    .Replace("[recipientName]", scheduleInterviewData.Candidate.Name)
+                    .Replace("[companyName]", scheduleInterviewData.Company.Name)
+                    .Replace("[jobTitle]", scheduleInterviewData.JobTitle)
+                    .Replace("[candidateName]", scheduleInterviewData.CustomerName)
+                    .Replace("[customerName]", scheduleInterviewData.CustomerName)
+                    .Replace("[typeLocation]", typeLocation)
+                    .Replace("[linkLocation]", scheduleInterviewData.Location)
+                    .Replace("[Date]", scheduleInterviewData.StartInterview.ToString("dddd, dd MMMM hh:mm tt"));
 
                 MailHelper mailToCandidate = new MailHelper();
                 mailToCandidate.SmtpClient(
                     subjectMail1,
-                    bodyMail1,
+                    MailText,
                     detailScheduleInterviewData.EmailCandidate,
                     myConfiguration.From,
                     myConfiguration.Email,
@@ -336,26 +344,33 @@ namespace API.Repository.Data
                 string linkCancel = $"{myConfiguration.BaseUrlClient}/interview/{scheduleInterviewData.ScheduleInterviewId}/CANCELED?e={Emailencrypted}";
 
                 string subjectMail2 = "[INTERVIEW] Invitations to interview";
-                string bodyMail2 =
-                    $"Dear {scheduleInterviewData.CustomerName}<br><br> " +
-                    $"You will conduct an interview with the following details: <br>" +
-                    $"Company : <b>{scheduleInterviewData.Company.Name}</b><br>" +
-                    $"Position : <b>{scheduleInterviewData.JobTitle}</b><br>" +
-                    $"User : <b>{scheduleInterviewData.CustomerName}</b><br>" +
-                    $"Date : <b>{scheduleInterviewData.StartInterview.ToString("dddd, dd MMMM hh:mm tt")}</b><br>" +
-                    $"{location}" +
-                    $"</hr>" +
-                    $"After conducting the interview, please confirm the candidate acceptance : <br>" +
-                    $"<a href={linkAccept}> candidate accepted </a><br>" +
-                    $"<a href={linkCancel}> candidate not accepted </a><br><br>" +
 
-                    $"[Distribution System]";
+                //Fetching Email Body Text from EmailTemplate File.  
+                string FilePath2 = @"..\Client\\wwwroot\\assets\\email_template\\interviewcustomer.html";
+                StreamReader str2 = new StreamReader(FilePath2);
+                string MailText2 = str2.ReadToEnd();
+                str2.Close();
 
-
+                string title2 = "Invitations to interview";
+                //Repalce dinamic text  
+                MailText2 = MailText2.Replace("[title]", title2)
+                    .Replace("[recipientName]", scheduleInterviewData.CustomerName)
+                    .Replace("[companyName]", scheduleInterviewData.Company.Name)
+                    .Replace("[jobTitle]", scheduleInterviewData.JobTitle)
+                    .Replace("[candidateName]", scheduleInterviewData.CustomerName)
+                    .Replace("[customerName]", scheduleInterviewData.CustomerName)
+                    .Replace("[typeLocation]", typeLocation)
+                    .Replace("[linkLocation]", scheduleInterviewData.Location)
+                    .Replace("[Date]", scheduleInterviewData.StartInterview.ToString("dddd, dd MMMM hh:mm tt"))
+                    .Replace("[linkAccept]", linkAccept)
+                    .Replace("[linkCancel]", linkCancel)
+                    ;
+                    
+                    
                 MailHelper mailToCustromer = new MailHelper();
                 mailToCustromer.SmtpClient(
                     subjectMail2,
-                    bodyMail2,
+                    MailText2,
                     detailScheduleInterviewData.EmailCustomer,
                     myConfiguration.From,
                     myConfiguration.Email,
@@ -410,19 +425,24 @@ namespace API.Repository.Data
                     myContext.SaveChanges();
 
                     //send feedback
-                    string subjectMail2 = "[INTERVIEW] Congratulations, you passed the job interview stage!";
-                    string bodyMail2 =
-                        $"Dear {scheduleInterviewData.Candidate.Name}<br><br> " +
-                        $"Thank you for your participation in the job interview process at {scheduleInterviewData.Company.Name}. <br>" +
-                        $"Congratulations, you got the job! <br>" +
-                        $"for the next, wait for information from us for scheduling your work.</b><br><br>" +
-                        $"[Distribution System]";
+                    string subjectMail2 = "[INTERVIEW] Update the interview results";
 
+                    //Fetching Email Body Text from EmailTemplate File.  
+                    string FilePath = @"..\Client\wwwroot\assets\email_template\accepted.html";
+                    StreamReader str = new StreamReader(FilePath);
+                    string MailText = str.ReadToEnd();
+                    str.Close();
+
+                    string title = "Update the interview results";
+                    //Repalce dinamic text  
+                    MailText = MailText.Replace("[title]", title)
+                        .Replace("[recipientName]", scheduleInterviewData.Candidate.Name)
+                        .Replace("[companyName]", scheduleInterviewData.Company.Name);
 
                     MailHelper mailToCustromer = new MailHelper();
                     mailToCustromer.SmtpClient(
                         subjectMail2,
-                        bodyMail2,
+                        MailText,
                         detailScheduleInterviewData.EmailCandidate,
                         myConfiguration.From,
                         myConfiguration.Email,
@@ -451,19 +471,25 @@ namespace API.Repository.Data
                     myContext.SaveChanges();
 
                     //send feedback
-                    string subjectMail2 = "[INTERVIEW] Sorry, you haven't made it yet";
-                    string bodyMail2 =
-                        $"Dear {scheduleInterviewData.Candidate.Name}<br><br> " +
-                        $"Thank you for your participation in the job interview process at {scheduleInterviewData.Company.Name}. <br>" +
-                        $"We would like to inform you are not yet qualified to pass the interview . <br>" +
-                        $"wait for more information from us.</b><br><br>" +
-                        $"[Distribution System]";
+                    string subjectMail2 = "[INTERVIEW] Update the interview results";
+
+                    //Fetching Email Body Text from EmailTemplate File.  
+                    string FilePath2 = @"..\Client\wwwroot\assets\email_template\canceled.html";
+                    StreamReader str2 = new StreamReader(FilePath2);
+                    string MailText2 = str2.ReadToEnd();
+                    str2.Close();
+
+                    string title = "Update the interview results";
+                    //Repalce dinamic text  
+                    MailText2 = MailText2.Replace("[title]", title)
+                        .Replace("[recipientName]", scheduleInterviewData.Candidate.Name)
+                        .Replace("[companyName]", scheduleInterviewData.Company.Name);
 
 
                     MailHelper mailToCustromer = new MailHelper();
                     mailToCustromer.SmtpClient(
                         subjectMail2,
-                        bodyMail2,
+                        MailText2,
                         detailScheduleInterviewData.EmailCandidate,
                         myConfiguration.From,
                         myConfiguration.Email,

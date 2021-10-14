@@ -29,6 +29,43 @@
             text-decoration: underline;
         }
         
+		.button {
+			  border-radius:4px;
+			  border: none;
+			  padding: 2px 14px;
+			  text-align: center;
+			  text-decoration: none;
+			  display: inline-block;
+			  font-size: 16px;
+			  margin: 4px 2px;
+			  cursor: pointer;
+		}
+		
+		.button-green {
+			background-color: #4CAF50;
+			color: white;
+		}
+		
+		.button-blue {
+			background-color: #008CBA;
+			color: white;
+		}
+		
+		.button-red {
+			background-color: #f44336;
+			color: white;
+		}
+		
+		.button-grey {
+			background-color: #e7e7e7;
+			color: black;
+		}
+		
+		.button-dark {
+			background-color: #555555;
+			color: white;
+		}
+		
         @media (max-width: 480px) {
             #u_content_image_2 .v-container-padding-padding {
                 padding: 30px 40px 0px 0px !important;
@@ -161,7 +198,7 @@
                                                                 <tr>
                                                                     <td class="v-text-align" style="padding-right: 0px;padding-left: 0px;" align="center">
 
-                                                                        <img align="center" border="0" src="images/image-5.png" alt="Hero Image" title="Hero Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 45%;max-width: 119.25px;"
+                                                                        <img align="center" border="0" src="https://raw.githubusercontent.com/YeptaSamosir/Distribution-System/development/Client/wwwroot/assets/email_template/images/image-5.png" alt="Hero Image" title="Hero Image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 45%;max-width: 119.25px;"
                                                                             width="119.25" />
 
                                                                     </td>
@@ -253,9 +290,9 @@
                                                                     Position : <strong>[jobTitle]</strong><br />
                                                                     Candidate : <strong>[candidateName]</strong><br />
                                                                     User : <strong>[customerName]</strong><br />
-                                                                    Location : 
-                                                                    <span style="text-decoration: underline; font-size: 18px; line-height: 30.6px; color: #3598db;">
-                                                                      <a href="[linkLocation]">Join</a>
+                                                                    Location([typeLocation]) : 
+                                                                     <span style="text-decoration: underline; font-size: 18px; line-height: 30.6px; color: #3598db;">
+                                                                      <a href="[linkLocation]" style="border-radius:4px; border: none; padding: 2px 14px; text-align: center; text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer; background-color: #008CBA; color: white;">Join</a>
                                                                     </span>
                                                                     </span>
                                                                     </span>
@@ -265,10 +302,10 @@
                                                                     <span style="font-family: Lato, sans-serif; font-size: 14px; line-height: 23.8px; color: #000000;">
                                                                     <span style="font-size: 18px; line-height: 30.6px;">
                                                                     <span style="font-size: 18px; line-height: 30.6px;">
-                                                                    Please choose three schedule you can, We will contact Candidate for follow your schedule :<br />
+                                                                    Please choose three schedule you can, We will contact [userFollow] for follow your schedule :<br />
                                                                     <span style="color: #3598db; font-size: 18px; line-height: 30.6px;">
-                                                                    <a href="[linkDates]">
-                                                                    <span style="text-decoration: underline; font-size: 18px; line-height: 30.6px;">Select schedule</span>
+                                                                    <a href="[linkDates]" class="button button-blue">
+                                                                    <span style=" font-size: 18px; line-height: 30.6px;" color="white">Select schedule</span>
                                                                     </a>
                                                                     </span>
                                                                     </span>
@@ -282,7 +319,7 @@
                                                                     <span style="font-size: 18px; line-height: 30.6px;">
                                                                     <span style="font-size: 18px; line-height: 30.6px;">
                                                                     <span style="font-size: 18px; line-height: 30.6px;">
-                                                                    Please tell us immediatelly, to be processes immediatelly.
+                                                                    Please tell us immediatelly, to be processes.
                                                                     </span>
                                                                     </span>
                                                                     </span>
@@ -304,20 +341,7 @@
                                                                     </span>
                                                                 </p>
                                                                 <p style="line-height: 170%; font-size: 14px;">&nbsp;</p>
-                                                                <p style="line-height: 170%; font-size: 14px;">
-                                                                    <span style="font-family: Lato, sans-serif; font-size: 14px; line-height: 23.8px; color: #000000;">
-                                                                    <span style="font-size: 18px; line-height: 30.6px;">
-                                                                    <span style="font-size: 18px; line-height: 30.6px;">
-                                                                    <span style="font-size: 18px; line-height: 30.6px;">
-                                                                    <span style="font-size: 18px; line-height: 30.6px;">
-                                                                      Distribution System
-                                                                    </span>
-                                                                    </span>
-                                                                    </span>
-                                                                    </span>
-                                                                    </span>
-                                                                </p>
-                                                                <p style="line-height: 170%; font-size: 14px;">&nbsp;</p>
+																<p style="line-height: 170%; font-size: 14px;">&nbsp;</p>
                                                                 <p style="line-height: 170%; font-size: 14px;">&nbsp;</p>
                                                             </div>
 
@@ -367,7 +391,7 @@
                                                                             <tr style="vertical-align: top">
                                                                                 <td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
                                                                                     <a href="https://twitter.com/" title="Twitter" target="_blank">
-                                                                                        <img src="images/image-1.png" alt="Twitter" title="Twitter" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
+                                                                                        <img src="https://raw.githubusercontent.com/YeptaSamosir/Distribution-System/development/Client/wwwroot/assets/email_template/images/image-1.png" alt="Twitter" title="Twitter" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
                                                                                     </a>
                                                                                 </td>
                                                                             </tr>
@@ -381,7 +405,7 @@
                                                                             <tr style="vertical-align: top">
                                                                                 <td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
                                                                                     <a href="https://instagram.com/" title="Instagram" target="_blank">
-                                                                                        <img src="images/image-2.png" alt="Instagram" title="Instagram" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
+                                                                                        <img src="https://raw.githubusercontent.com/YeptaSamosir/Distribution-System/development/Client/wwwroot/assets/email_template/images/image-2.png" alt="Instagram" title="Instagram" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
                                                                                     </a>
                                                                                 </td>
                                                                             </tr>
@@ -395,7 +419,7 @@
                                                                             <tr style="vertical-align: top">
                                                                                 <td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
                                                                                     <a href="https://youtube.com/" title="YouTube" target="_blank">
-                                                                                        <img src="images/image-3.png" alt="YouTube" title="YouTube" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
+                                                                                        <img src="https://raw.githubusercontent.com/YeptaSamosir/Distribution-System/development/Client/wwwroot/assets/email_template/images/image-3.png" alt="YouTube" title="YouTube" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
                                                                                     </a>
                                                                                 </td>
                                                                             </tr>
@@ -409,7 +433,7 @@
                                                                             <tr style="vertical-align: top">
                                                                                 <td align="left" valign="middle" style="word-break: break-word;border-collapse: collapse !important;vertical-align: top">
                                                                                     <a href="https://linkedin.com/" title="LinkedIn" target="_blank">
-                                                                                        <img src="images/image-4.png" alt="LinkedIn" title="LinkedIn" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
+                                                                                        <img src="https://raw.githubusercontent.com/YeptaSamosir/Distribution-System/development/Client/wwwroot/assets/email_template/images/image-4.png" alt="LinkedIn" title="LinkedIn" width="32" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: none;height: auto;float: none;max-width: 32px !important">
                                                                                     </a>
                                                                                 </td>
                                                                             </tr>

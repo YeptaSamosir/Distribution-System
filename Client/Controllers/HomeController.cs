@@ -21,7 +21,7 @@ namespace Client.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("login", "Auth");
         }
 
         [HttpGet("reset")]

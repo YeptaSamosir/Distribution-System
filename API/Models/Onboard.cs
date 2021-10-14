@@ -23,14 +23,14 @@ namespace API.Models
 
         public virtual Company Company { get; set; }
 
-        [Required]
+       /* [Required]*/
         public string JobTitle { get; set; }
 
         [ForeignKey("Status")]
         public string StatusId { get; set; }
         public virtual Status Status { get; set; }
 
-        [Required]
+       /* [Required]*/
         public DateTime DateStart { get; set; }
         public DateTime DateEnd { get; set; }
         public DateTime CreatedAt { get; set; }

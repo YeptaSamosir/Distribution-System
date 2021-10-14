@@ -35,5 +35,19 @@ namespace API.Base.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, new { message = e.Message });
             }
         }
+
+        [HttpPut("update")]
+        public ActionResult Update(Onboard onboard)
+        {
+            try
+            {
+                onboardRepository.UpdateOnBoard(onboard);
+                return Ok(new { Message = "Success Update" });
+            }
+            catch (System.Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { Message = e.Message });
+            }
+        }
     }
 }

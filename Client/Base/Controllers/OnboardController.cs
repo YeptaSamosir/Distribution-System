@@ -23,8 +23,15 @@ namespace Client.Base.Controllers
         {
             var result = repository.CreateOnBoard(onboard);
             return Json(result);
-        }   
-        
+        }
+
+        [HttpPut("update")]
+        public JsonResult UpdateOnBoard(Onboard onboard)
+        {
+            var result = repository.UpdateOnBoard(onboard);
+            return Json(result);
+        }
+
         [HttpGet("")]
         public IActionResult Index()
         {
