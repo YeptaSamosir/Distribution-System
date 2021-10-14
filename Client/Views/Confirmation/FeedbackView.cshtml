@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Feedback";
+    Layout = "_LayoutAuth";
+}
+<div class="login_wrapper">
+    <div class="animate form login_form">
+        <section class="login_content">
+            <form id="form-feedback-customer">
+                <hr />
+                <h2 class="h2">Your Feedback</h2>
+                <hr />
+                <span class="text-danger">@TempData["Message"]</span>
+
+                <input id="scheduleInterviewId" type="hidden" name="scheduleInterviewId" value="@ViewBag.ScheduleInterviewId" />
+
+                <div class="form-group row mt-5">
+                    <label class="control-label col-md-12 col-sm-12 pt-1">Message</label>
+                    <div class="col-md-12 col-sm-12">
+                        <textarea class="form-control" id="inputFeedback" rows="10"></textarea>
+                        <div class="invalid-feedback">
+                            <span id="messageFeedback"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <button id="btn-sub" class="btn btn-success" type="submit">
+                        Send
+                    </button>
+                </div>
+
+                <div class="clearfix"></div>
+            </form>
+        </section>
+    </div>
+</div>

@@ -6,7 +6,13 @@
     <div class="animate form login_form">
         <section class="login_content">
             <form id="form-confirm-schedule" method="POST">
-                <h2 class="h2"> Confirmation schedule interview</h2>
+                <hr />
+                <h2 class="h2 text-uppercase">@ViewBag.ScheduleFollowBy schedule interview confirmation</h2>
+                <hr />
+                <h2 class="mt-5 text-justify">
+                    Hi, @ViewBag.Name!, please inform us of the three schedule options for interviews with your @ViewBag.Followed.
+                    We will then contact your @ViewBag.Followed to choose one of the three dates.
+                </h2>
                 <span class="text-danger">@TempData["Message"]</span>
 
                 <input id="scheduleInterviewId" type="hidden" name="scheduleInterviewId" value="@ViewBag.ScheduleInterviewId" />

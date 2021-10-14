@@ -88,5 +88,19 @@ namespace API.Base.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
         }
+
+        [HttpPost("feedback-customer")]
+        public ActionResult FeedbackCustomer(FeedbackVM feedbackVM)
+        {
+            try
+            {
+                scheduleInterviewRepository.FeedbackCustomer(feedbackVM);
+                return Ok(new { message = "Thank you" });
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, new { message = e.Message });
+            }
+        }
     }
 }

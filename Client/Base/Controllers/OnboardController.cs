@@ -25,7 +25,7 @@ namespace Client.Base.Controllers
             return Json(result);
         }
 
-        [HttpPut("update")]
+        [HttpPost("update")]
         public JsonResult UpdateOnBoard(Onboard onboard)
         {
             var result = repository.UpdateOnBoard(onboard);

@@ -133,7 +133,24 @@ namespace API.Repository.Data
 
         }
 
-      
+        internal int FeedbackCustomer(FeedbackVM feedbackVM)
+        {
+            try
+            {
+                //update schedule
+                var scheduleInterviewData = myContext.ScheduleInterviews.Where(x => x.ScheduleInterviewId == feedbackVM.ScheduleInterviewId).FirstOrDefault();
+                scheduleInterviewData.FeedbackMessage = feedbackVM.FeedbackMessage;
+                scheduleInterviewData.UpdatedAt = DateTime.Now;
+                Update(scheduleInterviewData);
+                myContext.SaveChanges();
+                return 1;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
+        }
 
         internal int CreateDateOption(CreateDateOptionsVM createDateOptionsVM)
         {
@@ -378,7 +395,7 @@ namespace API.Repository.Data
                     myConfiguration.SmtpServer,
                     myConfiguration.Port
                 );
-                return "Success! Check your email for update schedule interview";
+                return "Thank you for your response, please check your email for an update on the interview schedule";
             }
             catch (Exception e)
             {
@@ -424,7 +441,7 @@ namespace API.Repository.Data
                     myContext.Candidates.Update(candidateData);
                     myContext.SaveChanges();
 
-                    //send feedback
+                    //send feedback candidate
                     string subjectMail2 = "[INTERVIEW] Update the interview results";
 
                     //Fetching Email Body Text from EmailTemplate File.  
@@ -451,7 +468,37 @@ namespace API.Repository.Data
                         myConfiguration.Port
                     );
 
-                    return "Success! candidate accepted";
+
+                    //send feedback customer
+                    string subjectMail3 = "[INTERVIEW] Invitations to interview";
+
+                    //Fetching Email Body Text from EmailTemplate File.  
+                    string FilePath3 = @"..\Client\wwwroot\assets\email_template\feedback.html";
+                    StreamReader str3 = new StreamReader(FilePath3);
+                    string MailText3 = str3.ReadToEnd();
+                    str3.Close();
+
+                    string title3 = "Please tell us";
+                    string responseAcceped = "Thank you for your participation in the job interview process, candidate accepted!";
+                    string linkFeedback = $"{myConfiguration.BaseUrlClient}/interview/feedback/{scheduleInterviewData.ScheduleInterviewId}";
+                    //Repalce dinamic text  
+                    MailText3 = MailText3.Replace("[title]", title3)
+                        .Replace("[response]", responseAcceped)
+                        .Replace("[linkFeedback]", linkFeedback);
+
+                    MailHelper mailToCustromer3 = new MailHelper();
+                    mailToCustromer3.SmtpClient(
+                        subjectMail3,
+                        MailText3,
+                        detailScheduleInterviewData.EmailCustomer,
+                        myConfiguration.From,
+                        myConfiguration.Email,
+                        myConfiguration.Password,
+                        myConfiguration.SmtpServer,
+                        myConfiguration.Port
+                    );
+
+                    return "Thank you for your participation in the job interview process, candidate accepted!";
                 }
 
                 //if candidate canceled
@@ -498,7 +545,36 @@ namespace API.Repository.Data
                         myConfiguration.Port
                     );
 
-                    return "Success! candidate canceled";
+                    //send feedback customer
+                    string subjectMail3 = "[INTERVIEW] Invitations to interview";
+
+                    //Fetching Email Body Text from EmailTemplate File.  
+                    string FilePath3 = @"..\Client\wwwroot\assets\email_template\feedback.html";
+                    StreamReader str3 = new StreamReader(FilePath3);
+                    string MailText3 = str3.ReadToEnd();
+                    str3.Close();
+
+                    string title3 = "Please tell us";
+                    string responseCancel = "Thank you for your participation in the job interview process, candidate canceled!";
+                    string linkFeedback = $"{myConfiguration.BaseUrlClient}/interview/feedback/{scheduleInterviewData.ScheduleInterviewId}";
+                    //Repalce dinamic text  
+                    MailText3 = MailText3.Replace("[title]", title3)
+                        .Replace("[response]", responseCancel)
+                        .Replace("[linkFeedback]", linkFeedback);
+
+                    MailHelper mailToCustromer3 = new MailHelper();
+                    mailToCustromer3.SmtpClient(
+                        subjectMail3,
+                        MailText3,
+                        detailScheduleInterviewData.EmailCustomer,
+                        myConfiguration.From,
+                        myConfiguration.Email,
+                        myConfiguration.Password,
+                        myConfiguration.SmtpServer,
+                        myConfiguration.Port
+                    );
+
+                    return "Thank you for your participation in the job interview process, candidate canceled!";
                 }
 
                 return "404";

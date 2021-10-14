@@ -55,6 +55,10 @@ namespace Client.Repository.Data
             return response;
         }
 
-       
+        internal string Feedback(FeedbackVM feedbackVM)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(feedbackVM), Encoding.UTF8, "application/json");
+            return httpClient.PostAsync(request + "feedback-customer", content).Result.Content.ReadAsStringAsync().Result;
+        }
     }
 }

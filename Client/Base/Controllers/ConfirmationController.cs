@@ -43,6 +43,16 @@ namespace Client.Base.Controllers
             
             ViewBag.ScheduleInterviewId = dataScheduleInterview.ScheduleInterviewId;
             ViewBag.ScheduleFollowBy = scheduleFollowBy;
+            if (scheduleFollowBy == "candidate")
+            {
+                ViewBag.Name = dataScheduleInterview.Candidate.Name;
+                ViewBag.Followed = "customer";
+            }
+            else {
+                ViewBag.Name = dataScheduleInterview.CustomerName;
+                ViewBag.Followed = "candidate";
+            }
+           
             return View();
         }
 
@@ -75,6 +85,32 @@ namespace Client.Base.Controllers
          
             ViewBag.Response = response;
             return View();
+        }
+
+        [HttpGet("feedback/{scheduleInterviewId}")]
+        public IActionResult FeedbackView(string scheduleInterviewId)
+        {
+            if (scheduleInterviewId == null)
+            {
+                return Redirect("/error/404");
+            }
+
+            var dataScheduleInterview = repository.Get(scheduleInterviewId).Result;
+            if (dataScheduleInterview.StatusId == "ITV-CN" || dataScheduleInterview.StatusId == "ITV-AC" || dataScheduleInterview.StatusId == "ITV-DN")
+            {
+                ViewBag.ScheduleInterviewId = scheduleInterviewId;
+                return View();
+            }
+
+            return Redirect("/error/404");
+        }
+
+        [HttpPost("feedback")]
+        public IActionResult Feedback(FeedbackVM feedbackVM)
+        {
+            var response = repository.Feedback(feedbackVM);
+
+            return Json(response);
         }
 
         [HttpGet("{keyinterviev}/{isaccepted}")]
@@ -110,5 +146,7 @@ namespace Client.Base.Controllers
             ViewBag.Response = response;
             return View();
         }
+
+       
     }
 }

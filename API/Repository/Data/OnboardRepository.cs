@@ -105,19 +105,16 @@ namespace API.Repository.Data
 
         internal int UpdateOnBoard(Onboard onboard)
         {
-            //get onboard data
-            var onboardata = myContext.Onboards.Where(x => x.OnboardId == onboard.OnboardId).FirstOrDefault();
-            onboard.CandidateId = onboardata.CompanyId;
-            onboard.CompanyId = onboardata.CompanyId;
-            onboard.JobTitle = onboard.JobTitle;
-            onboard.DateStart = onboardata.DateStart;
-            onboard.UpdatedAt = DateTime.Now;
-            myContext.Onboards.Add(onboard);
-            myContext.SaveChanges();
-
-            //UPDATE status candidate if onboard done
+         
+            //UPDATE if onboard done
             if (onboard.StatusId == "ONB-DN")
             {
+                //update problem tolong dibenerin
+                onboard.DateEnd = DateTime.Now;
+                Update(onboard);
+                myContext.SaveChanges();
+
+
                 var candidateData = myContext.Candidates.Where(x => x.CandidateId == onboard.CandidateId).FirstOrDefault();
                 candidateData.Status = status.Idle;
                 candidateData.UpdatedAt = DateTime.Now;

@@ -70,7 +70,7 @@
                             if (dateStart == "0001-01-01T00:00:00") {
                                 return `-`;
                             } else {
-                                return moment(dateStart).format('ddd, DD MMMM YYYY HH:mm');
+                                return moment(dateStart).format('ddd, DD MMMM YYYY');
                                 //return scheduleDate;
                             }
                         },
@@ -94,9 +94,9 @@
 
                         render: function (data, type, row, meta) {
                             return `
-                                <div class="float-right">
+                                <div class="float-right w-100">
                                   <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalEdit"  onclick="editModalOnboard('${row["onboardId"]}')">
-                                        Edit
+                                        Update
                                     </button>
                                 </div>
                                 `;
@@ -188,6 +188,16 @@ function checkValidation(errorMsg, elementById, elementMsg) {
 //        console.log(result);
 //    });
 //}
+
+
+/*$('#inputDateEnd').daterangepicker({
+    singleDatePicker: true,
+    showDropdowns: true,
+}, function (start, end, label) {
+    console.log("A new date selection was made: " + start.format('YYYY-MM-DD'));
+    $('#dateStart').val(`${start.format('YYYY-MM-DD')}`);
+});*/
+
 //Edit
 editModalOnboard = (id) => {
     $.ajax({
@@ -199,81 +209,41 @@ editModalOnboard = (id) => {
         //set value
         $('#inputOnboardId').val(`${result.onboardId}`);
         $('#inputStatusId').val(`${result.statusId}`);
+        $('#inputCandidateId').val(`${result.candidateId}`);
+        $('#inputCompanyId').val(`${result.companyId}`);
+        $('#inputDateStart').val(`${result.dateStart}`);
+
         $('#candidateName').text(`${result.candidate.name}`);
         $('#candidateEmail').text(`${result.candidate.email}`);
         $('#companyName').text(`${result.company.name}`);
         $('#jobTitle').text(`${result.jobTitle}`);
-        $('#inputStatusEdit').html(`<option value="${result.statusId}">${result.status.name}
-                        </option>`);
-        
+         var dateStart = moment(result.dateStart).format('ddd, DD MMMM YYYY');
+        $('#dateStart').text(`${dateStart}`);
 
+        if (result.statusId == "ONB-OG") {
+            document.querySelector('#inputStatus').options[1].selected = true;
+            $("#dateEndForm").hide();
+        } else {
+            document.querySelector('#inputStatus').options[0].selected = true;
+        }
 
     }).fail((result) => {
         console.log(result);
     });
 }
 
-//update
-$("#form-edit-onbaord").submit(function (event) {
+function showDateEnd() {
 
-
-    /* stop form from submitting normally */
-    event.preventDefault();
     //get datetime
     let current = new Date();
-    let cDate = current.getFullYear() + '-' + (current.getMonth() + 1) + '-' + current.getDate();
-    let cTime = current.getHours() + ":" + current.getMinutes() + ":" + current.getSeconds();
-    let dateTime = cDate + ' ' + cTime;
+    $('#DateNow').text(moment(current).format('ddd, DD MMMM YYYY'));
 
-    var data_input = {
-        "CandidateId": $("#candidateId").val(),
-        "Name": $("#inputCandidateNameEdit").val(),
-        "Grade": $("#inputGradeEdit").val(),
-        "Email": $("#inputEmailEdit").val(),
-        "UpdatedAt": dateTime
+    if (document.querySelector('#inputStatus').options[0].selected == true) {
+        $("#dateEndForm").show();
+    } else {
+        $("#dateEndForm").hide();
     }
-
-    console.log(JSON.stringify(data_input));
-
-    $.ajax({
-        url: `/admin/onboard/update`,
-        method: 'PUT',
-        dataType: 'json',
-        contentType: 'application/x-www-form-urlencoded',
-        data: data_input,
-        success: function (response) {
-            console.log(response);
-            var obj = JSON.parse(response);
-
-            console.log(obj);
-            if (obj.errors != undefined) {
-                checkValidation(obj.errors.Name, "inputCandidateNameEdit", "messageCandidateNameEdit");
-                checkValidation(obj.errors.Grade, "inputGradeEdit", "messageGradeEdit");
-                checkValidation(obj.errors.Email, "inputEmailEdit", "messageEmailEdit");
-
-            } else {
-                $('#modalEdit').modal('hide');
-
-                //sweet alert message success
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: `${obj.message}`,
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-
-                //reload only datatable
-                $('#datatable-candidate').DataTable().ajax.reload();
-            }
-        },
-        error: function (xhr, status, error) {
-            var err = eval(xhr.responseJSON);
-        }
-    });
-});
-
-
+}
 
 //create onboard
 $("#form-edit-onbaord").submit(function (event) {
@@ -284,59 +254,51 @@ $("#form-edit-onbaord").submit(function (event) {
 
     var dataInput = new Object();
     dataInput.OnboardId = $("#inputOnboardId").val();
-    dataInput.DateEnd = $("#inputDateEnd").val();
-    dataInput.StatusId = $("#inputStatusId").val();
+    dataInput.StatusId = $("#inputStatus").val();
+    dataInput.CandidateId = $('#inputCandidateId').val();
+    dataInput.CompanyId = $('#inputCompanyId').val();
+    dataInput.DateStart = $('#inputDateStart').val();
 
     console.log(dataInput);
 
-    if (dataInput.OnboardId == "") {
-        document.getElementById(`inputDateEnd`).className = "form-control is-invalid";
-        $(`#messageOnboardate`).html(`Onboard date cannot null`);
-    } else {
-        document.getElementById(`inputDateEnd`).className = "form-control";
 
-       /* $.ajax({
-            url: '/admin/Onboard/update',
-            method: 'PUT',
-            dataType: 'json',
-            contentType: 'application/x-www-form-urlencoded',
-            data: dataInput,
-            success: function (response) {
+    $.ajax({
+        url: `/admin/onboard/update`,
+        method: 'POST',
+        dataType: 'json',
+        contentType: 'application/x-www-form-urlencoded',
+        data: dataInput,
+        success: function (response) {
 
-                console.log(response);
+            console.log(response);
 
-                var obj = JSON.parse(response);
+            var obj = JSON.parse(response);
 
-                console.log(obj);
+            console.log(obj);
 
-                if (obj.errors != undefined) {
-                    checkValidation(obj.errors.DateStart, "inputDateEnd", "messageOnboardate");
-                } else {
+            if (obj.errors == undefined) {
+                //idmodal di hide
+                document.getElementById("modalEdit").className = "modal fade";
+                $('.modal-backdrop').remove();
 
-                    //idmodal di hide
-                    document.getElementById("modalOnboard").className = "modal fade";
-                    $('.modal-backdrop').remove();
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: `${obj.message}`,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
 
-
-                    //sweet alert message success
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: `${obj.message}`,
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-
-
-                }
-
-            },
-            error: function (xhr, status, error) {
-                var err = eval(xhr.responseJSON);
-                console.log(err);
+                //reload only datatable
+                $('#datatable-onboard').DataTable().ajax.reload();
             }
-        })*/
-    }
+        },
+        error: function (xhr, status, error) {
+            var err = eval(xhr.responseJSON);
+            console.log(err);
+        }
+    })
+  
 });
 
 //delete 
