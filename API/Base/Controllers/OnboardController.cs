@@ -37,7 +37,7 @@ namespace API.Base.Controllers
         }
 
         [HttpPut("update")]
-        public ActionResult Update(Onboard onboard)
+        public ActionResult UpdateOnboard(Onboard onboard)
         {
             try
             {

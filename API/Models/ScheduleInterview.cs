@@ -62,6 +62,7 @@ namespace API.Models
 
         public string FollowingBy { get; set; }
 
+        public string FeedbackMessage { get; set; }
 
         [ForeignKey("Status")]
         [Required]
@@ -77,6 +78,6 @@ namespace API.Models
 
         /*[JsonIgnore]*/
         public virtual ICollection<ScheduleInterviewDateOption> ScheduleInterviewDateOptions { get; set; }
-
+        
     }
 }
