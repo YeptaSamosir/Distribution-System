@@ -82,7 +82,7 @@
                             if (dateEnd == "0001-01-01T00:00:00") {
                                 return `-`;
                             } else {
-                                return moment(dateEnd).format('ddd, DD MMMM YYYY HH:mm');
+                                return moment(dateEnd).format('ddd, DD MMMM YYYY');
                                 //return dateEnd;
                             }
                         },
