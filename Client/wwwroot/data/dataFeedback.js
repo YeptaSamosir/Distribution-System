@@ -26,6 +26,7 @@ $("#form-feedback-customer").submit(function (event) {
         //$(`#messageFeedback`).html(``);
     } else {
         document.getElementById(`inputFeedback`).className="form-control invalid";
+        
 
         $.ajax({
             url: '/interview/feedback',
@@ -47,6 +48,8 @@ $("#form-feedback-customer").submit(function (event) {
                     showConfirmButton: false,
                     timer: 1500
                 })
+
+                $('#inputFeedback').val('');
 
             },
             error: function (xhr, status, error) {

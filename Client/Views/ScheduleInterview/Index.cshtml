@@ -117,47 +117,39 @@
 </div>
 
 
-<div id="modalDetail" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id="modalDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
-
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Detail schedule interview</h4>
-
-                <button type="button" class="close" data-dismiss="modal">
-                    <span aria-hidden="true">×</span>
+                <h5 class="modal-title" id="exampleModalLabel">Detail Schedule Interview</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <ul class="list-group list-group-flush">
+                    <li class="list-group-item">ID : <span id="interviewId">-</span></li>
+                    <li class="list-group-item">Candidate name : <span id="candidateNameDetail"> - </span></li>
+                    <li class="list-group-item">Candidate email : <span id="candidateEmailDetail"> - </span></li>
+                    <li class="list-group-item">Customer name : <span id="customerNameDetail"> - </span></li>
+                    <li class="list-group-item">Customer email : <span id="customerEmailDetail"> - </span></li>
+                    <li class="list-group-item">Company : <span id="companyNameDetail"> - </span></li>
+                    <li class="list-group-item">Apply : <span id="jobTitleDetail"> - </span></li>
+                    <li class="list-group-item">Type : <span id="typeDetail"> - </span></li>
+                    <li class="list-group-item">Location : <span id="locationDetail"> - </span></li>
+                    <li class="list-group-item">Start Interview : <span id="startDateDetail"> - </span></li>
+                    <li class="list-group-item">Status : <span id="statusDetail"> - </span></li>
                     <li class="list-group-item">
-                        <p>Candidate name :  <span id="candidateNameDetail"></span></p>
-                    </li>
-                    <li class="list-group-item">
-                        <p>Candidate email :  <span id="candidateEmailDetail"></span></p>
-                    </li>
-                    <li class="list-group-item">
-                        <p>Company :  <span id="companyNameDetail"></span></p>
-                    </li>
-                    <li class="list-group-item">
-                        <p>Position Apply :  <span id="jobTitleDetail"></span></p>
-                    </li>
-                    <li class="list-group-item">
-                        <p>Customer :  <span id="customerNameDetail"></span></p>
-                    </li>
-                    <li class="list-group-item">
-                        <p>Customer email :  <span id="customerEmailDetail"></span></p>
-                    </li>
-                    <li class="list-group-item">
-                        <p>Scedule Interview :  <span id="dateStartDetail"></span></p>
+                        Feedback Message : <br />
+                        <span id="feedbackMessageDetail"> - </span>
                     </li>
                 </ul>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-success">Deleta Data</button>
             </div>
         </div>
     </div>
 </div>
+
 <!-- /page content -->

@@ -94,34 +94,29 @@
                     {
 
                         render: function (data, type, row, meta) {
-                            if (row["statusId"] == "ITV-AC") {
-                                return `
-                                <div class="float-right">
-                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalOnboard"  onclick="modalOnboard('${row["scheduleInterviewId"]}')">
-                                        Create Onboard
-                                    </button>
-                                </div>
-                                `;
+
+                            var action = ` <div class="dropdown">
+		                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+			                        Action
+		                        </button>
+		                        <div class="dropdown-menu">`;
+
+                            action += ` <a href="#" class="dropdown-item" data-toggle="modal" data-target="#modalDetail" onclick="modalDetail('${row["scheduleInterviewId"]}')">Detail</a>` ;
+
+
+                            if (row["statusId"] == "ITV-DN" || row["statusId"] == "ITV-CN") {
+                                action += ` <a class="dropdown-item text-danger" onclick="deleteModalScheduleInterview('${row["scheduleInterviewId"]}')">Delete</a>`;
                             }
 
-                            if (row["statusId"] == "ITV-DN" || row["statusId"] == "ITV-CN"){
-                                return `
-                                <div class="float-right">
-                                    <button type="button" class="btn btn-danger btn-sm"  onclick="deleteModalScheduleInterview('${row["scheduleInterviewId"]}')">
-                                        Delete
-                                    </button>
-                                </div>
-                                `;
+                            if (row["statusId"] == "ITV-AC") {
+                                action += ` <a href="" class="dropdown-item" data-toggle="modal" data-target="#modalOnboard" onclick="modalOnboard('${row["scheduleInterviewId"]}')">Create Onboard</a>`;
                             }
-                            
-                            return `
-                            <div class="float-right">
-                                <button type="button" class="btn btn-danger btn-sm" disabled>
-                                    Delete
-                                </button>
-                            </div>
-                            `;
-                            
+
+
+                            action += `</div>
+	                                 </div>`;
+
+                            return action;
                         },
                     },
                 ],
@@ -197,6 +192,32 @@ $('#inputOnboardate').daterangepicker({
     $('#dateStart').val(`${start.format('YYYY-MM-DD')}`);
 });
 
+
+modalDetail = (id) => {
+    $.ajax({
+        url: `/admin/scheduleinterview/get/${id}`,
+    }).done((result) => {
+        console.log(result);
+       // document.getElementById('form-create-onbaord').reset();
+      
+        //set value
+        $('#interviewId').text(result.scheduleInterviewId);
+        $('#candidateNameDetail').text(result.candidate.name);
+        $('#candidateEmailDetail').text(result.detailScheduleInterviews[0].emailCandidate);
+        $('#customerNameDetail').text(result.customerName);
+        $('#customerEmailDetail').text(result.detailScheduleInterviews[0].emailCustomer);
+        $('#companyNameDetail').text(result.company.name);
+        $('#jobTitleDetail').text(result.jobTitle);
+        $('#typeDetail').text(result.detailScheduleInterviews[0].typeLocation);
+        $('#locationDetail').text(result.location);
+        $('#startDateDetail').text(moment(result.startInterview).format('ddd, DD MMMM YYYY HH:mm'));
+        $('#feedbackMessageDetail').text(result.feedbackMessage);
+        $('#statusDetail').text(result.status.name);
+    }).fail((result) => {
+        console.log(result);
+    });
+}
+
 //modal onboard
 modalOnboard = (id) => {
     $.ajax({
@@ -218,6 +239,7 @@ modalOnboard = (id) => {
         console.log(result);
     });
 }
+
 
 //create onboard
 $("#form-create-onbaord").submit(function (event) {
@@ -273,7 +295,8 @@ $("#form-create-onbaord").submit(function (event) {
                         timer: 1500
                     })
 
-                    
+                    //reload only datatable
+                    $('#datatable-interview-schedule').DataTable().ajax.reload();
                 }
 
             },
@@ -315,7 +338,7 @@ deleteModalScheduleInterview = (id) => {
                     )
 
                     //reload only datatable
-                    $('#datatable-candidate').DataTable().ajax.reload();
+                    $('#datatable-interview-schedule').DataTable().ajax.reload();
                 },
             })
         }
