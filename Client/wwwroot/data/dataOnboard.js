@@ -204,7 +204,7 @@ editModalOnboard = (id) => {
         url: `/admin/onboard/get/${id}`,
     }).done((result) => {
         //console.log(result);
-        console.log(result.status.name);
+        console.log(result.jobTitle);
 
         //set value
         $('#inputOnboardId').val(`${result.onboardId}`);
@@ -212,11 +212,11 @@ editModalOnboard = (id) => {
         $('#inputCandidateId').val(`${result.candidateId}`);
         $('#inputCompanyId').val(`${result.companyId}`);
         $('#inputDateStart').val(`${result.dateStart}`);
-
         $('#candidateName').text(`${result.candidate.name}`);
         $('#candidateEmail').text(`${result.candidate.email}`);
         $('#companyName').text(`${result.company.name}`);
         $('#jobTitle').text(`${result.jobTitle}`);
+
          var dateStart = moment(result.dateStart).format('ddd, DD MMMM YYYY');
         $('#dateStart').text(`${dateStart}`);
 
@@ -258,6 +258,7 @@ $("#form-edit-onbaord").submit(function (event) {
     dataInput.CandidateId = $('#inputCandidateId').val();
     dataInput.CompanyId = $('#inputCompanyId').val();
     dataInput.DateStart = $('#inputDateStart').val();
+    dataInput.jobTitle = $('#jobTitle').text();
 
     console.log(dataInput);
 
