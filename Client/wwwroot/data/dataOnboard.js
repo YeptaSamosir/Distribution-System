@@ -38,7 +38,7 @@
                 columnDefs: [{
                     searchable: false,
                     orderable: false,
-                    targets: [0, 6]
+                    targets: [0, 8]
                 }],
                 ajax: {
                     url: "/admin/onboard/get",
@@ -168,36 +168,6 @@ function checkValidation(errorMsg, elementById, elementMsg) {
 }
 
 
-//modal onboard
-//modalOnboard = (id) => {
-//    $.ajax({
-//        url: `/admin/onboard/get/${id}`,
-//    }).done((result) => {
-//        console.log(result);
-//        document.getElementById('form-edit-onbaord').reset();
-
-//        //set value
-//        $('#inputOnboardId').val(`${result.onboardId}`);
-//        $('#inputStatusId').val(`${result.statusId}`);
-//        $('#candidateName').text(`${result.candidate.name}`);
-//        $('#candidateEmail').text(`${result.candidate.email}`);
-//        $('#companyName').text(`${result.company.name}`);
-//        $('#jobTitle').text(`${result.JobTitle}`);
-
-//    }).fail((result) => {
-//        console.log(result);
-//    });
-//}
-
-
-/*$('#inputDateEnd').daterangepicker({
-    singleDatePicker: true,
-    showDropdowns: true,
-}, function (start, end, label) {
-    console.log("A new date selection was made: " + start.format('YYYY-MM-DD'));
-    $('#dateStart').val(`${start.format('YYYY-MM-DD')}`);
-});*/
-
 //Edit
 editModalOnboard = (id) => {
     $.ajax({
@@ -300,40 +270,3 @@ $("#form-edit-onbaord").submit(function (event) {
     })
   
 });
-
-//delete 
-deleteModalCandidate = (id) => {
-
-    console.log(id);
-
-    Swal.fire({
-        title: 'Delete Data',
-        text: `You will delete this data ?`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete!'
-    }).then((isDelete) => {
-        if (isDelete.isConfirmed) {
-
-            $.ajax({
-                url: `/admin/candidate/delete/${id}`,
-                method: 'DELETE',
-                contentType: 'application/x-www-form-urlencoded',
-                success: function (response) {
-                    console.log(response);
-
-                    Swal.fire(
-                        'Deleted!',
-                        `Data deleted successfully`,
-                        'success'
-                    )
-
-                    //reload only datatable
-                    $('#datatable-candidate').DataTable().ajax.reload();
-                },
-            })
-        }
-    })
-}
