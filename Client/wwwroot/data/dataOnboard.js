@@ -93,6 +93,17 @@
                     {
 
                         render: function (data, type, row, meta) {
+                            if (row["statusId"] == "ONB-DN") {
+                                return `
+                                <div class="float-right w-100">
+                                  <button type="button" class="btn btn-danger btn-sm" onclick="deleteModalOnboard('${row["onboardId"]}')">
+                                        Delete
+                                    </button>
+                                </div>
+                                `;
+
+                            }
+
                             return `
                                 <div class="float-right w-100">
                                   <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalEdit"  onclick="editModalOnboard('${row["onboardId"]}')">
@@ -215,7 +226,7 @@ function showDateEnd() {
     }
 }
 
-//create onboard
+//update onboard
 $("#form-edit-onbaord").submit(function (event) {
 
 
@@ -271,3 +282,42 @@ $("#form-edit-onbaord").submit(function (event) {
     })
   
 });
+
+
+//delete 
+deleteModalOnboard = (id) => {
+
+    console.log(id);
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: `You won't be able to revert this!`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete!'
+    }).then((isDelete) => {
+        if (isDelete.isConfirmed) {
+
+            $.ajax({
+                url: `/admin/onboard/delete/${id}`,
+                method: 'DELETE',
+                contentType: 'application/x-www-form-urlencoded',
+                success: function (response) {
+                    console.log(response);
+
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+
+                    //reload only datatable
+                    $('#datatable-onboard').DataTable().ajax.reload();
+                },
+            })
+        }
+    })
+}
+
