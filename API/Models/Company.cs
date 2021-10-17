@@ -11,6 +11,10 @@ namespace API.Models
     [Table("tb_m_companies")]
     public class Company
     {
+        public Company()
+        {
+        }
+
         public Company(string name, DateTime createdAt, DateTime updatedAt)
         {
             Name = name;

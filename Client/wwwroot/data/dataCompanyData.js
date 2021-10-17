@@ -147,19 +147,19 @@ $("#form-create-company").submit(function (event) {
     let cTime = current.getHours() + ":" + current.getMinutes() + ":" + current.getSeconds();
     let dateTime = cDate + ' ' + cTime;
 
-    var data_input = new Object();
-    data_input.Name = $("#inputCompanyName").val();
-    data_input.UpdatedAt = dateTime;
-    data_input.CreatedAt = dateTime;
+    var dataInput = new Object();
+    dataInput.Name = $("#inputCompanyName").val();
+    dataInput.CreatedAt = dateTime;
+    dataInput.UpdatedAt = dateTime;
 
-    console.log(data_input);
+    console.log(dataInput);
 
     $.ajax({
-        url: '/admin/company/post',
-        method: 'POST',
+        url: `/admin/company/post`,
+        method: 'post',
         dataType: 'json',
         contentType: 'application/x-www-form-urlencoded',
-        data: data_input,
+        data: dataInput,
         success: function (response) {
             console.log(response);
             var obj = JSON.parse(response);
@@ -170,9 +170,9 @@ $("#form-create-company").submit(function (event) {
                 checkValidation(obj.errors.Name, "inputCompanyName", "messageCompanyName");
 
             } else {
-                $('#modalCompany').modal('hide');
-
-
+                //idmodal di hide
+                document.getElementById("modalCompany").className = "modal fade";
+                $('.modal-backdrop').remove();
 
                 //sweet alert message success
                 Swal.fire({
@@ -189,7 +189,7 @@ $("#form-create-company").submit(function (event) {
         },
         error: function (xhr, status, error) {
             var err = eval(xhr.responseJSON);
-
+            console.log(err);
         }
     })
 });
