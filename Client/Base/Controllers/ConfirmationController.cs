@@ -1,13 +1,20 @@
 ﻿using API.Helper;
 using API.Models;
 using API.Models.ViewModels;
+using Client.Handler;
 using Client.Repository.Data;
+using Ical.Net.CalendarComponents;
+using Ical.Net.DataTypes;
+using Ical.Net.Serialization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Net.Http;
+using System.Net.Mail;
+using System.Text;
 
 namespace Client.Base.Controllers
 {
@@ -111,6 +118,34 @@ namespace Client.Base.Controllers
             var response = repository.Feedback(feedbackVM);
 
             return Json(response);
+        }
+
+        [HttpGet("ics")]
+        public ActionResult GenerateICSFile(string s)
+        {
+            if (s == null)
+            {
+                return Redirect("/error/404");
+            }
+
+            string result = s.Replace(" ", "+");
+
+            RsaHelper rsaHelper = new RsaHelper();
+            var decrypt = rsaHelper.Decrypt(result);
+
+            var dataScheduleInterview = repository.Get(decrypt).Result;
+
+            string summary = $"Interview for {dataScheduleInterview.JobTitle} at {dataScheduleInterview.Company.Name}";
+            string deskription =
+                $"Event Name : Interview for {dataScheduleInterview.JobTitle} at {dataScheduleInterview.Company.Name}\\n" +
+                $"Your Interview : {dataScheduleInterview.CustomerName} \\n " +
+                $"Location : {dataScheduleInterview.Location} \\n";
+            var ICSHandler = new ICSHandler();
+            var fileContent = ICSHandler.GetFileContent(summary, deskription,dataScheduleInterview.StartInterview, dataScheduleInterview.StartInterview.AddMinutes(60),dataScheduleInterview.Location);
+
+            var bytes = Encoding.UTF8.GetBytes(fileContent.ToString());
+
+            return this.File(bytes, "text/calendar", "thisEvent.ics");
         }
 
         [HttpGet("{keyinterviev}/{isaccepted}")]

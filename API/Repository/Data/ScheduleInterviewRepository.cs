@@ -319,7 +319,13 @@ namespace API.Repository.Data
                 string typeLocation = (detailScheduleInterviewData.TypeLocation == 0) ? "Online" : "Offline";
                 //send email schedule to candidate
                 string subjectMail1 = "[INTERVIEW] Invitations to interview";
-                
+
+
+                //RSACryptoServiceProvider encrypt interviewid
+                var rsaHelper2 = new RsaHelper();
+                var encrypt = rsaHelper2.Encrypt(scheduleInterviewData.ScheduleInterviewId);
+                string calenderUrl = $"{myConfiguration.BaseUrlClient}interview/ics?s={encrypt}";
+
                 //Fetching Email Body Text from EmailTemplate File.  
                 string FilePath = @"..\Client\\wwwroot\\assets\\email_template\\interviewcandidate.html";
                 StreamReader str = new StreamReader(FilePath);
@@ -336,7 +342,8 @@ namespace API.Repository.Data
                     .Replace("[customerName]", scheduleInterviewData.CustomerName)
                     .Replace("[typeLocation]", typeLocation)
                     .Replace("[linkLocation]", scheduleInterviewData.Location)
-                    .Replace("[Date]", scheduleInterviewData.StartInterview.ToString("dddd, dd MMMM hh:mm tt"));
+                    .Replace("[Date]", scheduleInterviewData.StartInterview.ToString("dddd, dd MMMM hh:mm tt"))
+                    .Replace("[calender]", calenderUrl);
 
                 MailHelper mailToCandidate = new MailHelper();
                 mailToCandidate.SmtpClient(
@@ -379,9 +386,9 @@ namespace API.Repository.Data
                     .Replace("[typeLocation]", typeLocation)
                     .Replace("[linkLocation]", scheduleInterviewData.Location)
                     .Replace("[Date]", scheduleInterviewData.StartInterview.ToString("dddd, dd MMMM hh:mm tt"))
+                    .Replace("[calender]", calenderUrl)
                     .Replace("[linkAccept]", linkAccept)
-                    .Replace("[linkCancel]", linkCancel)
-                    ;
+                    .Replace("[linkCancel]", linkCancel);
                     
                     
                 MailHelper mailToCustromer = new MailHelper();

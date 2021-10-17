@@ -109,17 +109,54 @@ namespace API.Repository.Data
             //UPDATE if onboard done
             if (onboard.StatusId == "ONB-DN")
             {
-                //update problem tolong dibenerin
+                //update onboard
                 onboard.DateEnd = DateTime.Now;
                 Update(onboard);
                 myContext.SaveChanges();
 
-
+                //update status canididate
                 var candidateData = myContext.Candidates.Where(x => x.CandidateId == onboard.CandidateId).FirstOrDefault();
                 candidateData.Status = status.Idle;
                 candidateData.UpdatedAt = DateTime.Now;
                 myContext.Candidates.Update(candidateData);
                 myContext.SaveChanges();
+
+
+                //get data company
+                var companyData = myContext.Companies.Where(x => x.CompanyId == onboard.CompanyId).FirstOrDefault();
+                
+                //send notif email candidate
+
+                //subject
+                string subjectMail = $"[UPDATE] Update status onboard at {companyData.Name}";
+
+                //Fetching Email Body Text from EmailTemplate File.  
+                string FilePath = @"..\Client\wwwroot\assets\email_template\updatescheduleonboard.html";
+                StreamReader str = new StreamReader(FilePath);
+                string MailText = str.ReadToEnd();
+                str.Close();
+
+                string title = "Update status Onboard";
+                //Repalce dinamic text  
+                MailText = MailText.Replace("[title]", title)
+                    .Replace("[recipientName]", candidateData.Name)
+                    .Replace("[companyName]", companyData.Name)
+                    .Replace("[jobTitle]", onboard.JobTitle)
+                    .Replace("[dateEnd]", onboard.DateEnd.ToString("dddd, dd MMMM yyyy"))
+                    .Replace("[status]", "Idle")
+                    ;
+
+                MailHelper mailHelper = new MailHelper();
+                mailHelper.SmtpClient(
+                    subjectMail,
+                    MailText,
+                    candidateData.Email,
+                    myConfiguration.From,
+                    myConfiguration.Email,
+                    myConfiguration.Password,
+                    myConfiguration.SmtpServer,
+                    myConfiguration.Port
+                );
             }
 
 

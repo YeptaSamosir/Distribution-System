@@ -111,7 +111,6 @@ namespace API.Helper
                 message.IsBodyHtml = true;
                 message.Body = "<html><body> " + MailBody + " </body></html>";
 
-
                 var smtpClient = new SmtpClient(SmptServer)
                 {
                     Port = SmptPort,
