@@ -364,8 +364,8 @@ namespace API.Repository.Data
                 var rsaHelper = new RsaHelper();
                 var Emailencrypted = rsaHelper.Encrypt(detailScheduleInterviewData.EmailCustomer);
 
-                string linkAccept = $"{myConfiguration.BaseUrlClient}/interview/{scheduleInterviewData.ScheduleInterviewId}/ACCEPTED?e={Emailencrypted}";
-                string linkCancel = $"{myConfiguration.BaseUrlClient}/interview/{scheduleInterviewData.ScheduleInterviewId}/CANCELED?e={Emailencrypted}";
+                string linkAccept = $"{myConfiguration.BaseUrlClient}interview/{scheduleInterviewData.ScheduleInterviewId}/ACCEPTED?e={Emailencrypted}";
+                string linkCancel = $"{myConfiguration.BaseUrlClient}interview/{scheduleInterviewData.ScheduleInterviewId}/CANCELED?e={Emailencrypted}";
 
                 string subjectMail2 = "[INTERVIEW] Invitations to interview";
 
@@ -487,7 +487,7 @@ namespace API.Repository.Data
 
                     string title3 = "Please tell us";
                     string responseAcceped = "Thank you for your participation in the job interview process, candidate accepted!";
-                    string linkFeedback = $"{myConfiguration.BaseUrlClient}/interview/feedback/{scheduleInterviewData.ScheduleInterviewId}";
+                    string linkFeedback = $"{myConfiguration.BaseUrlClient}interview/feedback/{scheduleInterviewData.ScheduleInterviewId}";
                     //Repalce dinamic text  
                     MailText3 = MailText3.Replace("[title]", title3)
                         .Replace("[response]", responseAcceped)
@@ -563,7 +563,7 @@ namespace API.Repository.Data
 
                     string title3 = "Please tell us";
                     string responseCancel = "Thank you for your participation in the job interview process, candidate canceled!";
-                    string linkFeedback = $"{myConfiguration.BaseUrlClient}/interview/feedback/{scheduleInterviewData.ScheduleInterviewId}";
+                    string linkFeedback = $"{myConfiguration.BaseUrlClient}interview/feedback/{scheduleInterviewData.ScheduleInterviewId}";
                     //Repalce dinamic text  
                     MailText3 = MailText3.Replace("[title]", title3)
                         .Replace("[response]", responseCancel)
