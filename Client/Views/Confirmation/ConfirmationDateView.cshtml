@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Confirm schedule Interview";
+    Layout = "_LayoutAuth";
+}
+<div class="login_wrapper">
+    <div class="animate form login_form">
+        <section class="login_content">
+            <form id="form-confirm-schedule" method="POST">
+                <hr />
+                <h2 class="h2 text-uppercase">@ViewBag.ScheduleFollowBy schedule interview confirmation</h2>
+                <hr />
+                <h2 class="mt-5 text-justify">
+                    Hi, @ViewBag.Name!, please inform us of the three schedule options for interviews with your @ViewBag.Followed.
+                    We will then contact your @ViewBag.Followed to choose one of the three dates.
+                </h2>
+                <span class="text-danger">@TempData["Message"]</span>
+
+                <input id="scheduleInterviewId" type="hidden" name="scheduleInterviewId" value="@ViewBag.ScheduleInterviewId" />
+                <input id="scheduleFollowBy" type="hidden" name="scheduleFollowBy" value="@ViewBag.ScheduleFollowBy" />
+
+                <div class="form-group row mt-5">
+                    <label class="control-label col-md-4 col-sm-12 pt-1">Date Schedule Offer 1</label>
+                    <div class="col-md-8 col-sm-12">
+                        <div class="input-append date form_datetime d-flex" id='myDatepicker1'>
+                            <input size="16" type="text" class="form-control" value="" readonly id="inputDateTimeOne">
+                            <span class="add-on p-2"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <div class="invalid-feedback">
+                            <span id="messageDateTimeOne"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="control-label col-md-4 col-sm-12 pt-1">Date Schedule Offer 2</label>
+                    <div class="col-md-8 col-sm-12">
+                        <div class="input-append date form_datetime d-flex" id='myDatepicker2'>
+                            <input size="16" type="text" class="form-control" value="" readonly id="inputDateTimeTwo">
+                            <span class="add-on p-2"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <div class="invalid-feedback">
+                            <span id="messageDateTimeTwo"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="control-label col-md-4 col-sm-12 pt-1">Date Schedule Offer 3</label>
+                    <div class="col-md-8 col-sm-12">
+                        <div class="input-append date form_datetime d-flex" id='myDatepicker3'>
+                            <input size="16" type="text" class="form-control" value="" readonly id="inputDateTimeThree">
+                            <span class="add-on p-2"><i class="fa fa-calendar"></i></span>
+                        </div>
+                        <div class="invalid-feedback">
+                            <span id="messageDateTimeThree"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <button id="btn-sub" class="btn btn-success w-100" type="submit">
+                        Save
+                    </button>
+                </div>
+
+                <div class="clearfix"></div>
+            </form>
+        </section>
+    </div>
+</div>

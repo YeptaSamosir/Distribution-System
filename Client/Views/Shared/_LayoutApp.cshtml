@@ -1,0 +1,307 @@
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["LogEmail"] = HttpContextAccessor.HttpContext.Session.GetString("LogEmail");
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="images/favicon.ico" type="image/ico" />
+    <meta name="_csrf" content="${_csrf.token}" />
+    <meta name="_csrf_header" content="${_csrf.headerName}" />
+    <title> @ViewData["Title"] - Distribution System </title>
+
+    <!-- Bootstrap -->
+    <link href="~/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="~/assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="~/assets/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="~/assets/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <!--DateTimePicker-->
+    <link href="~/assets/vendors/bootstrap-datetimepicker2/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="~/assets/vendors/bootstrap-datetimepicker2/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <!-- bootstrap-progressbar -->
+    <link href="~/assets/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <!-- FullCalendar -->
+    <link href="~/assets/vendors/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
+    <link href="~/assets/vendors/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
+    <!-- JQVMap -->
+    <link href="~/assets/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet" />
+    <!-- bootstrap-daterangepicker -->
+    <link href="~/assets/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+    <!-- Datatables -->
+    <link href="~/assets/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="~/assets/build/css/custom.min.css" rel="stylesheet">
+    <!-- Sweet Alert 2-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;">
+                        <a href="" class="site_title"> <span>Distribution System</span></a>
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <br />
+
+                    <!-- sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <h3>Home</h3>
+                            <ul class="nav side-menu">
+                                <li class=""><a href="~/Admin"><i class="fa fa-home"></i> Dashboard</a></li>
+                            </ul>
+                        </div>
+                        @if (User.IsInRole("Super Administrator") == true)
+                        {
+                            <div class="menu_section">
+                                <h3>Super Admin</h3>
+                                <ul class="nav side-menu">
+                                    <li class=""><a href="~/Admin/account"><i class="fa fa-users"></i> Account Manajement</a></li>
+                                    <li class=""><a href="~/Admin/role"><i class="fa fa-eye"></i> Access Role</a></li>
+                                </ul>
+                            </div>
+                        }
+
+                        @if (User.IsInRole("Administrator") == true)
+                        {
+                            <div class="menu_section">
+                                <h3>Admin</h3>
+                                <ul class="nav side-menu">
+                                    <li class=""><a href="~/Admin/onboard"><i class="fa fa-briefcase"></i>Onboard Manajement</a></li>
+                                    <li class=""><a href="~/Admin/candidate"><i class="fa fa-folder"></i> Master Candidate</a></li>
+                                    <li>
+                                        <a>
+                                            <i class="fa fa-building-o"></i> Interview Scheduling <span class="fa fa-chevron-down"></span>
+                                        </a>
+                                        <ul class="nav child_menu">
+                                            <li><a href="~/Admin/scheduleinterview">Interview Scheduling</a></li>
+                                            <li><a href="~/Admin/scheduleinterview/create">Create Scheduling</a></li>
+                                            <li><a href="~/Admin/company">Company Data</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        }
+
+                        <div class="menu_section">
+                            <h3>Settings</h3>
+                            <ul class="nav side-menu">
+                                <li>
+                                    <a><i class="fa fa-cog"></i> Account <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="~/Admin/setting/profile">Profile</a></li>
+                                        <li><a href="~/Admin/setting/change-password">Change Password</a></li>
+                                    </ul>
+                                </li>
+
+                                <li><a asp-controller="auth" asp-action="logout"><i class="fa fa-power-off"></i> Log out </a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <!-- /sidebar menu -->
+                    <!-- /menu footer buttons -->
+                    <div class="sidebar-footer hidden-small">
+
+                    </div>
+                    <!-- /menu footer buttons -->
+                </div>
+            </div>
+
+            <!-- top navigation -->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <div class="nav toggle">
+                        <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                    </div>
+                    <nav class="nav navbar-nav">
+                        <ul class=" navbar-right">
+                            <li class="nav-item dropdown open" style="padding-left: 15px;">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true"
+                                   id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                                    <img src="~/assets/production/images/user.png" alt="">@ViewData["LogEmail"]
+                                </a>
+                                <div class="dropdown-menu dropdown-usermenu pull-right"
+                                     aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="~/admin/setting/profile"> Profile</a>
+                                    <a class="dropdown-item" asp-controller="auth" asp-action="logout">
+                                        <i class="fa fa-sign-out pull-right"></i>
+                                        Log Out
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- /top navigation -->
+
+            @RenderBody()
+
+            <!-- footer content -->
+            <footer>
+                <div class="pull-right">
+                    Distribution System - MBKM</a>
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+        </div>
+    </div>
+
+
+    <!-- jQuery -->
+    <script src="~/assets/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="~/assets/vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FastClick -->
+    <script src="~/assets/vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="~/assets/vendors/nprogress/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="~/assets/vendors/Chart.js/dist/Chart.min.js"></script>
+    <!-- gauge.js -->
+    <script src="~/assets/vendors/gauge.js/dist/gauge.min.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="~/assets/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <!-- iCheck -->
+    <script src="~/assets/vendors/iCheck/icheck.min.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="~/assets/vendors/moment/min/moment.min.js"></script>
+    <script src="~/assets/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <!-- Skycons -->
+    <script src="~/assets/vendors/skycons/skycons.js"></script>
+    <!-- Flot -->
+    <script src="~/assets/vendors/Flot/jquery.flot.js"></script>
+    <script src="~/assets/vendors/Flot/jquery.flot.pie.js"></script>
+    <script src="~/assets/vendors/Flot/jquery.flot.time.js"></script>
+    <script src="~/assets/vendors/Flot/jquery.flot.stack.js"></script>
+    <script src="~/assets/vendors/Flot/jquery.flot.resize.js"></script>
+    <!-- Flot plugins -->
+    <script src="~/assets/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+    <script src="~/assets/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+    <script src="~/assets/vendors/flot.curvedlines/curvedLines.js"></script>
+    <!-- DateJS -->
+    <script src="~/assets/vendors/DateJS/build/date.js"></script>
+    <!-- JQVMap -->
+    <script src="~/assets/vendors/jqvmap/dist/jquery.vmap.js"></script>
+    <script src="~/assets/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+    <script src="~/assets/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+
+    <!-- Datatables -->
+    <script src="~/assets/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/assets/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/assets/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/assets/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="~/assets/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="~/assets/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/assets/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="~/assets/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="~/assets/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="~/assets/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/assets/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="~/assets/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="~/assets/vendors/jszip/dist/jszip.min.js"></script>
+    <script src="~/assets/vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="~/assets/vendors/pdfmake/build/vfs_fonts.js"></script>
+    <!-- FullCalendar -->
+    <script src="~/assets/vendors/moment/min/moment.min.js"></script>
+    <script src="~/assets/vendors/fullcalendar/dist/fullcalendar.min.js"></script>
+    <!--Date Time-->
+    <script src="~/assets/vendors/datetime/datetime.js"></script>
+
+
+    <!-- Custom Theme Scripts -->
+    <script src="~/assets/build/js/custom.min.js"></script>
+    <!-- bootstrap-datetimepicker2 -->
+    <script src="~/assets/vendors/bootstrap-datetimepicker2/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/assets/vendors/bootstrap-datetimepicker2/js/bootstrap-datetimepicker.js"></script>
+
+
+    @if (ViewData["Title"] == "Create Schedule Interview")
+    {
+
+        <!-- jQuery Tags Input -->
+        <script src="~/assets/vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+
+        <!-- jQuery autocomplete -->
+        <script src="~/assets/vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
+
+        <script src="~/data/dataCreateScheduleInterview.js"></script>
+    }
+
+
+
+
+
+    @if (ViewData["Title"] == "Account Role")
+    {
+        <script src="~/data/dataRole.js"></script>
+    }
+
+    @if (ViewData["Title"] == "Account Manajement")
+    {
+        <script src="~/data/dataAccount.js"></script>
+    }
+    @if (ViewData["Title"] == "Company Data")
+    {
+        <script src="~/data/dataCompanyData.js"></script>
+    }
+
+    @if (ViewData["Title"] == "Master Candidate")
+    {
+        <script src="~/data/dataCandidate.js"></script>
+    }
+
+    @if (ViewData["Title"] == "Profile")
+    {
+        <script src="~/data/dataProfile.js"></script>
+    }
+
+    @if (ViewData["Title"] == "Change Password")
+    {
+        <script src="~/data/dataChangePassword.js"></script>
+    }
+    @if (ViewData["Title"] == "Schedule Interview")
+    {
+        <script src="~/data/dataScheduleInterview.js"></script>
+    }
+    @if (ViewData["Title"] == "Onboard Management")
+    {
+        <script src="~/data/dataOnboard.js"></script>
+    }
+    @if (ViewData["Title"] == "Dashboard")
+    {
+        <script src="~/data/dataDashboard.js"></script>
+    }
+
+
+</body>
+
+</html>

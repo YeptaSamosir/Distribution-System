@@ -1,4 +1,5 @@
-﻿using Client.Models;
+﻿using API.Helper;
+using Client.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -20,8 +21,27 @@ namespace Client.Controllers
 
         public IActionResult Index()
         {
+            return RedirectToAction("login", "Auth");
+        }
+
+        [HttpGet("reset")]
+        public IActionResult ResetPassword(string p)
+        {
+
+            if (p == null) {
+                return Redirect("/error/404");
+            }
+
+            string result = p.Replace(" ", "+");
+
+            RsaHelper rsaHelper = new RsaHelper();
+            var decrypt = rsaHelper.Decrypt(result);
+
+            ViewBag.Email = decrypt;
+
             return View();
         }
+
 
         public IActionResult Privacy()
         {

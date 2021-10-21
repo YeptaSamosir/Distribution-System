@@ -33,11 +33,12 @@ namespace API.Repository
         TEntity IGenericRepository<TEntity, TKey>.Get(TKey key)
         {
             var data = dbSet.Find(key);
-            if (data != null)
+            return data;
+            /*if (data != null)
             {
                 return data;
             }
-            throw new ArgumentNullException();
+            throw new ArgumentNullException();*/
         }
 
         int IGenericRepository<TEntity, TKey>.Insert(TEntity entity)
@@ -61,6 +62,17 @@ namespace API.Repository
                 return myContext.SaveChanges();
             }
             throw new ArgumentNullException();
+        }
+        public int Update(TEntity entity)
+        {
+            if (entity == null)
+            {
+                throw new Exception();
+            }
+            myContext.Entry(entity).State = EntityState.Modified;
+            var update = myContext.SaveChanges();
+
+            return update;
         }
     }
 }

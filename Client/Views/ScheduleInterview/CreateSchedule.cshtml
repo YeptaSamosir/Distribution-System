@@ -1,0 +1,163 @@
+﻿@{
+    ViewData["Title"] = "Create Schedule Interview";
+    Layout = "_LayoutApp";
+}
+<div class="right_col" role="main">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="~/Admin">Home</a></li>
+                    <li class="breadcrumb-item"><a href="~/Admin">Admin</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="col-12">
+            <h3>@ViewData["Title"]</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 ">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Form create Schedule Interview</h2>
+                    <ul class="nav navbar-right panel_toolbox flex-row-reverse">
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                    <form id="form-create-shedule">
+
+                        <h2>Schedule interview profile</h2>
+
+                        <div class="clearfix"></div>
+                        <div class="form-group row ">
+                            <label class="control-label col-md-3 col-sm-12 ">Customer Name</label>
+                            <div class="col-md-8 col-sm-12 ">
+                                <input type="text" class="form-control" id="inputCustomerName" />
+                                <div class="invalid-feedback">
+                                    <span id="messageCustomerName"></span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row ">
+                            <label class="control-label col-md-3 col-sm-12 ">Customer Email</label>
+                            <div class="col-md-8 col-sm-12 ">
+                                <input type="text" class="form-control" id="inputCustomerEmail" />
+                                <div class="invalid-feedback">
+                                    <span id="messageCustomerEmail"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="control-label col-md-3 col-sm-12 ">Company</label>
+                            <div class="col-md-8 col-sm-12 ">
+                                <input type="text" name="company" class="form-control" id="inputCompany" />
+                                <div class="invalid-feedback">
+                                    <span id="messageCompany"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row ">
+                            <label class="control-label col-md-3 col-sm-12 ">Job title</label>
+                            <div class="col-md-8 col-sm-12 ">
+                                <input type="text" class="form-control" id="inputJobTitle">
+                                <div class="invalid-feedback">
+                                    <span id="messageJobTitle"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="control-label col-md-3 col-sm-12 ">Candidate Name</label>
+                            <div class="col-md-8 col-sm-12 ">
+                                <select class="custom-select form-control" id="inputCandidate" onchange="getEmailCandidate()">
+                                    <option>-</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    <span id="messageCandidate"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row ">
+                            <label class="control-label col-md-3 col-sm-12 ">Candidate Email</label>
+                            <div class="col-md-8 col-sm-12 ">
+                                <input type="text" class="form-control"  id="inputCandidateEmail" />
+                                <div class="invalid-feedback">
+                                    <span id="messageCandidateEmail"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-2">
+                            <label class="control-label col-md-3 col-sm-12 ">Type Interview</label>
+                            <div class="col-md-8 col-sm-12 ">
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="online" name="inputType" class="custom-control-input" value="0">
+                                    <label class="custom-control-label" for="online">Online</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="offline" name="inputType" class="custom-control-input" value="1">
+                                    <label class="custom-control-label" for="offline">Offline</label>
+                                </div>
+                                <div class="text-danger">
+                                    <span id="messageType"></span>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group row">
+                            <label class="control-label col-md-3 col-sm-12 ">Location/Link</label>
+                            <div class="col-md-8 col-sm-12 ">
+                                <textarea class="form-control" id="inputLocation"></textarea>
+                                <div class="invalid-feedback">
+                                    <span id="messageLocation"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h2>Schedule Offer</h2>
+
+                        <div class="form-group row">
+                            <label class="control-label col-md-3 col-sm-12 ">Following schedule by</label>
+                            <div class="col-md-8 col-sm-12 ">
+                                <select class="custom-select form-control" id="inputScheduleBy">
+                                    <option value="" selected></option>
+                                    <option value="candidate">Candidate</option>
+                                    <option value="customer">Customer</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    <span id="messageScheduleBy"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ln_solid"></div>
+                        <div class="form-group">
+                            <div class="col-md-9 col-sm-9  offset-md-3">
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,146 @@
+﻿@{
+    ViewData["Title"] = "Master Candidate";
+    Layout = "_LayoutApp";
+}
+<div class="right_col" role="main">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="~/Admin">Home</a></li>
+                    <li class="breadcrumb-item"><a href="~/Admin">Admin</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="col-12">
+            <h3>@ViewData["Title"]</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 ">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Candidate data</h2>
+                    <ul class="nav navbar-right panel_toolbox flex-row-reverse">
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card-box table-responsive">
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalCandidate">Create</button>
+
+                                <div id="modalCandidate" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="myModalLabel">Create new candidate data</h4>
+                                                <button type="button" class="close" data-dismiss="modal">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                            </div>
+                                            <form id="form-create-candidate" method="post">
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <label for="inputCandidateName">Candidate Name</label>
+                                                        <input id="inputCandidateName" type="text" class="form-control" value="">
+                                                        <div class="invalid-feedback">
+                                                            <span id="messageCandidateName"></span>
+                                                        </div>
+
+                                                        <label for="inputGrade">Grade</label>
+                                                        <input id="inputGrade" type="text" class="form-control" value="">
+                                                        <div class="invalid-feedback">
+                                                            <span id="messageGrade"></span>
+                                                        </div>
+
+                                                        <label for="inputEmail">Email</label>
+                                                        <input id="inputEmail" type="text" class="form-control" value="">
+                                                        <div class="invalid-feedback">
+                                                            <span id="messageEmail"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-success">Create</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <table id="datatable-candidate" class="table table-striped table-bordered" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th width="1%">No</th>
+                                            <th>Candidate Name</th>
+                                            <th>Grade Candidate</th>
+                                            <th>Email Candidate</th>
+                                            <th>Status Candidate</th>
+                                            <th width="10%">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /page content -->
+<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="editLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editLabel">Edit Candidate</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="form-edit-candidate" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input id="candidateId" type="hidden" />
+                        <label for="inputCandidateNameEdit">Candidate Name</label>
+                        <input id="inputCandidateNameEdit" type="text" class="form-control" value="">
+                        <div class="invalid-feedback">
+                            <span id="messageCandidateNameEdit"></span>
+                        </div>
+
+                        <label for="inputGradeEdit">Grade</label>
+                        <input id="inputGradeEdit" type="text" class="form-control" value="">
+                        <div class="invalid-feedback">
+                            <span id="messageGradeEdit"></span>
+                        </div>
+
+                        <label for="inputEmailEdit">Email</label>
+                        <input id="inputEmailEdit" type="text" class="form-control" value="">
+                        <div class="invalid-feedback">
+                            <span id="messageEmailEdit"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
